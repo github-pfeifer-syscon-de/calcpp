@@ -1,6 +1,8 @@
 # calcpp
 A desktop calculator
 
+![calcpp](calcpp.png "calcpp")
+
 A simple lightweight desktop calculator
 (this time based on C++11 to try some it's features.
 As far i coud see they are useful,
