@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<interface>
+  <!-- interface-requires gtk+ 3.0 -->
+   <menu id="menubar">
+    <submenu>
+      <attribute translatable="yes" name="label">File</attribute>
+      <section>
+        <item>
+          <attribute translatable="yes" name="label">Load</attribute>
+          <attribute name="action">win.load</attribute>
+        </item>
+        <item>
+          <attribute translatable="yes" name="label">Save</attribute>
+          <attribute name="action">win.save</attribute>
+        </item>
+        <item>
+          <attribute translatable="yes" name="label">Quit</attribute>
+          <attribute name="action">app.quit</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name="label" translatable="yes">_Preferences</attribute>
+      <section>
+        <submenu id="angle-unit">
+        	<attribute name="label" translatable="yes">Angle unit</attribute>
+        	<!-- section item build from source to keep the definition in sync>
+				<item>
+				  <attribute translatable="yes" name="label">Radians</attribute>
+				  <attribute name="action">win.angle-unit</attribute>
+				  <attribute name="target">rad</attribute>
+				</item>
+				<item>
+				  <attribute translatable="yes" name="label">Degree (°)</attribute>
+				  <attribute name="action">win.angle-unit</attribute>
+				  <attribute name="target">deg</attribute>
+				</item>
+				<item>
+				  <attribute translatable="yes" name="label">Grad (Gon)</attribute>
+				  <attribute name="action">win.angle-unit</attribute>
+				  <attribute name="target">gon</attribute>
+				</item>
+        	</section -->
+        </submenu>	
+        <submenu id="output-format">
+        	<attribute name="label" translatable="yes">Output</attribute>
+        	  <!-- section  item build from source to keep the definition in sync>
+				<item>
+				  <attribute translatable="yes" name="label">Decimal</attribute>
+				  <attribute name="action">win.output-format</attribute>
+				  <attribute name="target">dec</attribute>
+				</item>
+				<item>
+				  <attribute translatable="yes" name="label">Scientific</attribute>
+				  <attribute name="action">win.output-format</attribute>
+				  <attribute name="target">sci</attribute>
+				</item>
+				<item>
+				  <attribute translatable="yes" name="label">Exponential</attribute>
+				  <attribute name="action">win.output-format</attribute>
+				  <attribute name="target">exp</attribute>
+				</item>
+				<item>
+				  <attribute translatable="yes" name="label">Hexadecimal (integer)</attribute>
+				  <attribute name="action">win.output-format</attribute>
+				  <attribute name="target">hex</attribute>
+				</item>
+				<item>
+				  <attribute translatable="yes" name="label">Hexadecimal (floating point)</attribute>
+				  <attribute name="action">win.output-format</attribute>
+				  <attribute name="target">hexd</attribute>
+				</item>
+				<item>
+				  <attribute translatable="yes" name="label">Octal (integer)</attribute>
+				  <attribute name="action">win.output-format</attribute>
+				  <attribute name="target">oct</attribute>
+				</item>
+        	</section -->        	
+		</submenu>
+		<item>
+          <attribute name="label" translatable="yes">_Preferences</attribute>
+          <attribute name="action">win.preferences</attribute>
+        </item>		
+      </section>
+    </submenu>
+      <submenu id="utility">
+      	 <attribute name="label" translatable="yes">Utility</attribute>    
+			<item>
+			  <attribute translatable="yes" name="label">Characters</attribute>
+			  <attribute name="action">win.chars</attribute>
+			</item>
+			<item>
+			  <attribute translatable="yes" name="label">Calendar</attribute>
+			  <attribute name="action">win.calendar</attribute>
+			</item>
+	  </submenu>	
+    <submenu>
+      <attribute translatable="yes" name="label">Help</attribute>
+      <section>    
+        <item>
+          <attribute name="label" translatable="yes">_Help</attribute>
+          <attribute name="action">app.help</attribute>
+        </item>
+        <item>
+          <attribute name="label" translatable="yes">_About</attribute>
+          <attribute name="action">app.about</attribute>
+        </item>
+      </section>  
+    </submenu>
+  </menu>
+</interface>

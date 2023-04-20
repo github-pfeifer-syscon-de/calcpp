@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Version=0.1
+Name=Calculator
+Comment=Desktop calculator
+Categories=Application;Utility;
+Exec=calcpp
+Icon=@APP_ICON@

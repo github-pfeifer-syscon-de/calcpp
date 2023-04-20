@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/de/pfeifer_syscon/calcpp">
+    <file preprocess="xml-stripblanks">app-menu.ui</file>
+    <file preprocess="xml-stripblanks">calc-win.ui</file>
+    <file preprocess="xml-stripblanks">char-dlg.ui</file>
+    <file preprocess="xml-stripblanks">abt-dlg.ui</file>
+    <file preprocess="xml-stripblanks">help-dlg.ui</file>
+    <file preprocess="xml-stripblanks">pref-dlg.ui</file>
+    <file preprocess="xml-stripblanks">date-dlg.ui</file>
+    <file>calcpp.png</file>
+  </gresource>
+</gresources>

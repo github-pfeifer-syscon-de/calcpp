@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>  
+  <schema path="/de/pfeifer_syscon/calcpp/" id="de.pfeifer_syscon.calcpp">
+    <key name="defaultfont" type="b">
+      <default>true</default>
+      <summary>Default Font</summary>
+      <description>If default font shoud be used.</description>
+    </key>
+    <key name="font" type="s">
+      <default>'monospace 10'</default>
+      <summary>Font</summary>
+      <description>The font to be used for content.</description>
+    </key>       
+    <key name="angle-unit" type='s'>
+      <!-- choices leave out values as they are already present in source, and they are not translateable here... >
+        <choice value='rad'/>
+        <choice value='deg'/>
+        <choice value='gon'/>
+      </choices -->
+      <default>'rad'</default>
+      <summary>Angle unit</summary>
+      <description>The unit for angles. 'rad' Radian describes a circle from 0..2pi, 'deg' degree 0..360°, 'gon' grad 0..400.</description>
+    </key>
+    <key name="output-format" type='s'>
+        <!-- choices leave out values as they are already present in source, and they are not translatebale here... >
+			<choice value='dec'/>
+			<choice value='sci'/>
+			<choice value='exp'/>
+			<choice value='hex'/>
+			<choice value='hxf'/>
+			<choice value='oct'/>    
+        </choices -->
+      <default>'dec'</default>      
+      <summary>Output format</summary>
+      <description>The format numbers are outputed, 'dec','sci','exp','hex','hxf' in case of 'oct' octal this also allows reading e.g. 010 as decimal 8.</description>
+    </key>    
+    <key name="text" type="s">
+      <default>'Just write your expression e.g
+ 3 + 4 * 5
+ and press [Ctrl] + [Enter] on that line.
+ Or mark an area for evaluation, multiple lines are evaluated separately.
+ The usual functions sin,cos,log,sqrt,... are supported as well.
+ You can use the predefined constants pi,e, 
+ or assign your own variables e.g.
+ a = 2 ^ 8
+ and use the result for your next evaluation.'</default>      
+      <summary>Last edited text</summary>
+      <description>The text loaded on startup, and saved on exit.</description>
+    </key>
+    <key name="paned" type="i">
+      <default>200</default>      
+      <summary>Paned position</summary>
+      <description>The position of splitter between text and list.</description>
+    </key>    
+    <key name="pos" type="(ii)">
+      <default>(0,0)</default>      
+      <summary>Window position</summary>
+      <description>Last window position.</description>
+    </key>    
+    <key name="size" type="(ii)">
+      <default>(400,300)</default>      
+      <summary>Window size</summary>
+      <description>Last window size.</description>
+    </key>    
+    <key name="variables" type="a{sd}">
+      <default>[]</default>      
+      <summary>Variables</summary>
+      <description>Variable names and values.</description>
+    </key>
+  </schema>
+</schemalist>
