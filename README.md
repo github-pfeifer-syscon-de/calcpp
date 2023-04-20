@@ -63,3 +63,15 @@ A simple calendar view is included.
 Issues:
 * The parsing doesn't support grouping separators
   (and they are missing in output as well).
+
+To build on (Lin)ux use:
+<pre>
+autoreconf -fis
+./configure ...
+make
+</pre>
+
+For windows change:
+<pre>
+  in src/Makefile.am modify ..._LDFLAGS = -mwindows
+</pre>
