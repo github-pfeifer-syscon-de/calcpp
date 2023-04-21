@@ -1,20 +1,40 @@
 AC_INIT([calcpp program],[0.1],[calcpp@pfeifer-syscon.de])
+
 AC_CONFIG_MACRO_DIR([m4])
+
 dnl use -no-portablitity to stop complaining about $(shell... in res Makefile.am
 dnl i dont get it, as the shell is everywhere, turtle power!
+
 AM_INIT_AUTOMAKE([1.11 -Wno-portability])
+
 AM_SILENT_RULES([yes])
+
 AC_CONFIG_HEADERS([config.h])
+
 AX_CHECK_ENABLE_DEBUG([info], [DEBUG], [RELEASE], [IS-RELEASE])
 AC_PROG_CC
 AC_PROG_CXX
 AX_CXX_COMPILE_STDCXX_11(noext, mandatory)
+
 GLIB_GSETTINGS
+
 LT_INIT
+
+AC_CANONICAL_HOST
+AC_MSG_NOTICE([host_os $host_os])
+
 PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0])
+
 PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 giomm-2.4])
+
 AC_SEARCH_LIBS([uc_all_blocks], [unistring])
+
 AX_CHECK_SED()
+
+if test "$host_os" = "mingw32" ; then
+    AC_SUBST(EXTRA_LDFLAGS, "-mwindows")
+fi
+
 AC_CONFIG_FILES([
 Makefile
 srcLib/Makefile

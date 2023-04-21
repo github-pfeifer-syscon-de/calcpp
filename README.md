@@ -73,7 +73,7 @@ autoreconf -fis
 make
 </pre>
 
-For windows change:
+Build for windows was integrated at least for msys2<br>
 <pre>
-  in src/Makefile.am modify ..._LDFLAGS = -mwindows
+  look for "$host_os" = "mingw32"
 </pre>

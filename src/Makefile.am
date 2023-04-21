@@ -13,6 +13,8 @@ calcpp_CFLAGS = -Wall
 calcpp_CXXFLAGS = -Wall \
 	-Wno-psabi ## -Wno-psabi disable abi warn, as we use a value list..., may need changing if different gcc versions will be used
 
+calcpp_LDFLAGS = @EXTRA_LDFLAGS@
+
 calcpp_LDADD =  \
 	-lunistring \
 	../srcLib/libexpression.a \
