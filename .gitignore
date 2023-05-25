@@ -1,5 +1,3 @@
-/m4/lt~obsolete.m4
-/m4/libtool.m4
 /configure
 /src/resources.c
 /autom4te.cache/
@@ -25,11 +23,8 @@
 /Makefile
 /src/Makefile
 /depcomp
-/m4/ltsugar.m4
 /compile
-/m4/ltversion.m4
 /config.guess
-/m4/ltoptions.m4
 /nbproject/private/cpp_standard_headers_indexer.cpp
 /config.h
 /ltmain.sh
@@ -43,3 +38,12 @@
 /src/calcpp
 /nbproject/private/Default-exec.log
 /nbproject/private/CodeAssistancePathMapper.properties
+/PKGBUILD
+/src/configure.ac
+/src/.deps/
+/pkg/
+/m4/ltsugar.m4
+/m4/libtool.m4
+/m4/ltversion.m4
+/m4/ltoptions.m4
+/m4/lt~obsolete.m4
