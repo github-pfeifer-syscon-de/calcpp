@@ -134,7 +134,7 @@ CalcppWin::activate_actions()
 
     auto char_action = Gio::SimpleAction::create("chars");
     char_action->signal_activate().connect (
-        [=] (const Glib::VariantBase& value)
+        [this] (const Glib::VariantBase& value)
 		{
 			try {
 				auto builder = Gtk::Builder::create();
@@ -152,7 +152,7 @@ CalcppWin::activate_actions()
 
     auto calendar_action = Gio::SimpleAction::create("calendar");
     calendar_action->signal_activate().connect(
-        [=]  (const Glib::VariantBase& value)
+        [this]  (const Glib::VariantBase& value)
 		{
 			try {
 				auto builder = Gtk::Builder::create();
@@ -170,7 +170,7 @@ CalcppWin::activate_actions()
 
     auto pref_action = Gio::SimpleAction::create("preferences");
     pref_action->signal_activate().connect(
-        [=]  (const Glib::VariantBase& value)
+        [this]  (const Glib::VariantBase& value)
 		{
 			try {
 				auto builder = Gtk::Builder::create();
@@ -188,7 +188,7 @@ CalcppWin::activate_actions()
 
     auto load_action = Gio::SimpleAction::create("load");
     load_action->signal_activate().connect(
-        [=]  (const Glib::VariantBase& value)
+        [this]  (const Glib::VariantBase& value)
 		{
 			try {
 				CalcFileChooser file_chooser(this, false);
@@ -205,7 +205,7 @@ CalcppWin::activate_actions()
 
     auto save_action = Gio::SimpleAction::create("save");
     save_action->signal_activate().connect (
-        [=]  (const Glib::VariantBase& value)
+        [this]  (const Glib::VariantBase& value)
 		{
 			try {
 				CalcFileChooser file_chooser(this, true);

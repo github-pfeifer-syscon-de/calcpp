@@ -32,7 +32,7 @@ CalcTreeView::CalcTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
     set_model(m_evalContext->get_list());
 	auto format_proxy = m_evalContext->property_output_format_id();
 	format_proxy.signal_changed().connect(
-	[=] {
+	[this] {
 		// to rerender, wont work
 		//set_model(m_evalContext->get_list());
 		auto col = m_evalContext->m_variable_columns.m_value;
@@ -54,7 +54,7 @@ CalcTreeView::create_column_name(Glib::ustring name, Gtk::TreeModelColumn<Glib::
     Gtk::CellRendererText* cell = (Gtk::CellRendererText*)get_column_cell_renderer(col.index());
     cell->property_editable() = true;
     cell->signal_edited().connect(
-		[=](Glib::ustring path, Glib::ustring data)
+		[this, col](Glib::ustring path, Glib::ustring data)
 		{
 			// lamda allows to avoid function hoping
 			Gtk::TreePath tPath(path);
@@ -119,7 +119,7 @@ CalcTreeView::create_column_value(Glib::ustring name, Gtk::TreeModelColumn<doubl
 
     cellRenderer->property_editable() = true;
     cellRenderer->signal_edited().connect(
-		[=](Glib::ustring path, Glib::ustring data)
+		[this](Glib::ustring path, Glib::ustring data)
 		{	// lamda allows to avoid function hoping
 			Gtk::TreePath tPath(path);
 			auto model = get_model();

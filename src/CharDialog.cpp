@@ -81,13 +81,13 @@ CharDialog::CharDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     fill_list();
     show_all();
     signal_response().connect(
-        [=] (int response)
+        [this] (int response)
 		{
             hide();
         }
     );
 	m_entry->signal_changed().connect(	// allow display of info for char
-		[=] {
+		[this] {
 			Glib::ustring text = m_entry->get_text();
 			Glib::ustring info;
 			auto iter = text.begin();
@@ -106,7 +106,7 @@ CharDialog::CharDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 				if (last < unicodePage->get_start()
 				 || last > unicodePage->get_end()) {	// if page does not match char
 					auto model = m_page->get_model();
-					for (auto i : model->children()) {	// find it 
+					for (auto i : model->children()) {	// find it
 						auto r = *i;
 					    std::shared_ptr<UnicodeBlock> uniPage = r[m_combo_columns.m_value];
 						if (last >= uniPage->get_start()
@@ -151,7 +151,7 @@ CharDialog::create_columns()
         }
         //cell.editable = true;		// simple hack to allow copy
         cell->signal_edited().connect(
-            [ = ](Glib::ustring path, Glib::ustring data)
+            [this, id](Glib::ustring path, Glib::ustring data)
 			{
                 Gtk::TreePath tPath(path);
                 auto model = m_table->get_model();
@@ -159,7 +159,7 @@ CharDialog::create_columns()
                 Gtk::TreeModel::Row row = *iter;
                 Glib::ustring cellVal = row[m_char_columns.m_cell[id]];
 				m_entry->set_text(m_entry->get_text() + cellVal);		// let entry event handler do work
-                //std::cout << "Cell value " << cellVal << std::endl;				
+                //std::cout << "Cell value " << cellVal << std::endl;
 				//if (cellVal.length() > 0) {
 				//	ucs4_t uc = cellVal.at(0);
 				//	m_info->set_text(char_info(uc));
@@ -225,7 +225,7 @@ CharDialog::fill_list()
     m_page->set_entry_text_column(m_combo_columns.m_name);
 
     m_page->signal_changed().connect(
-        [=] {
+        [this] {
 			Gtk::TreeIter iter = m_page->get_active();
 			Gtk::TreeModel::Row row = *iter;
 			auto unicodePage = row[m_combo_columns.m_value];

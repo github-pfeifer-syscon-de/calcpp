@@ -75,14 +75,14 @@ EvalContext::EvalContext()
 , m_list{Gtk::ListStore::create(m_variable_columns)}
 , m_functionMap()
 {
-    set_value(u8"\u03c0", G_PI); // π or pi set some defaults
+    set_value((const char*)u8"\u03c0", G_PI); // π or pi set some defaults
     set_value("e", G_E);
-    set_value(u8"\u03d5", (1.0 + sqrt(5.0)) / 2.0); // ϕ or phi
+    set_value((const char*)u8"\u03d5", (1.0 + sqrt(5.0)) / 2.0); // ϕ or phi
     // have to use proxy as it seems, to reflect property changes with functions
     //   custom setter,getter for property would be nice but the functions are not virtual...
     Glib::PropertyProxy<Glib::ustring> angle_proxy = property_angle_conv_id_.get_proxy();
     angle_proxy.signal_changed().connect(
-        [=] {
+        [this, angle_proxy] {
             Glib::ustring val = angle_proxy.get_value();
             //std::cout << "angle setting val " << val << " actual " << m_angleConv->get_id() << std::endl;
             if (val != m_angleConv->get_id()) {
@@ -91,7 +91,7 @@ EvalContext::EvalContext()
         });
     Glib::PropertyProxy<Glib::ustring> format_proxy = output_format_id_.get_proxy();
     format_proxy.signal_changed().connect(
-        [=] {
+        [this, format_proxy] {
             Glib::ustring val = format_proxy.get_value();
             //std::cout << "format setting val " << val << " actual " << m_output_format->get_id() << std::endl;
             if (val != m_output_format->get_id()) {

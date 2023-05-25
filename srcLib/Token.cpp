@@ -210,7 +210,7 @@ OpAddToken::eval(double valL, double valR)
 bool OpAddToken::is_minus(gunichar c)
 {
 	return c == '-'
-		|| c == g_utf8_get_char(u8"\u2212");		// − using gutf8.c functions here seem most convenient
+		|| c == L'\u2212';		// − using gutf8.c functions here seem most convenient
 }
 
 OpMulToken::OpMulToken(gunichar opMul)
@@ -228,14 +228,14 @@ bool
 OpMulToken::is_mult(gunichar c)
 {
 	return c == '*'		// \u2217 ∗ alternative ?
-		|| c == g_utf8_get_char(u8"\u00d7");		// ×
+		|| c == L'\u00d7';		// ×
 }
 
 bool
 OpMulToken::is_div(gunichar c)
 {
 	return c == '/'
-		|| c == g_utf8_get_char(u8"\u00f7");	// ÷ wiki says used as minus in Scandinavia
+		|| c == L'\u00f7';	// ÷ wiki says used as minus in Scandinavia
 }
 
 double
