@@ -32,7 +32,7 @@ DateDialog::DateDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
     show_all();
     signal_response().connect(
-        [=] (int response)
+        [this] (int response)
         {
             hide();
         }

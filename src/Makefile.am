@@ -32,6 +32,7 @@ calcpp_SOURCES = resources.c \
 	OutputForm.hpp \
 	AngleUnit.cpp \
 	AngleUnit.hpp \
+	StringUtils.hpp \
 	CalcTextView.cpp \
 	CalcTextView.hpp \
 	CalcTreeView.cpp \

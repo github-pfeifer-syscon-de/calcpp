@@ -20,6 +20,7 @@
 #include <iostream>
 
 #include "EvalContext.hpp"
+#include "StringUtils.hpp"
 
 Glib::ustring
 StrUtil::strip(Glib::ustring str)
@@ -75,9 +76,9 @@ EvalContext::EvalContext()
 , m_list{Gtk::ListStore::create(m_variable_columns)}
 , m_functionMap()
 {
-    set_value((const char*)u8"\u03c0", G_PI); // π or pi set some defaults
+    set_value(Glib_u8str(u8"\u03c0"), G_PI); // π or pi set some defaults
     set_value("e", G_E);
-    set_value((const char*)u8"\u03d5", (1.0 + sqrt(5.0)) / 2.0); // ϕ or phi
+    set_value(Glib_u8str(u8"\u03d5"), (1.0 + sqrt(5.0)) / 2.0); // ϕ or phi
     // have to use proxy as it seems, to reflect property changes with functions
     //   custom setter,getter for property would be nice but the functions are not virtual...
     Glib::PropertyProxy<Glib::ustring> angle_proxy = property_angle_conv_id_.get_proxy();
