@@ -37,15 +37,15 @@ PrefDialog::PrefDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     set_transient_for(*parent);
     //show_all();
     m_defaultFont->signal_toggled().connect(
-        [&] {        // as we use primarily this reference capture seems best
+        [this,parent] {        // as we use primarily this reference capture seems best
 			//std::cout << "Signal toggled" << std::endl;
 			bool defaultFont = m_defaultFont->property_active();    // need to pass param as settings are updated later
 			m_fontButton->property_sensitive() = !defaultFont;
+			//std::cout << "Signal toggled apply" << std::endl;
 			parent->apply_font(defaultFont);		// only needed as we may swiched enable / disable
 		});
     signal_response().connect(
-        [&] (int response)
-		{
+        [this] (int response) {
 			hide();
 		});
 }

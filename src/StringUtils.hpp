@@ -15,16 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * File:   StringUtils.hpp
- * Author: RPf <gpl3@pfeifer-syscon.de>
- *
- * Created on 27. Mai 2023, 07:49
- */
 
 #ifndef STRINGUTILS_HPP
 #define STRINGUTILS_HPP
 
+// simple fix for the ustring <-> char8_t incompatibility
 #define Glib_u8str(cnst) Glib::ustring(reinterpret_cast<const char*>(cnst))
 
 #endif /* STRINGUTILS_HPP */
