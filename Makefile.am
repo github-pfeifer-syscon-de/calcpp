@@ -3,7 +3,6 @@ SUBDIRS = res srcLib src
 
 dist_doc_DATA = \
 	README \
-	README.md \
 	NEWS \
 	ChangeLog \
 	COPYING \
