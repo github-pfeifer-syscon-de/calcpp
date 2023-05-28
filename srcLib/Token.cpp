@@ -49,7 +49,7 @@ NumToken::create(const Glib::ustring& val, Glib::ustring::iterator& i, const Num
 	std::shared_ptr<NumToken> numToken;
     gunichar c = *i;
     struct lconv* lconv = localeconv();
-    if (g_unichar_isdigit(c) || c == lconv->decimal_point[0]) {
+    if (g_unichar_isdigit(c) || c == static_cast<gunichar>(lconv->decimal_point[0])) {
     	std::string::size_type conv;
 		double num;
         if (!m_numberFormat->parse(val, num, &conv)) {
