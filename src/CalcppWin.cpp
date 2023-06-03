@@ -271,13 +271,21 @@ CalcppWin::load_config()
     std::string resSchema = Glib::build_filename(resPath, m_application->get_id() + ".gschema.xml");
     // this file identifies the development resources dir, beside executable
     try {
-        if (Glib::file_test(resSchema, Glib::FileTest::FILE_TEST_IS_REGULAR)) {
+        bool exists = Glib::file_test(resSchema, Glib::FileTest::FILE_TEST_IS_REGULAR);
+        if (exists) {
             // for development run without global schema, and again the documented function is missing
             schema_source = Glib::wrap(
                     g_settings_schema_source_new_from_directory(
                         resPath.c_str(), g_settings_schema_source_get_default(), FALSE, nullptr));
         }
-        Glib::RefPtr<Gio::SettingsSchema> schema = schema_source->lookup(m_application->get_id(), false);
+        Glib::RefPtr<Gio::SettingsSchema> schema = schema_source->lookup(m_application->get_id(), true);
+        if (!schema) {
+            std::cerr << "Schema was not loaded!"
+                      << " id " << m_application->get_id()
+                      << " local path " << resSchema
+                      << " exists " << (exists ? "y" : "n")
+                      << std::endl;
+        }
         // Somehow this function was not ported to glibmm
         m_settings = Glib::wrap(g_settings_new_full(schema->gobj(), nullptr, nullptr), false);
     }
