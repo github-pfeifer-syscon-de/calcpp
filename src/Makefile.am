@@ -6,6 +6,7 @@ AM_CPPFLAGS = \
         -DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
         -DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
 	-I"$(srcdir)"/../srcLib \
+	$(GENERICIMG_CFLAGS) \
 	$(GLIBMM_CFLAGS) \
 	$(GTKMM_CFLAGS)
 
@@ -18,6 +19,7 @@ calcpp_LDFLAGS = @EXTRA_LDFLAGS@
 calcpp_LDADD =  \
 	-lunistring \
 	../srcLib/libexpression.a \
+	$(GENERICIMG_LIBS) \
 	$(GLIBMM_LIBS) \
 	$(GTKMM_LIBS)
 
@@ -32,7 +34,6 @@ calcpp_SOURCES = resources.c \
 	OutputForm.hpp \
 	AngleUnit.cpp \
 	AngleUnit.hpp \
-	StringUtils.hpp \
 	CalcTextView.cpp \
 	CalcTextView.hpp \
 	CalcTreeView.cpp \

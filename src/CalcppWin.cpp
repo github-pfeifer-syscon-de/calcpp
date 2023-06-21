@@ -17,7 +17,7 @@
  */
 
 #include <iostream>
-
+#include <StringUtils.hpp>
 
 #include "CalcppWin.hpp"
 #include "CalcppApp.hpp"
@@ -423,12 +423,13 @@ CalcppWin::eval(Glib::ustring text, Gtk::TextIter& end)
     OutputForm* outputForm = m_evalContext->get_output_format();
 
     try {
-        std::vector<Glib::ustring> lines = StrUtil::split(text, '\n');
-
+        std::vector<Glib::ustring> lines;
+        StringUtils::split(text, '\n', lines);
         double val;
         bool result = false;
         for (Glib::ustring& line : lines) {
-            auto sline = StrUtil::strip(line);
+            auto sline = line;
+            StringUtils::trim(sline);
             if (!sline.empty()) { // not worth starting the whole thing up
                 if (DEBUG)
                     std::cout << "eval \"" << sline << "\"" << std::endl;

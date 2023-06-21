@@ -18,52 +18,9 @@
 
 #include <math.h>
 #include <iostream>
+#include <StringUtils.hpp>
 
 #include "EvalContext.hpp"
-#include "StringUtils.hpp"
-
-Glib::ustring
-StrUtil::strip(Glib::ustring str)
-{
-    Glib::ustring ret(str);
-    Glib::ustring::iterator it = ret.begin();
-    for (; it != ret.end(); ++it)
-        if (!g_unichar_isspace(*it))
-            break;
-    if (it != ret.begin()) {
-        ret.erase(ret.begin(), it);
-    }
-    Glib::ustring::iterator rit = ret.end();
-    do {
-        --rit;
-        if (!g_unichar_isspace(*rit))
-            break;
-    }
-    while (rit != ret.begin());
-    ++rit;
-    if (rit != ret.end()) {
-        ret.erase(rit, ret.end());
-    }
-    //std::cout << "strip ret \"" << ret << "\"" << std::endl;
-    return ret;
-}
-
-std::vector<Glib::ustring>
-StrUtil::split(Glib::ustring text, gunichar c)
-{
-    std::vector<Glib::ustring> ret;
-    std::string::size_type pos = 0;
-    while (true) {
-        std::string::size_type next = text.find(c, pos);
-        if (next == Glib::ustring::npos) {
-            ret.push_back(text.substr(pos)); // add remain
-            break;
-        }
-        ret.push_back(text.substr(pos, next - pos));
-        pos = ++next;
-    }
-    return ret;
-}
 
 EvalContext::EvalContext()
 : Glib::ObjectBase(typeid (EvalContext))
@@ -76,9 +33,9 @@ EvalContext::EvalContext()
 , m_list{Gtk::ListStore::create(m_variable_columns)}
 , m_functionMap()
 {
-    set_value(Glib_u8str(u8"\u03c0"), G_PI); // π or pi set some defaults
+    set_value(StringUtils::u8str(u8"\u03c0"), G_PI); // π or pi set some defaults
     set_value("e", G_E);
-    set_value(Glib_u8str(u8"\u03d5"), (1.0 + sqrt(5.0)) / 2.0); // ϕ or phi
+    set_value(StringUtils::u8str(u8"\u03d5"), (1.0 + sqrt(5.0)) / 2.0); // ϕ or phi
     // have to use proxy as it seems, to reflect property changes with functions
     //   custom setter,getter for property would be nice but the functions are not virtual...
     Glib::PropertyProxy<Glib::ustring> angle_proxy = property_angle_conv_id_.get_proxy();

@@ -16,6 +16,7 @@
  */
 
 #include <iostream>
+#include <StringUtils.hpp>
 
 #include "CalcTreeView.hpp"
 #include "EvalContext.hpp"
@@ -61,7 +62,8 @@ CalcTreeView::create_column_name(Glib::ustring name, Gtk::TreeModelColumn<Glib::
 			auto model = get_model();
 			Gtk::TreeIter iter = model->get_iter(tPath);
 			//std::cout << "Data " << data << std::endl;
-			auto datas = StrUtil::strip(data);	// no ws
+			auto datas = data;
+            StringUtils::trim(datas);	// no ws
 			//std::cout << "Datas " << datas << std::endl;
 			Gtk::TreeModel::Row row = *iter;
 			Glib::ustring varName = row[col];
