@@ -31,7 +31,7 @@ PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0])
 
 PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 giomm-2.4])
 
-PKG_CHECK_MODULES(GENERICIMG,genericimg-0.1.0)
+PKG_CHECK_MODULES([GENERICIMG],[genericimg >= 0.1.0])
 
 AC_SEARCH_LIBS([uc_all_blocks], [unistring])
 
