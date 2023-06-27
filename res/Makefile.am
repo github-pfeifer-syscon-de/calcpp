@@ -2,7 +2,7 @@
 ##   the autoreconf complains about the $(shell) construct, fix see configure.ac  -Wno-portability.
 ##   But this seems the best way to keep this portable
 
-PKGCONFIG = pkgconf
+PKGCONFIG = pkg-config
 GLIB_COMPILE_RESOURCES = $(shell $(PKGCONFIG) --variable=glib_compile_resources gio-2.0)
 GLIB_COMPILE_SCHEMAS = $(shell $(PKGCONFIG) --variable=glib_compile_schemas gio-2.0)
 
