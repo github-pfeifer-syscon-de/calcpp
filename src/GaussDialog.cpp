@@ -179,15 +179,13 @@ GaussDialog::gauss(std::vector<std::vector<double>>& mat)
 		swapRow(mat[h], mat[i_max]);
 		/* Do for all rows below pivot: */
 		for (int i = h + 1; i < m; ++i) {
-		    double f = mat[i][k] / mat[h][k];
-		    if (std::abs(f) > 0.0) {
-                /* Fill with zeros the lower part of pivot column: */
-                mat[i][k] = 0.0;
-                /* Do for all remaining elements in current row: */
-                for (int j = k + 1; j < n; ++j) {
-                    mat[i][j] = mat[i][j] - mat[h][j] * f;
-                }
-		    }
+		    double f = mat[i][k] / mat[h][k];   // mat[i][k] might be 0, so f will also, continue and get Nan on output?
+            /* Fill with zeros the lower part of pivot column: */
+            mat[i][k] = 0.0;
+            /* Do for all remaining elements in current row: */
+            for (int j = k + 1; j < n; ++j) {
+                mat[i][j] = mat[i][j] - mat[h][j] * f;
+            }
 		}
 		++h;    /* Increase pivot row and column */
 		++k;
