@@ -155,7 +155,7 @@ swapRow(std::vector<double>& a, std::vector<double>& b) {
 void
 GaussDialog::gauss(std::vector<std::vector<double>>& mat)
 {
-    // following wikipedia to avoid numeric instability (but may still have issues, but it is as far as i can manage this, even the numberical recepies won't solve any random matrix...)
+    // following wikipedia to avoid numeric instability (but may still have issues, but it is as far as i can manage this, even the numerical recepies won't solve any random matrix...)
     // https://en.wikipedia.org/wiki/Gaussian_elimination
 	int h = 0; /* Initialization of the pivot row */
 	int k = 0; /* Initialization of the pivot column */
