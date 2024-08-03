@@ -80,12 +80,6 @@ CharDialog::CharDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     m_table->set_model(m_list);
     fill_list();
     show_all();
-    signal_response().connect(
-        [this] (int response)
-		{
-            hide();
-        }
-    );
 	m_entry->signal_changed().connect(	// allow display of info for char
 		[this] {
 			Glib::ustring text = m_entry->get_text();

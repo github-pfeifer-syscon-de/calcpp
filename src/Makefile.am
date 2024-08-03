@@ -40,6 +40,12 @@ calcpp_SOURCES = resources.c \
 	CalcTreeView.hpp \
 	CharDialog.cpp \
 	CharDialog.hpp \
+	NumDialog.cpp \
+	NumDialog.hpp \
+	QuadDialog.cpp \
+	QuadDialog.hpp \
+	GaussDialog.cpp \
+	GaussDialog.hpp \
 	DateDialog.cpp \
 	DateDialog.hpp \
 	Function.cpp \

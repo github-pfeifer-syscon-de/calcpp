@@ -41,7 +41,7 @@
 				  <attribute name="target">gon</attribute>
 				</item>
         	</section -->
-        </submenu>	
+        </submenu>
         <submenu id="output-format">
         	<attribute name="label" translatable="yes">Output</attribute>
         	  <!-- section  item build from source to keep the definition in sync>
@@ -75,16 +75,16 @@
 				  <attribute name="action">win.output-format</attribute>
 				  <attribute name="target">oct</attribute>
 				</item>
-        	</section -->        	
+        	</section -->
 		</submenu>
 		<item>
           <attribute name="label" translatable="yes">_Preferences</attribute>
           <attribute name="action">win.preferences</attribute>
-        </item>		
+        </item>
       </section>
     </submenu>
       <submenu id="utility">
-      	 <attribute name="label" translatable="yes">Utility</attribute>    
+      	 <attribute name="label" translatable="yes">Utility</attribute>
 			<item>
 			  <attribute translatable="yes" name="label">Characters</attribute>
 			  <attribute name="action">win.chars</attribute>
@@ -93,10 +93,18 @@
 			  <attribute translatable="yes" name="label">Calendar</attribute>
 			  <attribute name="action">win.calendar</attribute>
 			</item>
-	  </submenu>	
+			<item>
+			  <attribute translatable="yes" name="label">Quadratic equation</attribute>
+			  <attribute name="action">win.quad</attribute>
+			</item>
+			<item>
+			  <attribute translatable="yes" name="label">Linear equations</attribute>
+			  <attribute name="action">win.gauss</attribute>
+			</item>
+	  </submenu>
     <submenu>
       <attribute translatable="yes" name="label">Help</attribute>
-      <section>    
+      <section>
         <item>
           <attribute name="label" translatable="yes">_Help</attribute>
           <attribute name="action">app.help</attribute>
@@ -105,7 +113,7 @@
           <attribute name="label" translatable="yes">_About</attribute>
           <attribute name="action">app.about</attribute>
         </item>
-      </section>  
+      </section>
     </submenu>
   </menu>
 </interface>

@@ -47,3 +47,10 @@
 /m4/ltversion.m4
 /m4/ltoptions.m4
 /m4/lt~obsolete.m4
+/test/Makefile
+/test/Makefile.in
+/test/math_test
+/test/math_test.log
+/test/test-suite.log
+/test/math_test.trs
+/test/

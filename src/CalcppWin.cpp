@@ -28,6 +28,8 @@
 #include "CharDialog.hpp"
 #include "DateDialog.hpp"
 #include "PrefDialog.hpp"
+#include "QuadDialog.hpp"
+#include "GaussDialog.hpp"
 
 /*
  * slightly customized file chooser
@@ -142,6 +144,7 @@ CalcppWin::activate_actions()
 				builder->add_from_resource(m_application->get_resource_base_path() + "/char-dlg.ui");
 				builder->get_widget_derived("CharDialog", charDialog, this, m_settings);
 				charDialog->run();
+                charDialog->hide();
 				delete charDialog;  // as this is a toplevel component shoud destroy -> works
 			}
 			catch (const Glib::Error &ex) {
@@ -219,6 +222,44 @@ CalcppWin::activate_actions()
 			}
 		});
     add_action (save_action);
+
+    auto quad_action = Gio::SimpleAction::create("quad");
+    quad_action->signal_activate().connect(
+        [this] (const Glib::VariantBase& value)
+		{
+			try {
+				auto builder = Gtk::Builder::create();
+				QuadDialog* quadDialog;
+				builder->add_from_resource(m_application->get_resource_base_path() + "/quad-dlg.ui");
+				builder->get_widget_derived("QuadDialog", quadDialog, this);
+				quadDialog->run();
+                quadDialog->hide();
+				delete quadDialog;
+			}
+			catch (const Glib::Error &ex) {
+				std::cerr << "Unable to load quad-dlg: " << ex.what() << std::endl;
+			}
+		});
+    add_action(quad_action);
+
+    auto gauss_action = Gio::SimpleAction::create("gauss");
+    gauss_action->signal_activate().connect(
+        [this] (const Glib::VariantBase& value)
+		{
+			try {
+				auto builder = Gtk::Builder::create();
+				GaussDialog* gaussDialog;
+				builder->add_from_resource(m_application->get_resource_base_path() + "/gauss-dlg.ui");
+				builder->get_widget_derived("GaussDialog", gaussDialog, this);
+				gaussDialog->run();
+                gaussDialog->hide();
+				delete gaussDialog;
+			}
+			catch (const Glib::Error &ex) {
+				std::cerr << "Unable to load gauss-dlg: " << ex.what() << std::endl;
+			}
+		});
+    add_action(gauss_action);
 
 }
 
