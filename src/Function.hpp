@@ -108,3 +108,9 @@ class FunctionAbs : public Function
 public:
     double eval(double argument, EvalContext *evalContext) override;
 };
+
+class FunctionFactorial : public Function
+{
+public:
+    double eval(double argument, EvalContext *evalContext) override;
+};

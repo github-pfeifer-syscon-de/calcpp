@@ -21,6 +21,7 @@
 
 #include "GaussDialog.hpp"
 #include "CalcppWin.hpp"
+#include "Matrix.hpp"
 
 GaussDialog::GaussDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, CalcppWin* parent)
 : NumDialog(cobject,  builder, parent)
@@ -105,9 +106,8 @@ GaussDialog::evaluate()
         if (m_n < MIN_ROWS) {
             throw std::invalid_argument("Invalid number");
         }
-        std::vector<std::vector<double>> rows;
+        psc::mat::MatrixU<double> m{static_cast<size_t>(m_n)};
         for (int row = 1; row < m_n+1; ++row) {
-            std::vector<double> colValue;
             for (int col = 1; col < m_n+2; ++col) {
                 auto widget = m_grid->get_child_at(col, row);
                 auto val = 0.0;
@@ -117,20 +117,20 @@ GaussDialog::evaluate()
                 else {
                     std::cout << "No entry at " << row << " " << col  << std::endl;
                 }
-                colValue.push_back(val);
+                m[row-1][col-1] = val;
             }
             //std::cout << row << " col size" << colValue.size() << std::endl;
-            rows.emplace_back(std::move(colValue));
+            //rows.emplace_back(std::move(colValue));
         }
         //std::cout << "row size " << rows.size() << std::endl;
-        gauss(rows);
-        for (int row = 0; row < static_cast<int32_t>(rows.size()); ++row) {
+        psc::mat::Gauss::eliminate(m);
+        for (int row = 0; row < static_cast<int32_t>(m.getRows()); ++row) {
             auto widget = m_grid->get_child_at(row+1, m_n+1);
             if (auto entry = dynamic_cast<Gtk::Entry*>(widget)) {
                 //std::cout << "Setting row " << row
                 //          << " col " << m_n
                 //          << " row " << rows[row][m_n] << std::endl;
-                entry->set_text(Glib::ustring::sprintf("%lf", rows[row][m_n]));
+                entry->set_text(Glib::ustring::sprintf("%lf", m[row][m_n]));
             }
             else {
                 std::cout << "No out-entry at " << row+1 << " " << m_n+1 << std::endl;
@@ -142,63 +142,3 @@ GaussDialog::evaluate()
     }
 }
 
-static void
-swapRow(std::vector<double>& a, std::vector<double>& b) {
-    for (int32_t l = 0; l < static_cast<int32_t>(a.size()); ++l) {
-        double temp = a[l];
-        a[l] = b[l];
-        b[l] = temp;
-    }
-}
-
-// simple evaluation might be inaccurate
-void
-GaussDialog::gauss(std::vector<std::vector<double>>& mat)
-{
-    // following wikipedia to avoid numeric instability (but may still have issues, but it is as far as i can manage this, even the numerical recepies won't solve any random matrix...)
-    // https://en.wikipedia.org/wiki/Gaussian_elimination
-	int h = 0; /* Initialization of the pivot row */
-	int k = 0; /* Initialization of the pivot column */
-	const int m = mat.size();
-	const int n = mat[0].size();
-	while (h < m && k < n) {
-	    /* Find the k-th pivot: */
-	    int i_max = 0;
-	    double max = 0.0;
-            for (int i = h; i < m; ++i) {
-            double abs = std::abs(mat[i][k]);
-            if (abs > max) {
-                max = abs;
-                i_max = i;
-            }
-	    }
-	    if (mat[i_max][k] == 0.0) {
-            ++k;    /* No pivot in this column, pass to next column */
-	    }
-	    else {
-		swapRow(mat[h], mat[i_max]);
-		/* Do for all rows below pivot: */
-		for (int i = h + 1; i < m; ++i) {
-		    double f = mat[i][k] / mat[h][k];   // mat[i][k] might be 0, so f will also, continue and get Nan on output?
-            /* Fill with zeros the lower part of pivot column: */
-            mat[i][k] = 0.0;
-            /* Do for all remaining elements in current row: */
-            for (int j = k + 1; j < n; ++j) {
-                mat[i][j] = mat[i][j] - mat[h][j] * f;
-            }
-		}
-		++h;    /* Increase pivot row and column */
-		++k;
-	    }
-	}
-	// back substitution
-	for (int row = m-1; row >= 0; --row) {
-	    double sum = 0.0;
-	    for (int col = row+1; col < m; ++col) {
-            sum += mat[row][col] * mat[col][n-1];
-            mat[row][col] = 0.0;	// as we canceling these out
-	    }
-	    mat[row][n-1] = (mat[row][n-1]-sum) / (mat[row][row]);
-	    mat[row][row] = 1.0;
-	}
-}

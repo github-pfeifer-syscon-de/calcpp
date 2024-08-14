@@ -383,42 +383,44 @@ EvalContext::get_function_map()
     if (m_functionMap.empty()) {
         // lambdas allow compact definition
         m_functionMap.insert(
-			std::pair<Glib::ustring, std::shared_ptr<Function>>(
+			std::pair(
 				"sqrt",	std::make_shared<FunctionSqrt>()));
         m_functionMap.insert(
-			std::pair<Glib::ustring, std::shared_ptr<Function>>(
+			std::pair(
 				"cbrt", std::make_shared<FunctionCbrt>()));
         auto flog = std::make_shared<FunctionLog>();
-        m_functionMap.insert(std::pair<Glib::ustring, std::shared_ptr<Function>>("log", flog));
-        m_functionMap.insert(std::pair<Glib::ustring, std::shared_ptr<Function>>("ln", flog));
+        m_functionMap.insert(std::pair("log", flog));
+        m_functionMap.insert(std::pair("ln", flog));
         m_functionMap.insert(
-			std::pair<Glib::ustring, std::shared_ptr<Function>>(
+			std::pair(
 				"exp", std::make_shared<FunctionExp>()));
         m_functionMap.insert(
-			std::pair<Glib::ustring, std::shared_ptr<Function>>(
+			std::pair(
 				"sin", std::make_shared<FunctionSin>()));
         m_functionMap.insert(
-			std::pair<Glib::ustring, std::shared_ptr<Function>>(
+			std::pair(
 				"cos", std::make_shared<FunctionCos>()));
-        m_functionMap.insert(std::pair<Glib::ustring, std::shared_ptr<Function>>(
+        m_functionMap.insert(std::pair(
 				"tan", std::make_shared<FunctionTan>()));
 		auto fasin = std::make_shared<FunctionAsin>();
-        m_functionMap.insert(std::pair<Glib::ustring, std::shared_ptr<Function>>("asin", fasin));
-        m_functionMap.insert(std::pair<Glib::ustring, std::shared_ptr<Function>>("arcsin", fasin));
+        m_functionMap.insert(std::pair("asin", fasin));
+        m_functionMap.insert(std::pair("arcsin", fasin));
         auto facos = std::make_shared<FunctionAcos>();
-        m_functionMap.insert(std::pair<Glib::ustring, std::shared_ptr<Function>>("acos", facos));
-        m_functionMap.insert(std::pair<Glib::ustring, std::shared_ptr<Function>>("arccos", facos));
+        m_functionMap.insert(std::pair("acos", facos));
+        m_functionMap.insert(std::pair("arccos", facos));
 		auto fatan = std::make_shared<FunctionAtan>();
-        m_functionMap.insert(std::pair<Glib::ustring, std::shared_ptr<Function>>("atan", fatan));
-        m_functionMap.insert(std::pair<Glib::ustring, std::shared_ptr<Function>>("arctan", fatan));
+        m_functionMap.insert(std::pair("atan", fatan));
+        m_functionMap.insert(std::pair("arctan", fatan));
         m_functionMap.insert(
-			std::pair<Glib::ustring, std::shared_ptr<Function>>(
+			std::pair(
 				"log2", std::make_shared<FunctionLog2>()));
         auto flog10 = std::make_shared<FunctionLog10>();
-        m_functionMap.insert(std::pair<Glib::ustring, std::shared_ptr<Function>>("log10", flog10));
-        m_functionMap.insert(std::pair<Glib::ustring, std::shared_ptr<Function>>("lg", flog10));
+        m_functionMap.insert(std::pair("log10", flog10));
+        m_functionMap.insert(std::pair("lg", flog10));
         m_functionMap.insert(
-			std::pair<Glib::ustring, std::shared_ptr<Function>>("abs", std::make_shared<FunctionAbs>()));
+			std::pair("abs", std::make_shared<FunctionAbs>()));
+        m_functionMap.insert(
+			std::pair("fac", std::make_shared<FunctionFactorial>()));
     }
     return m_functionMap;
 }

@@ -41,6 +41,7 @@ The following functions are supported:
 * acos, arcus cosinus
 * atan, arcus tangens
 * abs, absolut value
+* fac, factorial (usually writen as !)
 </pre>
 
 Usage of variables e.g.

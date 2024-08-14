@@ -112,3 +112,14 @@ FunctionAbs::eval(double val, EvalContext *evalContext)
 {
 	return std::fabs(val);
 }
+
+double
+FunctionFactorial::eval(double val, EvalContext *evalContext)
+{
+    double fac = 1.0;
+    while (val > 1.0) {
+        fac *= val;
+        val = val - 1.0;
+    }
+	return fac;
+}

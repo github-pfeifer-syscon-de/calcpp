@@ -41,7 +41,7 @@ CalcppApp::on_activate()
         builder->add_from_resource(get_resource_base_path() + "/calc-win.ui");
         builder->get_widget_derived("CalcppWin", m_calcppAppWindow, this);
         add_window(*m_calcppAppWindow);
-        m_calcppAppWindow->show();  
+        m_calcppAppWindow->show();
     }
     catch (const Glib::Error &ex) {
         std::cerr << "Unable to load calc-win: " << ex.what() << std::endl;
@@ -124,7 +124,7 @@ CalcppApp::get_menu_builder()
     return m_builder;
 }
 
-Glib::ustring 
+Glib::ustring
 CalcppApp::get_exec_path()
 {
     return m_exec;
@@ -144,7 +144,7 @@ CalcppApp::on_startup()
         m_builder->add_from_resource(get_resource_base_path() + "/app-menu.ui");
         auto menuObj = m_builder->get_object("menubar");
         auto menuBar = Glib::RefPtr<Gio::Menu>::cast_dynamic(menuObj);
-        if (menuBar) 
+        if (menuBar)
             set_menubar(menuBar);
         else
             std::cerr << "Cound not find/cast menubar!" << std::endl;
@@ -154,10 +154,8 @@ CalcppApp::on_startup()
     }
 }
 
-int main(int argc, char** argv) 
+int main(int argc, char** argv)
 {
-    //printf("DISPLAY=%s\n", getenv("DISPLAY"));
-    //setenv("DISPLAY", ":0", 1);    // Debug on remote display
     setlocale(LC_ALL, "");      // we depend on locale
     CalcppApp app(argc, argv);
 
