@@ -91,7 +91,7 @@ public:
     void save(Glib::RefPtr<Gio::Settings> settings);
     VariableColumns m_variable_columns;
 private:
-    std::map<Glib::ustring, std::shared_ptr<Function>>& get_function_map();
+    const std::map<Glib::ustring, std::shared_ptr<Function>>& get_function_map();
     int validate(std::list<std::shared_ptr<Token>>& stack);
     std::shared_ptr<IdToken> assign_token(std::list<std::shared_ptr<Token>>& stack);
     AngleConversion* m_angleConv;
@@ -103,7 +103,7 @@ private:
     std::map<Glib::ustring, double> m_variables;
     // list a listStore to display variables
     Glib::RefPtr<Gtk::ListStore> m_list;
-    std::map<Glib::ustring, std::shared_ptr<Function>> m_functionMap;
+    const std::map<Glib::ustring, std::shared_ptr<Function>> m_functionMap;
 };
 
 const char * const ANGLE_CONV_ID_PROPERTY = "angle_conv_id";

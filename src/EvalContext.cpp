@@ -31,7 +31,27 @@ EvalContext::EvalContext()
 , output_format_id_(*this, OUTPUT_FORMAT_ID_PROPERTY, m_output_format->get_id())
 , m_variables()
 , m_list{Gtk::ListStore::create(m_variable_columns)}
-, m_functionMap()
+, m_functionMap{
+          {"sqrt",   std::make_shared<FunctionSqrt>()}
+    	, {"cbrt",   std::make_shared<FunctionCbrt>()}
+        , {"log",    std::make_shared<FunctionLog>()}
+        , {"ln",     std::make_shared<FunctionLog>()}
+        , {"exp",    std::make_shared<FunctionExp>()}
+        , {"sin",    std::make_shared<FunctionSin>()}
+        , {"cos",    std::make_shared<FunctionCos>()}
+        , {"tan",    std::make_shared<FunctionTan>()}
+        , {"asin",   std::make_shared<FunctionAsin>()}
+        , {"arcsin", std::make_shared<FunctionAsin>()}
+        , {"acos",   std::make_shared<FunctionAcos>()}
+        , {"arccos", std::make_shared<FunctionAcos>()}
+        , {"atan",   std::make_shared<FunctionAtan>()}
+        , {"arctan", std::make_shared<FunctionAtan>()}
+        , {"log2",   std::make_shared<FunctionLog2>()}
+        , {"log10",  std::make_shared<FunctionLog10>()}
+        , {"lg",     std::make_shared<FunctionLog10>()}
+        , {"abs",    std::make_shared<FunctionAbs>()}
+        , {"fac",    std::make_shared<FunctionFactorial>()}
+    }
 {
     set_value(StringUtils::u8str(u8"\u03c0"), G_PI); // π or pi set some defaults
     set_value("e", G_E);
@@ -377,50 +397,8 @@ EvalContext::is_function(const Glib::ustring& fun)
     return iter != map.end();
 }
 
-std::map<Glib::ustring, std::shared_ptr<Function>>&
+const std::map<Glib::ustring, std::shared_ptr<Function>>&
 EvalContext::get_function_map()
 {
-    if (m_functionMap.empty()) {
-        // lambdas allow compact definition
-        m_functionMap.insert(
-			std::pair(
-				"sqrt",	std::make_shared<FunctionSqrt>()));
-        m_functionMap.insert(
-			std::pair(
-				"cbrt", std::make_shared<FunctionCbrt>()));
-        auto flog = std::make_shared<FunctionLog>();
-        m_functionMap.insert(std::pair("log", flog));
-        m_functionMap.insert(std::pair("ln", flog));
-        m_functionMap.insert(
-			std::pair(
-				"exp", std::make_shared<FunctionExp>()));
-        m_functionMap.insert(
-			std::pair(
-				"sin", std::make_shared<FunctionSin>()));
-        m_functionMap.insert(
-			std::pair(
-				"cos", std::make_shared<FunctionCos>()));
-        m_functionMap.insert(std::pair(
-				"tan", std::make_shared<FunctionTan>()));
-		auto fasin = std::make_shared<FunctionAsin>();
-        m_functionMap.insert(std::pair("asin", fasin));
-        m_functionMap.insert(std::pair("arcsin", fasin));
-        auto facos = std::make_shared<FunctionAcos>();
-        m_functionMap.insert(std::pair("acos", facos));
-        m_functionMap.insert(std::pair("arccos", facos));
-		auto fatan = std::make_shared<FunctionAtan>();
-        m_functionMap.insert(std::pair("atan", fatan));
-        m_functionMap.insert(std::pair("arctan", fatan));
-        m_functionMap.insert(
-			std::pair(
-				"log2", std::make_shared<FunctionLog2>()));
-        auto flog10 = std::make_shared<FunctionLog10>();
-        m_functionMap.insert(std::pair("log10", flog10));
-        m_functionMap.insert(std::pair("lg", flog10));
-        m_functionMap.insert(
-			std::pair("abs", std::make_shared<FunctionAbs>()));
-        m_functionMap.insert(
-			std::pair("fac", std::make_shared<FunctionFactorial>()));
-    }
     return m_functionMap;
 }
