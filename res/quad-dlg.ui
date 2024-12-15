@@ -65,7 +65,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="xalign">1</property>
-                <property name="placeholder-text" translatable="yes">a</property>
+                <property name="placeholder-text" translatable="no">a</property>
                 <property name="input-purpose">number</property>
               </object>
               <packing>
@@ -78,7 +78,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="xpad">5</property>
-                <property name="label" translatable="yes">x²+</property>
+                <property name="label" translatable="no">x²+</property>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -90,7 +90,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="xalign">1</property>
-                <property name="placeholder-text" translatable="yes">b</property>
+                <property name="placeholder-text" translatable="no">b</property>
                 <property name="input-purpose">number</property>
               </object>
               <packing>
@@ -103,7 +103,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="xpad">5</property>
-                <property name="label" translatable="yes">x+</property>
+                <property name="label" translatable="no">x+</property>
               </object>
               <packing>
                 <property name="left-attach">3</property>
@@ -115,7 +115,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="xalign">1</property>
-                <property name="placeholder-text" translatable="yes">c</property>
+                <property name="placeholder-text" translatable="no">c</property>
                 <property name="input-purpose">number</property>
               </object>
               <packing>
@@ -127,7 +127,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">=0</property>
+                <property name="label" translatable="no">=0</property>
               </object>
               <packing>
                 <property name="left-attach">5</property>
@@ -138,7 +138,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">x1=</property>
+                <property name="label" translatable="no">x1=</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -150,7 +150,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">x2=</property>
+                <property name="label" translatable="no">x2=</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>

@@ -12,13 +12,15 @@ AM_CPPFLAGS = \
 
 calcpp_CFLAGS = -Wall
 calcpp_CXXFLAGS = -Wall \
-	-Wno-psabi ## -Wno-psabi disable abi warn, as we use a value list..., may need changing if different gcc versions will be used
+	-Wextra \
+	-Wno-unused-parameter \
+	-pedantic
 
 calcpp_LDFLAGS = @EXTRA_LDFLAGS@
 
 calcpp_LDADD =  \
 	-lunistring \
-	../srcLib/libexpression.a \
+ 	../srcLib/libexpression.a \
 	$(GENERICIMG_LIBS) \
 	$(GLIBMM_LIBS) \
 	$(GTKMM_LIBS)
@@ -54,3 +56,9 @@ calcpp_SOURCES = resources.c \
 	Matrix.hpp \
 	PrefDialog.cpp \
 	PrefDialog.hpp
+
+# Remove ui directory on uninstall
+uninstall-local:
+	-rm -r $(pkgdatadir)
+
+EXTRA_DIST = m4/ChangeLog

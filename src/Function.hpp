@@ -22,10 +22,9 @@ class EvalContext;
 class Function
 {
 public:
-    Function();
-    virtual ~Function();
+    Function() = default;
+    virtual ~Function() = default;
 
-    int get_argument_count();
     virtual double eval(double argument, EvalContext *evalContext) = 0;
 private:
 

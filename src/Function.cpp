@@ -21,19 +21,6 @@
 #include "Function.hpp"
 #include "EvalContext.hpp"
 
-Function::Function()
-{
-}
-
-Function::~Function()
-{
-}
-
-int
-Function::get_argument_count()
-{
-	return 1;
-}
 
 double
 FunctionSqrt::eval(double val, EvalContext *evalContext)
@@ -123,3 +110,31 @@ FunctionFactorial::eval(double val, EvalContext *evalContext)
     }
 	return fac;
 }
+
+//std::vector<double>
+//FunctionPrimfact::eval(double argument, EvalContext *evalContext)
+//{
+//    std::vector<double> ret;
+//    ret.reserve(16);
+//    // Print the number of 2s that divide n
+//    int64_t n = static_cast<int64_t>(argument);
+//    while (n % 2 == 0) {
+//        ret.push_back(2);
+//        n = n/2;
+//    }
+//    // n must be odd at this point. So we can skip
+//    // one element (Note i = i +2)
+//    for (int64_t i = 3; i <= std::sqrt(n); i += 2) {
+//        // While i divides n, print i and divide n
+//        while (n % i == 0) {
+//            ret.push_back(i);
+//            n = n / i;
+//        }
+//    }
+//    // This condition is to handle the case when n
+//    // is a prime number greater than 2
+//    if (n > 2) {
+//        ret.push_back(n);
+//    }
+//    return ret;
+//}

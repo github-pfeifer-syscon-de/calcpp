@@ -422,7 +422,7 @@ AssignToken::create(const Glib::ustring& value, Glib::ustring::iterator& i)
 Glib::ustring
 AssignToken::show()
 {
-	return Glib::ustring::sprintf("=");
+	return "=";
 }
 
 IdToken::IdToken(const Glib::ustring& id)

@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <cstdint>
 #include <string>
+#include <psc_i18n.hpp>
 
 #include "OutputForm.hpp"
 
@@ -85,7 +86,7 @@ OutputForm::parse(const Glib::ustring& remain, double& value, std::string::size_
 }
 
 OutformHex::OutformHex()
-: OutputForm("hex", "Hexadecimal (integer)")
+: OutputForm("hex", _("Hexadecimal (integer)"))
 {
 }
 
@@ -97,7 +98,7 @@ OutformHex::format(double val)
 }
 
 OutformOctal::OutformOctal()
-: OutputForm("oct", "Octal (integer)")
+: OutputForm("oct", _("Octal (integer)"))
 {
 }
 
@@ -126,7 +127,7 @@ OutformOctal::parse(const Glib::ustring& remain, double& value, std::string::siz
         *offs = fconv;
         value = fval;
     }
-    else {	// if both length are equal prefere integer that shoud include octal numbers    
+    else {	// if both length are equal prefere integer that shoud include octal numbers
         *offs = iconv;
         value = lout;
     }
@@ -134,7 +135,7 @@ OutformOctal::parse(const Glib::ustring& remain, double& value, std::string::siz
 }
 
 OutformHexFp::OutformHexFp()
-: OutputForm("hxf", "Hexadecimal (floating point)")
+: OutputForm("hxf", _("Hexadecimal (floating point)"))
 {
 }
 
@@ -145,7 +146,7 @@ OutformHexFp::format(double val)
 }
 
 OutformScientific::OutformScientific()
-: OutputForm("sci", "Scientific")
+: OutputForm("sci", _("Scientific"))
 {
 }
 
@@ -157,7 +158,7 @@ OutformScientific::format(double val)
 }
 
 OutformDecimal::OutformDecimal()
-: OutputForm("dec", "Decimal")
+: OutputForm("dec", _("Decimal"))
 {
 }
 
@@ -168,7 +169,7 @@ Glib::ustring OutformDecimal::format(double val)
 }
 
 OutformExponential::OutformExponential()
-: OutputForm("exp", "Exponential")
+: OutputForm("exp", _("Exponential"))
 {
 }
 

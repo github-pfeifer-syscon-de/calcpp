@@ -19,6 +19,9 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <locale>
+#include <psc_i18n.hpp>
+#include <psc_format.hpp>
 
 #include "QuadDialog.hpp"
 
@@ -55,7 +58,10 @@ QuadDialog::evaluate()
             m_entryX2->set_text(Glib::ustring::sprintf("%lf", x2));
         }
         else {
-            m_parent->show_error(Glib::ustring::sprintf("No result (square-root of negative number %ld is undefined)", insqrt));
+            m_parent->show_error(
+                psc::fmt::vformat(std::locale()
+                , _("No result (square-root of negative number {:L} is undefined)")
+                , psc::fmt::make_format_args(insqrt)));
             m_entryX1->set_text("");
             m_entryX2->set_text("");
         }

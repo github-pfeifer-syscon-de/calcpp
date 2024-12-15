@@ -1,0 +1,78 @@
+# calcpp
+Ein Desktop Rechner
+
+![calcpp](calcpp.png "calcpp")
+
+Ein einfacher Desktop Rechner.
+Erlaubt es Berrechnungen niederzuschreiben z.B.:
+<pre>
+3 + 4 * 5
+</pre>
+und mit [Strg] und [Eingabe] wird diese ausgewertet.
+
+Mit einstallbarem Ausgabeformat: Dezimal, Wissenschaftlich, Hexdezimal and Oktal.
+Bei der Eingabe von Werten in Dezimal- oder Hexdezimalzahlen mit Lokalisierung
+(Oktalwerte wie z.B. 0123 werden nur als solche ausgewertet wenn das Ausgabeformat Oktal gewählt ist).
+Ebenfalls einstellbare Winkeleinheit: Radians, Grad, Gon.
+
+Die folgenden Operatorn werden unterstützt:
+<pre>
++,- Addieren, Subtrahieren
+*,/,% Multipizieren, Dividieren, Modulo
+^ or ** Potenz
+|,&,!,<<,>> Logisch oder, und, xoder, verschiebe Links, verschiebe Rechts
+</pre>
+
+Die folgenden Funktionen werden unterstützt:
+<pre>
+* sqrt, Quadratwurzel
+* cbrt, Kubikwurzel
+* log,ln, Logarithmus zur Basis e
+* log2, Logarithmus zur Basis 2
+* log10,lg, Logarithmus zur Basis 10
+* exp, e ^ x
+* sin, Sinus
+* cos, Cosinus
+* tan, Tangens
+* asin, Arcussinus
+* acos, Arcuscosinus
+* atan, Arcustangens
+* abs, Absolutbetrag
+* fac, Fakultät (normalerweise geschrieben als n!)
+</pre>
+
+Verwendung von variablen:
+<pre>
+a = 3 + 4 * 5
+b = a + 7
+</pre>
+Die Variablentabelle kann mit einem Klick auf den Wert editiert werden.
+Oder bei einem Klick auf den Namane, können Variable umbennant werden.
+Um eine Variable zu entfernen kann der Namne zu einem leeren Zeichenkette geändert werden.
+
+Unterstützung für Unicodezeichen für Variablen-/Konstantennamen
+z.B. π (wenn Sie dies ohne Unicodeunterstützung lesen, der kleine griechische Buchstabe pi)
+
+Automatisches speichern/laden des Editierbuffers und der Fensterposition.
+
+Eine Zeichentablle ermöglicht die Auswahl von Symbolen
+aus einer Unicodeseite, mit dem Klick auf das ensprechende Zeichen.
+
+Eine einfache Kalendaransicht ist ebenso verfübar.
+
+Probleme:
+* Beim Parsen werden keine numerischen Gruppierungstrennzeichen unterstüzt
+  (sie erscheinen auch nicht in der Ausgabe).
+
+
+Zum erstellen für (Lin)ux verwenden (als Voraussetzung wird genericImg benötigt):
+<pre>
+autoreconf -fis
+./configure --prefix=/usr
+make
+</pre>
+
+Das Bauen für Win(dows) wird mit msys2 untersützt<br>
+<pre>
+  look for "$host_os" = "mingw32"
+</pre>

@@ -36,11 +36,13 @@ public:
 
     Glib::RefPtr<Gtk::Builder> get_menu_builder();
     Glib::ustring get_exec_path();
+    Glib::ustring getReadmeText();
 private:
     CalcppWin *m_calcppAppWindow;
     Glib::ustring m_exec;
     Glib::RefPtr<Gtk::Builder> m_builder;
 
+    std::string get_file(const std::string& name);
     void on_action_quit();
     void on_action_about();
     void on_action_help();

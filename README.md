@@ -16,7 +16,7 @@ and press [control] and [enter] to evaluate it.
 Adjustable output format: decimal, scientific, hexadecimal and octal.
 Input for decimal and hexdecimal numbers with local support
 (octal numbers e.g. 0123 are only parsed as such when the output format is octal).
-Adjustable angle unit: radian, degree, grad.
+Adjustable angle unit: radian, degree, gon.
 
 The following operators are supported:
 <pre>
@@ -41,7 +41,7 @@ The following functions are supported:
 * acos, arcus cosinus
 * atan, arcus tangens
 * abs, absolut value
-* fac, factorial (usually writen as !)
+* fac, factorial (usually writen as n!)
 </pre>
 
 Usage of variables e.g.
@@ -67,10 +67,10 @@ Issues:
 * The parsing doesn't support grouping separators
   (and they are missing in output as well).
 
-To build on (Lin)ux use:
+To build on (Lin)ux use (as a prerequisite genericImg is required):
 <pre>
 autoreconf -fis
-./configure ...
+./configure --prefix=/usr
 make
 </pre>
 

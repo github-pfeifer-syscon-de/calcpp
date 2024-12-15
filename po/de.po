@@ -1,0 +1,269 @@
+# German translations for calcpp package
+# German translation for calcpp.
+# This file is put in the public domain.
+#  <calcpp@pfeifer-syscon.de>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: calcpp 0.1\n"
+"Report-Msgid-Bugs-To: calcpp@pfeifer-syscon.de\n"
+"POT-Creation-Date: 2024-12-15 08:14+0100\n"
+"PO-Revision-Date: 2024-12-15 06:57+0100\n"
+"Last-Translator:  <calcpp@pfeifer-syscon.de>\n"
+"Language-Team: German <calcpp@pfeifer-syscon.de>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/CalcppWin.cpp:44
+msgid "Save File"
+msgstr "Datei speichern"
+
+#: src/CalcppWin.cpp:45
+msgid "Open File"
+msgstr "Datei öffnen"
+
+#: src/CalcppWin.cpp:51
+msgid "_Cancel"
+msgstr "_Abbrechen"
+
+#: src/CalcppWin.cpp:53
+msgid "_Save"
+msgstr "_Speichern"
+
+#: src/CalcppWin.cpp:54
+msgid "_Open"
+msgstr "Ö_ffnen"
+
+#: src/CalcppWin.cpp:101
+msgid "Calculator"
+msgstr "Rechner"
+
+#: src/CalcppWin.cpp:154 src/CalcppWin.cpp:174 src/CalcppWin.cpp:194
+#: src/CalcppWin.cpp:213 src/CalcppWin.cpp:253 src/CalcppWin.cpp:274
+#, c++-format
+msgid "Unable to load {} error {}"
+msgstr "{} wurde nicht geladen. Fehler {}"
+
+#: src/CalcppWin.cpp:232
+#, c++-format
+msgid "Unable to save {} error {}"
+msgstr "Fehler {1} beim speichen {0}"
+
+#: src/CalcppWin.cpp:351
+#, c++-format
+msgid ""
+"No settings coud be read! error {}\n"
+"Settings will not work !"
+msgstr ""
+"Einstellungen konnten nicht geladen werden! Fehler {}\n"
+"Einstellungen werden nicht funktionieren!"
+
+#: src/CalcppWin.cpp:508
+#, c++-format
+msgid "Parse error: {}"
+msgstr "Syntax nicht erkannt. Fehler {}"
+
+#: src/EvalContext.cpp:288
+msgid "Assignment operator only allowed once"
+msgstr "Zuweisung nur eimal erlaubt"
+
+#: src/EvalContext.cpp:334
+#, c++-format
+msgid "The calculation is not balanced {} (expect 1)"
+msgstr "Die Kalkulation ist nicht ausgeglichen {} (erwartet 1)"
+
+#: src/EvalContext.cpp:360
+#, c++-format
+msgid "No function named {}"
+msgstr "Keine Funktion mit dem Namen {}"
+
+#: src/EvalContext.cpp:369
+#, c++-format
+msgid "No variable named {}"
+msgstr "Keine Variable mit dem Namen {}"
+
+#: src/AngleUnit.cpp:72
+msgid "Radians"
+msgstr "Radiant (rad)"
+
+#: src/AngleUnit.cpp:89
+msgid "Degree (°)"
+msgstr "Grad (°)"
+
+#: src/AngleUnit.cpp:106
+msgid "Gon"
+msgstr "Gon"
+
+#: src/CalcTreeView.cpp:32
+msgid "Name"
+msgstr "Name"
+
+#: src/CalcTreeView.cpp:33
+msgid "Value"
+msgstr "Wert"
+
+#: src/CalcTreeView.cpp:142
+#, c++-format
+msgid "not a valid number {}"
+msgstr "{} ist keine gültige Zahl"
+
+#: src/GaussDialog.cpp:58
+#, c++-format
+msgid "Row{}"
+msgstr "Zeile{}"
+
+#: src/GaussDialog.cpp:72
+msgid "Result"
+msgstr "Ergebnis"
+
+#: src/GaussDialog.cpp:111 src/NumDialog.cpp:49
+msgid "Invalid number"
+msgstr "Keine gültige Zahl"
+
+#: src/GaussDialog.cpp:146
+#, c++-format
+msgid "Unable to calculate \"{}\""
+msgstr "Ausdruck nicht berrechenbar \"{}\""
+
+#: src/Matrix.cpp:48 src/Matrix.cpp:112
+#, c++-format
+msgid "Matrix row index {} exceeds limit {}"
+msgstr "Matrix Zeile {} überschreitet Limit {}"
+
+#: src/Matrix.cpp:166
+#, c++-format
+msgid "Matrix cols {} must be rows {}+1"
+msgstr "Matrix Spalten {} muss Zeilen {}+1 enthalten"
+
+#: src/Matrix.cpp:187
+#, c++-format
+msgid "Value for col {} row {} is 0, matrix not solveable."
+msgstr "Wert for Spalte {} Zeile {} ist 0, nicht lösbar"
+
+#: src/OutputForm.cpp:89
+msgid "Hexadecimal (integer)"
+msgstr "Hexdezimal (Ganzzahl)"
+
+#: src/OutputForm.cpp:101
+msgid "Octal (integer)"
+msgstr "Oktal (Ganzzahl)"
+
+#: src/OutputForm.cpp:138
+msgid "Hexadecimal (floating point)"
+msgstr "Hexdezimal (Gleitkommazahl)"
+
+#: src/OutputForm.cpp:149
+msgid "Scientific"
+msgstr "Wissenschaftlich"
+
+#: src/OutputForm.cpp:161
+msgid "Decimal"
+msgstr "Dezimal"
+
+#: src/OutputForm.cpp:172
+msgid "Exponential"
+msgstr "Exponentailform"
+
+#: src/QuadDialog.cpp:63
+#, c++-format
+msgid "No result (square-root of negative number {:L} is undefined)"
+msgstr ""
+"Kein Ergebnis (die Quadratwurzel einer negativen Zahl {:L} ist nicht "
+"berrechenbar)"
+
+#: res/app-menu.ui:6
+msgid "File"
+msgstr "Datei"
+
+#: res/app-menu.ui:9
+msgid "Load"
+msgstr "Laden"
+
+#: res/app-menu.ui:13
+msgid "Save"
+msgstr "Speichern"
+
+#: res/app-menu.ui:17
+msgid "Quit"
+msgstr "Beenden"
+
+#: res/app-menu.ui:23 res/app-menu.ui:81
+msgid "_Preferences"
+msgstr "Einstellungen"
+
+#: res/app-menu.ui:26
+msgid "Angle unit"
+msgstr "Winkeleinheit"
+
+#: res/app-menu.ui:46
+msgid "Output"
+msgstr "Ausgabe"
+
+#: res/app-menu.ui:87
+msgid "Utility"
+msgstr "Dienstprogramme"
+
+#: res/app-menu.ui:89
+msgid "Characters"
+msgstr "Zeichentabelle"
+
+#: res/app-menu.ui:93 res/date-dlg.ui:7
+msgid "Calendar"
+msgstr "Kalender"
+
+#: res/app-menu.ui:97 res/quad-dlg.ui:7
+msgid "Quadratic equation"
+msgstr "Quadratische Gleichung"
+
+#: res/app-menu.ui:101 res/gauss-dlg.ui:7
+msgid "Linear equations"
+msgstr "Lineare Gleichungen"
+
+#: res/app-menu.ui:106
+msgid "Help"
+msgstr "Hilfe"
+
+#: res/app-menu.ui:109
+msgid "_Help"
+msgstr "_Hilfe"
+
+#: res/app-menu.ui:113
+msgid "_About"
+msgstr "Über"
+
+#: res/abt-dlg.ui:10
+msgid "Simple desktop calculator."
+msgstr "Einfacher Desktoprechner."
+
+#: res/char-dlg.ui:7
+#, fuzzy
+#| msgid "Characters"
+msgid "Chars"
+msgstr "Zeichentabelle"
+
+#: res/char-dlg.ui:90
+msgid "Info"
+msgstr "Information"
+
+#: res/char-dlg.ui:114
+msgid "Input"
+msgstr "Eingabe"
+
+#: res/gauss-dlg.ui:66
+msgid "Entries"
+msgstr "Einträge"
+
+#: res/pref-dlg.ui:7
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: res/pref-dlg.ui:34
+msgid "Default:"
+msgstr "Standard:"
+
+#: res/pref-dlg.ui:43
+msgid "Use default font"
+msgstr "Verwende Standardschrift"

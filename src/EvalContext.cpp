@@ -19,6 +19,7 @@
 #include <math.h>
 #include <iostream>
 #include <StringUtils.hpp>
+#include <psc_i18n.hpp>
 
 #include "EvalContext.hpp"
 
@@ -284,7 +285,7 @@ EvalContext::validate(std::list<std::shared_ptr<Token>>& stack)
 		}
 		std::shared_ptr<AssignToken> assignToken = std::dynamic_pointer_cast<AssignToken>(token);
 		if (assignToken) {
-			throw EvalError("Assignment operator only allowed once");
+			throw EvalError(_("Assignment operator only allowed once"));
 		}
 	}
 	return cnt;
@@ -329,7 +330,9 @@ EvalContext::eval(std::list<std::shared_ptr<Token>> stack)
 	std::shared_ptr<IdToken> idAssignToken = assign_token(stack);
 	int cnt = validate(stack);
 	if (cnt != 1) {
-		throw EvalError(Glib::ustring::sprintf("The calculation is not balanced %d (expect 1)", cnt));
+		throw EvalError(psc::fmt::vformat(
+                _("The calculation is not balanced {} (expect 1)")
+                , psc::fmt::make_format_args(cnt)));
 	}
 	//#pragma GCC diagnostic push
 	//#pragma GCC diagnostic ignored "-Wno-psabi"		// only supported as compile option
@@ -347,18 +350,24 @@ EvalContext::eval(std::list<std::shared_ptr<Token>> stack)
 				values.pop_back();
 				auto map = get_function_map();
 				auto entry = map.find(idToken->getId());
-				if (entry != map.end()) {
+                if (entry != map.end()) {
 					double result = entry->second->eval(valueR, this);
 					values.push_back(result);
-				}
-				else {
-					throw EvalError(Glib::ustring::sprintf("No function named %s", idToken->show()));
+                }
+                else {
+                    auto idTokenName = idToken->show();
+					throw EvalError(psc::fmt::vformat(
+                            _("No function named {}")
+                            , psc::fmt::make_format_args(idTokenName)));
 				}
 			}
 			else {
 				double val = 0.0;
 				if (!get_variable(idToken->getId(), &val)) {
-					throw EvalError(Glib::ustring::sprintf("No variable named %s", idToken->show()));
+                    auto idTokenName = idToken->show();
+					throw EvalError(psc::fmt::vformat(
+                            _("No variable named {}")
+                            , psc::fmt::make_format_args(idTokenName)));
 				}
 				values.push_back(val);
 			}

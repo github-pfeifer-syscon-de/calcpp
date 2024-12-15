@@ -40,7 +40,7 @@ public:
     virtual ~CalcppWin();
 
     void on_hide() override;
-    void show_error(Glib::ustring msg);
+    void show_error(const Glib::ustring& msg, Gtk::MessageType type = Gtk::MessageType::MESSAGE_WARNING);
     void eval(Glib::ustring text, Gtk::TextIter& end);
     void apply_font(bool defaultFont);
 protected:

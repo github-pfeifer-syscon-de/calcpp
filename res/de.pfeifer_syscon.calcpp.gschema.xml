@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist>  
+<schemalist>
   <schema path="/de/pfeifer_syscon/calcpp/" id="de.pfeifer_syscon.calcpp">
     <key name="defaultfont" type="b">
       <default>true</default>
@@ -10,7 +10,7 @@
       <default>'monospace 10'</default>
       <summary>Font</summary>
       <description>The font to be used for content.</description>
-    </key>       
+    </key>
     <key name="angle-unit" type='s'>
       <!-- choices leave out values as they are already present in source, and they are not translateable here... >
         <choice value='rad'/>
@@ -28,42 +28,34 @@
 			<choice value='exp'/>
 			<choice value='hex'/>
 			<choice value='hxf'/>
-			<choice value='oct'/>    
+			<choice value='oct'/>
         </choices -->
-      <default>'dec'</default>      
+      <default>'dec'</default>
       <summary>Output format</summary>
       <description>The format numbers are outputed, 'dec','sci','exp','hex','hxf' in case of 'oct' octal this also allows reading e.g. 010 as decimal 8.</description>
-    </key>    
+    </key>
     <key name="text" type="s">
-      <default>'Just write your expression e.g
- 3 + 4 * 5
- and press [Ctrl] + [Enter] on that line.
- Or mark an area for evaluation, multiple lines are evaluated separately.
- The usual functions sin,cos,log,sqrt,... are supported as well.
- You can use the predefined constants pi,e, 
- or assign your own variables e.g.
- a = 2 ^ 8
- and use the result for your next evaluation.'</default>      
+      <default>'---'</default>
       <summary>Last edited text</summary>
       <description>The text loaded on startup, and saved on exit.</description>
     </key>
     <key name="paned" type="i">
-      <default>200</default>      
+      <default>200</default>
       <summary>Paned position</summary>
       <description>The position of splitter between text and list.</description>
-    </key>    
+    </key>
     <key name="pos" type="(ii)">
-      <default>(0,0)</default>      
+      <default>(0,0)</default>
       <summary>Window position</summary>
       <description>Last window position.</description>
-    </key>    
+    </key>
     <key name="size" type="(ii)">
-      <default>(400,300)</default>      
+      <default>(400,300)</default>
       <summary>Window size</summary>
       <description>Last window size.</description>
-    </key>    
+    </key>
     <key name="variables" type="a{sd}">
-      <default>[]</default>      
+      <default>[]</default>
       <summary>Variables</summary>
       <description>Variable names and values.</description>
     </key>

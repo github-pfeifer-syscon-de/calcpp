@@ -18,6 +18,11 @@
 
 #include <iostream>
 #include <exception>
+#include <psc_i18n.hpp>
+#include <psc_format.hpp>
+#include <locale>
+#include <clocale>
+#include <string_view>
 
 #include <config.h>
 #include "CalcppApp.hpp"
@@ -80,6 +85,46 @@ CalcppApp::on_action_about() {
     }
 }
 
+std::string
+CalcppApp::get_file(const std::string& name)
+{
+    auto fullPath = Glib::canonicalize_filename(Glib::StdStringView(m_exec), Glib::get_current_dir());
+    Glib::RefPtr<Gio::File> f = Gio::File::create_for_path(fullPath);
+    auto dist_dir = f->get_parent()->get_parent();
+    // this file identifies the development dir, beside executable
+    auto readme = Glib::build_filename(dist_dir->get_path(), name);
+    if (!Glib::file_test(readme, Glib::FileTest::FILE_TEST_IS_REGULAR)) {
+        // alternative search in distribution
+        Glib::RefPtr<Gio::File> packageData = Gio::File::create_for_path(PACKAGE_DATA_DIR); // see Makefile.am
+        std::string base_name = packageData->get_basename();
+        readme = Glib::build_filename(packageData->get_parent()->get_path(), "doc", base_name, name);
+    }
+    return readme;
+}
+
+Glib::ustring CalcppApp::getReadmeText()
+{
+    Glib::ustring readmeText;
+    std::string locale = std::setlocale(LC_MESSAGES, nullptr);
+    std::string readme = ".";
+    if (locale.length() >= 2) {
+        auto lang = locale.substr(0, 2);
+        readme = get_file(std::string("README_") + lang);
+    }
+    if (!Glib::file_test(readme, Glib::FileTest::FILE_TEST_IS_REGULAR)) {
+        readme = get_file("README");
+    }
+    if (Glib::file_test(readme, Glib::FileTest::FILE_TEST_IS_REGULAR)) {
+        readmeText = Glib::file_get_contents(readme);
+    }
+    else {
+        readmeText = psc::fmt::vformat(
+                _("The README file {} could not be located.")
+                , psc::fmt::make_format_args(readme));
+    }
+    return readmeText;
+}
+
 void
 CalcppApp::on_action_help() {
     auto builder = Gtk::Builder::create();
@@ -90,24 +135,7 @@ CalcppApp::on_action_help() {
         auto textObj = builder->get_object("text");
         auto text = Glib::RefPtr<Gtk::TextView>::cast_dynamic(textObj);
 
-        std::string fullPath = g_canonicalize_filename(m_exec.c_str(), Glib::get_current_dir().c_str());
-        Glib::RefPtr<Gio::File> f = Gio::File::create_for_path(fullPath);
-        auto dist_dir = f->get_parent()->get_parent();
-        // this file identifies the development dir, beside executable
-        auto readme = Glib::build_filename(dist_dir->get_path(), "README");
-        if (!Glib::file_test(readme, Glib::FileTest::FILE_TEST_IS_REGULAR)) {
-            // alternative search in distribution
-            Glib::RefPtr<Gio::File> packageData = Gio::File::create_for_path(PACKAGE_DATA_DIR); // see Makefile.am
-            std::string base_name = packageData->get_basename();
-            readme = Glib::build_filename(packageData->get_parent()->get_path(), "doc", base_name, "README");
-        }
-        if (Glib::file_test(readme, Glib::FileTest::FILE_TEST_IS_REGULAR)) {
-            Glib::ustring readmeText = Glib::file_get_contents(readme);
-            text->get_buffer()->set_text(readmeText);
-        } else {
-            text->get_buffer()->set_text(Glib::ustring::sprintf("The README file %s coud not be located.\n", readme));
-        }
-
+        text->get_buffer()->set_text(getReadmeText());
         dialog->set_transient_for(*m_calcppAppWindow);
         dialog->show_all();
         dialog->run();
@@ -156,7 +184,19 @@ CalcppApp::on_startup()
 
 int main(int argc, char** argv)
 {
-    setlocale(LC_ALL, "");      // we depend on locale
+    char* loc = std::setlocale(LC_ALL, "");
+    if (loc == nullptr) {
+        std::cout << "error setlocale " << std::endl;
+    }
+    else {
+        //std::cout << "setlocale " << loc << std::endl;
+        // sync c++
+        std::locale::global(std::locale(loc));
+    }
+    bindtextdomain(PACKAGE, PACKAGE_LOCALE_DIR);
+    textdomain(PACKAGE);
+    Glib::init();
+
     CalcppApp app(argc, argv);
 
     return app.run();

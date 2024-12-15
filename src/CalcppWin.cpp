@@ -18,6 +18,8 @@
 
 #include <iostream>
 #include <StringUtils.hpp>
+#include <psc_i18n.hpp>
+#include <Log.hpp>  // formatter Glib::Error
 
 #include "CalcppWin.hpp"
 #include "CalcppApp.hpp"
@@ -39,17 +41,17 @@ public:
     CalcFileChooser(Gtk::Window *win, bool save)
     : Gtk::FileChooserDialog(*win
                             , save
-                            ? "Save File"
-                            : "Open File"
+                            ? _("Save File")
+                            : _("Open File")
                             , save
                             ? Gtk::FileChooserAction::FILE_CHOOSER_ACTION_SAVE
                             : Gtk::FileChooserAction::FILE_CHOOSER_ACTION_OPEN
                             , Gtk::DIALOG_MODAL | Gtk::DIALOG_DESTROY_WITH_PARENT)
     {
-        add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+        add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
         add_button(save
-                    ? "_Save"
-                    : "_Open", Gtk::RESPONSE_ACCEPT);
+                    ? _("_Save")
+                    : _("_Open"), Gtk::RESPONSE_ACCEPT);
 
         Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();
         filter->set_name("Text");
@@ -96,7 +98,7 @@ CalcppWin::CalcppWin(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 , m_paned{nullptr}
 , m_treeView{nullptr}
 {
-    set_title("Calculator");
+    set_title(_("Calculator"));
     auto pix = Gdk::Pixbuf::create_from_resource(m_application->get_resource_base_path() + "/calcpp.png");
     set_icon(pix);
     // this allows using builder
@@ -131,8 +133,8 @@ CalcppWin::~CalcppWin()
 void
 CalcppWin::activate_actions()
 {
-    add_action(m_settings->create_action(CONFIG_ANGLE_UNIT));
-    add_action(m_settings->create_action(CONFIG_OUTPUT_FORMAT));
+    add_action(m_settings->create_action(EvalContext::CONFIG_ANGLE_UNIT));
+    add_action(m_settings->create_action(EvalContext::CONFIG_OUTPUT_FORMAT));
 
     auto char_action = Gio::SimpleAction::create("chars");
     char_action->signal_activate().connect (
@@ -148,7 +150,9 @@ CalcppWin::activate_actions()
 				delete charDialog;  // as this is a toplevel component shoud destroy -> works
 			}
 			catch (const Glib::Error &ex) {
-				std::cerr << "Unable to load char-dlg: " << ex.what() << std::endl;
+				show_error(psc::fmt::vformat(
+                        _("Unable to load {} error {}"),
+                          psc::fmt::make_format_args("char-dlg", ex)));
 			}
 		});
     add_action(char_action);
@@ -166,7 +170,9 @@ CalcppWin::activate_actions()
 				delete dateDialog;  // as this is a toplevel component shoud destroy -> works
 			}
 			catch (const Glib::Error &ex) {
-				std::cerr << "Unable to load date-dlg: " << ex.what() << std::endl;
+                show_error(psc::fmt::vformat(
+                        _("Unable to load {} error {}"),
+                          psc::fmt::make_format_args("date-dlg",  ex)));
 			}
 		});
     add_action (calendar_action);
@@ -184,7 +190,9 @@ CalcppWin::activate_actions()
 				delete prefDialog;  // as this is a toplevel component shoud destroy -> works
 			}
 			catch (const Glib::Error &ex) {
-				std::cerr << "Unable to load pref-dlg: " << ex.what() << std::endl;
+                show_error(psc::fmt::vformat(
+                        _("Unable to load {} error {}"),
+                          psc::fmt::make_format_args("pref-dlg", ex)));
 			}
 		});
     add_action(pref_action);
@@ -201,7 +209,9 @@ CalcppWin::activate_actions()
 				}
 			}
 			catch (const Glib::Error &ex) {
-				show_error(Glib::ustring::sprintf("Unable to load file %s", ex.what()));
+                show_error(psc::fmt::vformat(
+                        _("Unable to load {} error {}"),
+                          psc::fmt::make_format_args("file", ex)));
 			}
         });
     add_action (load_action);
@@ -218,7 +228,9 @@ CalcppWin::activate_actions()
 				}
 			}
 			catch (const Glib::Error &ex) {
-				show_error(Glib::ustring::sprintf("Unable to save file %s", ex.what()));
+                show_error(psc::fmt::vformat(
+                        _("Unable to save {} error {}"),
+                          psc::fmt::make_format_args("file", ex)));
 			}
 		});
     add_action (save_action);
@@ -237,7 +249,9 @@ CalcppWin::activate_actions()
 				delete quadDialog;
 			}
 			catch (const Glib::Error &ex) {
-				std::cerr << "Unable to load quad-dlg: " << ex.what() << std::endl;
+                show_error(psc::fmt::vformat(
+                        _("Unable to load {} error {}"),
+                          psc::fmt::make_format_args("quad-dlg", ex)));
 			}
 		});
     add_action(quad_action);
@@ -256,7 +270,9 @@ CalcppWin::activate_actions()
 				delete gaussDialog;
 			}
 			catch (const Glib::Error &ex) {
-				std::cerr << "Unable to load gauss-dlg: " << ex.what() << std::endl;
+                show_error(psc::fmt::vformat(
+                        _("Unable to load {} error {}"),
+                          psc::fmt::make_format_args("gauss-dlg", ex)));
 			}
 		});
     add_action(gauss_action);
@@ -331,10 +347,15 @@ CalcppWin::load_config()
         m_settings = Glib::wrap(g_settings_new_full(schema->gobj(), nullptr, nullptr), false);
     }
     catch (const Glib::Error &exc) {
-        show_error(Glib::ustring::sprintf("No settings coud be read! Error %s\nSettings will not work !", exc.what()));
+        show_error(psc::fmt::vformat(
+                _("No settings coud be read! error {}\nSettings will not work !")
+                 , psc::fmt::make_format_args(exc)));
     }
     if (m_settings) {
         Glib::ustring text = m_settings->get_string(CONFIG_TEXT);
+        if ("---" == text) {    // default value from settings
+            text = m_application->getReadmeText();
+        }
         m_textView->get_buffer()->set_text(text);
 
         int width = 400, height = 300;
@@ -415,12 +436,11 @@ CalcppWin::on_hide()
 }
 
 void
-CalcppWin::show_error(Glib::ustring msg)
+CalcppWin::show_error(const Glib::ustring& msg, Gtk::MessageType type)
 {
     // this shoud automatically give some context
     g_warning("show_error %s", msg.c_str());
-    Gtk::MessageDialog messagedialog(*this, msg, FALSE, Gtk::MessageType::MESSAGE_WARNING);
-
+    Gtk::MessageDialog messagedialog(*this, msg, FALSE, type);
     messagedialog.run();
     messagedialog.hide();
 }
@@ -487,7 +507,9 @@ CalcppWin::eval(Glib::ustring text, Gtk::TextIter& end)
         }
     }
     catch (const ParseError& err) {
-        show_error(Glib::ustring::sprintf("Error: %s", err.what()));
+        auto what = err.what();
+        show_error(psc::fmt::vformat(_("Parse error: {}")
+                    , psc::fmt::make_format_args(what)));
     }
 }
 

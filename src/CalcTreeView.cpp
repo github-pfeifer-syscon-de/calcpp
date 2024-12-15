@@ -17,6 +17,8 @@
 
 #include <iostream>
 #include <StringUtils.hpp>
+#include <psc_i18n.hpp>
+#include <psc_format.hpp>
 
 #include "CalcTreeView.hpp"
 #include "EvalContext.hpp"
@@ -27,8 +29,8 @@ CalcTreeView::CalcTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 , m_evalContext{evalContext}
 , m_calcppWin{calcppWin}
 {
-    create_column_name("Name", m_evalContext->m_variable_columns.m_name);
-    create_column_value("Value", m_evalContext->m_variable_columns.m_value);
+    create_column_name(_("Name"), m_evalContext->m_variable_columns.m_name);
+    create_column_value(_("Value"), m_evalContext->m_variable_columns.m_value);
 
     set_model(m_evalContext->get_list());
 	auto format_proxy = m_evalContext->property_output_format_id();
@@ -76,7 +78,9 @@ CalcTreeView::create_column_name(Glib::ustring name, Gtk::TreeModelColumn<Glib::
 					m_evalContext->rename(varName, datas);
 				}
 				else {
-					m_calcppWin->show_error(Glib::ustring::sprintf("Name %s already used.", data));
+					m_calcppWin->show_error(psc::fmt::vformat(
+                        "Name {} already used."
+                        , psc::fmt::make_format_args(data)));
 				}
 			}
 		});
@@ -134,7 +138,9 @@ CalcTreeView::create_column_value(Glib::ustring name, Gtk::TreeModelColumn<doubl
 				m_evalContext->set_value(varName, val);
 			}
 			else {
-				m_calcppWin->show_error(Glib::ustring::sprintf("not a valid number %s", data));
+				m_calcppWin->show_error(psc::fmt::vformat(
+                    _("not a valid number {}")
+                    , psc::fmt::make_format_args(data)));
 			}
 		});
 }

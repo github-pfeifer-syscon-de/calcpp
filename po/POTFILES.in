@@ -1,0 +1,19 @@
+# List of source files which contain translatable strings.
+src/CalcppApp.cpp
+src/CalcppWin.cpp
+src/EvalContext.cpp
+src/AngleUnit.cpp
+src/CalcTreeView.cpp
+src/GaussDialog.cpp
+src/Matrix.cpp
+src/NumDialog.cpp
+src/OutputForm.cpp
+src/QuadDialog.cpp
+res/app-menu.ui
+res/abt-dlg.ui
+res/calc-win.ui
+res/char-dlg.ui
+res/date-dlg.ui
+res/gauss-dlg.ui
+res/pref-dlg.ui
+res/quad-dlg.ui

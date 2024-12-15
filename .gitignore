@@ -54,3 +54,14 @@
 /test/test-suite.log
 /test/math_test.trs
 /test/
+/test-driver
+/po/Makefile
+/po/Makefile.in
+/po/POTFILES
+/po/calcpp-program.pot
+/po/calcpp.pot
+/po/remove-potcdate.sed
+/po/stamp-po
+/src/srcLib/Makefile
+/src/srcLib/Makefile.in
+/po/de.gmo

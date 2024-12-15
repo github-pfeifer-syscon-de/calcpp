@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <psc_i18n.hpp>
+#include <psc_format.hpp>
 
 #include "Matrix.hpp"
 
@@ -42,7 +44,9 @@ template<typename T> T*
 MatrixV<T>::operator[](size_t row)
 {
     if (row >= m_rows) {
-        throw std::invalid_argument(Glib::ustring::sprintf("Matrix row index %ld exceeds limit %ld", row, m_rows));
+        throw std::invalid_argument(psc::fmt::vformat(
+                _("Matrix row index {} exceeds limit {}")
+                , psc::fmt::make_format_args(row, m_rows)));
     }
     return &m_elem[row * m_cols];
 }
@@ -104,7 +108,9 @@ template<typename T> T*
 MatrixU<T>::operator[](size_t row)
 {
     if (row >= m_rows) {
-        throw std::invalid_argument(Glib::ustring::sprintf("Matrix row index %ld exceeds limit %ld", row, m_rows));
+        throw std::invalid_argument(psc::fmt::vformat(
+                _("Matrix row index {} exceeds limit {}")
+                , psc::fmt::make_format_args(row, m_rows)));
     }
     return &m_elem[row * m_cols];
 }
@@ -154,7 +160,11 @@ void
 Gauss::eliminate(Matrix<double>& m)
 {
     if (m.getColumns() != m.getRows() + 1) {
-        throw std::invalid_argument(Glib::ustring::sprintf("Matrix cols %ld must be rows %ld+1", m.getColumns(), m.getRows() ));
+        auto cols = m.getColumns();
+        auto rows = m.getRows();
+        throw std::invalid_argument(psc::fmt::vformat(
+                _("Matrix cols {} must be rows {}+1")
+                , psc::fmt::make_format_args(cols, rows)));
     }
     // following wikipedia to avoid numeric instability (but may still have issues, but it is as far as it is feasible at the moment)
     // https://en.wikipedia.org/wiki/Gaussian_elimination
@@ -172,7 +182,11 @@ Gauss::eliminate(Matrix<double>& m)
             }
 	    }
 	    if (m[i_max][k] == 0.0) {
-            ++k;    /* No pivot in this column, pass to next column */
+            // as we decided to provied the exact number of cols,rows so they should be <> 0
+            throw std::invalid_argument(psc::fmt::vformat(
+                    _("Value for col {} row {} is 0, matrix not solveable.")
+                    , psc::fmt::make_format_args(i_max, k)));
+            //++k;    /* No pivot in this column, pass to next column, or throw exception? */
 	    }
 	    else {
             m.swapRow(h, i_max);

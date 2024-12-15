@@ -18,6 +18,7 @@
 
 #include <string>   // stod
 #include <StringUtils.hpp>
+#include <psc_i18n.hpp>
 
 #include "NumDialog.hpp"
 #include "CalcppWin.hpp"
@@ -45,7 +46,7 @@ NumDialog::parse(Gtk::Entry* entry)
     double dbl = std::stod(val, &offs);
     if (offs != val.size()) {   // expect number to be completely parsable
         entry->grab_focus();
-        throw std::invalid_argument("Invalid number");
+        throw std::invalid_argument(_("Invalid number"));
     }
     return dbl;
 }

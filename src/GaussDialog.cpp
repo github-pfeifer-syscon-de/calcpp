@@ -18,6 +18,8 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <psc_i18n.hpp>
+#include <psc_format.hpp>
 
 #include "GaussDialog.hpp"
 #include "CalcppWin.hpp"
@@ -52,7 +54,9 @@ GaussDialog::buildHeadingRow(const int row)
 void
 GaussDialog::buildEntryRow(const int row)
 {
-    auto label = Gtk::make_managed<Gtk::Label>(Glib::ustring::sprintf("Row%d", row));
+    auto label = Gtk::make_managed<Gtk::Label>(
+        psc::fmt::vformat(_("Row{}")
+        , psc::fmt::make_format_args(row)));
     m_grid->attach(*label, 0, row);
     for (int col = 1; col < m_n+2; ++col) {
         auto entry = Gtk::make_managed<Gtk::Entry>();
@@ -65,7 +69,7 @@ GaussDialog::buildEntryRow(const int row)
 void
 GaussDialog::buildResultRow(const int row)
 {
-    auto label = Gtk::make_managed<Gtk::Label>(Glib::ustring("Result"));
+    auto label = Gtk::make_managed<Gtk::Label>(_("Result"));
     m_grid->attach(*label, 0, row);
     for (int col = 1; col < m_n+1; ++col) {
         auto entry = Gtk::make_managed<Gtk::Entry>();
@@ -104,7 +108,7 @@ GaussDialog::evaluate()
 {
     try {
         if (m_n < MIN_ROWS) {
-            throw std::invalid_argument("Invalid number");
+            throw std::invalid_argument(_("Invalid number"));
         }
         psc::mat::MatrixU<double> m{static_cast<size_t>(m_n)};
         for (int row = 1; row < m_n+1; ++row) {
@@ -138,7 +142,9 @@ GaussDialog::evaluate()
         }
     }
     catch (const std::exception& err) {
-        m_parent->show_error(Glib::ustring::sprintf("Unable to calculate \"%s\"", err.what()));
+        auto what = err.what();
+        m_parent->show_error(psc::fmt::vformat(_("Unable to calculate \"{}\""),
+                                               psc::fmt::make_format_args(what)));
     }
 }
 

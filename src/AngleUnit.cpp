@@ -17,6 +17,7 @@
  */
 
 #include <glibmm.h>
+#include <psc_i18n.hpp>
 
 #include "AngleUnit.hpp"
 
@@ -68,7 +69,7 @@ AngleConversion::get_conversion(Glib::ustring id)
 }
 
 RadianConversion::RadianConversion()
-: AngleConversion("rad", "Radians")
+: AngleConversion("rad", _("Radians"))
 {
 }
 
@@ -85,7 +86,7 @@ RadianConversion::convert_from_radian(double in)
 }
 
 DegreeConversion::DegreeConversion()
-: AngleConversion("deg", "Degree (°)")
+: AngleConversion("deg", _("Degree (°)"))
 {
 }
 
@@ -102,7 +103,7 @@ DegreeConversion::convert_from_radian(double in)
 }
 
 GonConversion::GonConversion()
-: AngleConversion("gon", "Grad (Gon)")
+: AngleConversion("gon", _("Gon"))
 {
 }
 

@@ -90,6 +90,12 @@ public:
     void load(Glib::RefPtr<Gio::Settings> settings);
     void save(Glib::RefPtr<Gio::Settings> settings);
     VariableColumns m_variable_columns;
+
+    static constexpr auto ANGLE_CONV_ID_PROPERTY = "angle_conv_id";
+    static constexpr auto OUTPUT_FORMAT_ID_PROPERTY = "output_format_id";
+    static constexpr auto VAR_CONFIG_GRP = "variables";
+    static constexpr auto CONFIG_ANGLE_UNIT = "angle-unit";
+    static constexpr auto CONFIG_OUTPUT_FORMAT = "output-format";
 private:
     const std::map<Glib::ustring, std::shared_ptr<Function>>& get_function_map();
     int validate(std::list<std::shared_ptr<Token>>& stack);
@@ -106,8 +112,3 @@ private:
     const std::map<Glib::ustring, std::shared_ptr<Function>> m_functionMap;
 };
 
-const char * const ANGLE_CONV_ID_PROPERTY = "angle_conv_id";
-const char * const OUTPUT_FORMAT_ID_PROPERTY = "output_format_id";
-const char * const VAR_CONFIG_GRP = "variables";
-const char * const CONFIG_ANGLE_UNIT = "angle-unit";
-const char * const CONFIG_OUTPUT_FORMAT = "output-format";
