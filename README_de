@@ -47,8 +47,8 @@ a = 3 + 4 * 5
 b = a + 7
 </pre>
 Die Variablentabelle kann mit einem Klick auf den Wert editiert werden.
-Oder bei einem Klick auf den Namane, können Variable umbennant werden.
-Um eine Variable zu entfernen kann der Namne zu einem leeren Zeichenkette geändert werden.
+Oder bei einem Klick auf den Namen, können Variable umbennant werden.
+Um eine Variable zu entfernen kann der Namen zu einer leeren Zeichenkette geändert werden.
 
 Unterstützung für Unicodezeichen für Variablen-/Konstantennamen
 z.B. π (wenn Sie dies ohne Unicodeunterstützung lesen, der kleine griechische Buchstabe pi)
@@ -65,14 +65,19 @@ Probleme:
   (sie erscheinen auch nicht in der Ausgabe).
 
 
-Zum erstellen für (Lin)ux verwenden (als Voraussetzung wird genericImg benötigt):
+Zum erstellen verwenden (als Voraussetzung wird genericImg benötigt):
 <pre>
 autoreconf -fis
 ./configure --prefix=/usr
 make
 </pre>
 
-Das Bauen für Win(dows) wird mit msys2 untersützt<br>
+Das Bauen für Win(dows) wird mit msys2 untersützt, dazu bauen wie oben beschrieben, mit Ausnahme von:
+<pre>
+./configure --prefix=/mingw64
+</pre>
+
+if you want to change this build look for:
 <pre>
   look for "$host_os" = "mingw32"
 </pre>
