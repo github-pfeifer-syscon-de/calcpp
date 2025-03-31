@@ -32,6 +32,7 @@
 #include "PrefDialog.hpp"
 #include "QuadDialog.hpp"
 #include "GaussDialog.hpp"
+#include "NumBaseDialog.hpp"
 
 /*
  * slightly customized file chooser
@@ -277,6 +278,26 @@ CalcppWin::activate_actions()
 		});
     add_action(gauss_action);
 
+    auto numbase_action = Gio::SimpleAction::create("numBase");
+    numbase_action->signal_activate().connect(
+        [this] (const Glib::VariantBase& value)
+		{
+			try {
+				auto builder = Gtk::Builder::create();
+				NumBaseDialog* numBaseDialog;
+				builder->add_from_resource(m_application->get_resource_base_path() + "/num-dlg.ui");
+				builder->get_widget_derived("NumDialog", numBaseDialog, this);
+				numBaseDialog->run();
+                numBaseDialog->hide();
+				delete numBaseDialog;
+			}
+			catch (const Glib::Error &ex) {
+                show_error(psc::fmt::vformat(
+                        _("Unable to load {} error {}"),
+                          psc::fmt::make_format_args("num-dlg", ex)));
+			}
+		});
+    add_action(numbase_action);
 }
 
 void

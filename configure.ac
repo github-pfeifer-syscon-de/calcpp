@@ -9,7 +9,7 @@ AC_CONFIG_SRCDIR([src/CalcppApp.cpp])
 
 dnl use -no-portablitity to stop complaining about $(shell... in res/Makefile.am
 dnl i dont get it, as the shell is everywhere, turtle power!
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([1.11 foreign])
 
 AC_CONFIG_HEADERS([config.h])
 
@@ -46,7 +46,7 @@ if test "$host_os" = "mingw32" ; then
     AC_SUBST(EXTRA_LDFLAGS, "-mwindows")
 fi
 
-AC_CONFIG_FILES([ 
+AC_CONFIG_FILES([
 po/Makefile.in
 Makefile
 srcLib/Makefile

@@ -101,6 +101,10 @@
 			  <attribute translatable="yes" name="label">Linear equations</attribute>
 			  <attribute name="action">win.gauss</attribute>
 			</item>
+			<item>
+			  <attribute translatable="yes" name="label">Number Base</attribute>
+			  <attribute name="action">win.numBase</attribute>
+			</item>
 	  </submenu>
     <submenu>
       <attribute translatable="yes" name="label">Help</attribute>

@@ -44,6 +44,8 @@ calcpp_SOURCES = resources.c \
 	CharDialog.hpp \
 	NumDialog.cpp \
 	NumDialog.hpp \
+	NumBaseDialog.cpp \
+	NumBaseDialog.hpp \
 	QuadDialog.cpp \
 	QuadDialog.hpp \
 	GaussDialog.cpp \

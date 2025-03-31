@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: calcpp 0.1\n"
 "Report-Msgid-Bugs-To: calcpp@pfeifer-syscon.de\n"
-"POT-Creation-Date: 2024-12-15 08:14+0100\n"
+"POT-Creation-Date: 2025-03-31 14:24+0200\n"
 "PO-Revision-Date: 2024-12-15 06:57+0100\n"
 "Last-Translator:  <calcpp@pfeifer-syscon.de>\n"
 "Language-Team: German <calcpp@pfeifer-syscon.de>\n"
@@ -17,42 +17,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/CalcppWin.cpp:44
+#: src/CalcppApp.cpp:122
+#, c++-format
+msgid "The README file {} could not be located."
+msgstr "Die README Datei {} wurde nicht gefunden."
+
+#: src/CalcppWin.cpp:45
 msgid "Save File"
 msgstr "Datei speichern"
 
-#: src/CalcppWin.cpp:45
+#: src/CalcppWin.cpp:46
 msgid "Open File"
 msgstr "Datei öffnen"
 
-#: src/CalcppWin.cpp:51
+#: src/CalcppWin.cpp:52
 msgid "_Cancel"
 msgstr "_Abbrechen"
 
-#: src/CalcppWin.cpp:53
+#: src/CalcppWin.cpp:54
 msgid "_Save"
 msgstr "_Speichern"
 
-#: src/CalcppWin.cpp:54
+#: src/CalcppWin.cpp:55
 msgid "_Open"
 msgstr "Ö_ffnen"
 
-#: src/CalcppWin.cpp:101
+#: src/CalcppWin.cpp:102
 msgid "Calculator"
 msgstr "Rechner"
 
-#: src/CalcppWin.cpp:154 src/CalcppWin.cpp:174 src/CalcppWin.cpp:194
-#: src/CalcppWin.cpp:213 src/CalcppWin.cpp:253 src/CalcppWin.cpp:274
+#: src/CalcppWin.cpp:155 src/CalcppWin.cpp:175 src/CalcppWin.cpp:195
+#: src/CalcppWin.cpp:214 src/CalcppWin.cpp:254 src/CalcppWin.cpp:275
+#: src/CalcppWin.cpp:296
 #, c++-format
 msgid "Unable to load {} error {}"
 msgstr "{} wurde nicht geladen. Fehler {}"
 
-#: src/CalcppWin.cpp:232
+#: src/CalcppWin.cpp:233
 #, c++-format
 msgid "Unable to save {} error {}"
 msgstr "Fehler {1} beim speichen {0}"
 
-#: src/CalcppWin.cpp:351
+#: src/CalcppWin.cpp:372
 #, c++-format
 msgid ""
 "No settings coud be read! error {}\n"
@@ -61,7 +67,7 @@ msgstr ""
 "Einstellungen konnten nicht geladen werden! Fehler {}\n"
 "Einstellungen werden nicht funktionieren!"
 
-#: src/CalcppWin.cpp:508
+#: src/CalcppWin.cpp:532
 #, c++-format
 msgid "Parse error: {}"
 msgstr "Syntax nicht erkannt. Fehler {}"
@@ -222,15 +228,19 @@ msgstr "Quadratische Gleichung"
 msgid "Linear equations"
 msgstr "Lineare Gleichungen"
 
-#: res/app-menu.ui:106
+#: res/app-menu.ui:105
+msgid "Number Base"
+msgstr "Zahlen Basis"
+
+#: res/app-menu.ui:110
 msgid "Help"
 msgstr "Hilfe"
 
-#: res/app-menu.ui:109
+#: res/app-menu.ui:113
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: res/app-menu.ui:113
+#: res/app-menu.ui:117
 msgid "_About"
 msgstr "Über"
 
@@ -267,3 +277,19 @@ msgstr "Standard:"
 #: res/pref-dlg.ui:43
 msgid "Use default font"
 msgstr "Verwende Standardschrift"
+
+#: res/num-dlg.ui:7
+msgid "Numeric conversion"
+msgstr "Zahlen konvertieren"
+
+#: res/num-dlg.ui:137
+msgid "Octal"
+msgstr "Oktal"
+
+#: res/num-dlg.ui:172
+msgid "Binary"
+msgstr "Binär"
+
+#: res/num-dlg.ui:183
+msgid "Unicode"
+msgstr "Unicode"

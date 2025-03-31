@@ -10,6 +10,7 @@
     <file preprocess="xml-stripblanks">date-dlg.ui</file>
     <file preprocess="xml-stripblanks">quad-dlg.ui</file>
     <file preprocess="xml-stripblanks">gauss-dlg.ui</file>
+    <file preprocess="xml-stripblanks">num-dlg.ui</file>
     <file>calcpp.png</file>
   </gresource>
 </gresources>
