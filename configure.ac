@@ -40,8 +40,6 @@ AC_SEARCH_LIBS([uc_all_blocks], [unistring])
 
 AM_GNU_GETTEXT([external])
 
-AX_CHECK_SED()
-
 if test "$host_os" = "mingw32" ; then
     AC_SUBST(EXTRA_LDFLAGS, "-mwindows")
 fi
