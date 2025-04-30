@@ -6,4 +6,4 @@ Name=Calculator
 Comment=Desktop calculator
 Categories=Application;Utility;
 Exec=calcpp
-Icon=@APP_ICON@
+Icon=calcpp
