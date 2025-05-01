@@ -40,4 +40,3 @@ $(GSCHEMA_COMPILED): $(gsettings_SCHEMAS)
 clean-local:
 	-rm -rf $(RESOURCE_C)
 	-rm -rf $(GSCHEMA_COMPILED)
-	-rm -rf $(desktop_DATA)
