@@ -167,9 +167,9 @@ CharDialog::char_info(ucs4_t uc)
 {
 	const uc_script_t* info = uc_script(uc);
     if (uc < 0x10000) {
-        return Glib::ustring::sprintf("%s \\u%04x ", info->name, uc);
+        return Glib::ustring::sprintf("%s \\u%04x &#%d;", info->name, uc, uc);
     }
-    return Glib::ustring::sprintf("%s \\u%08x ", info->name, uc);
+    return Glib::ustring::sprintf("%s \\U%08x &#%d;", info->name, uc, uc);
 }
 
 void

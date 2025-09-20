@@ -7,9 +7,9 @@ AC_INIT([calcpp],[0.1],[calcpp@pfeifer-syscon.de])
 dnl point to unique-file-in-source-dir, for safety check
 AC_CONFIG_SRCDIR([src/CalcppApp.cpp])
 
-dnl use -no-portablitity to stop complaining about $(shell... in res/Makefile.am
-dnl i dont get it, as the shell is everywhere, turtle power!
-AM_INIT_AUTOMAKE([1.11 foreign])
+dnl foreign -> leaves out INSTALL,
+dnl otherwise -> there is complaining about the shell, sorry for all non shell places :(
+AM_INIT_AUTOMAKE([1.11])
 
 AC_CONFIG_HEADERS([config.h])
 
