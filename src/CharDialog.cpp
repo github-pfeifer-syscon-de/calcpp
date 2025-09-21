@@ -72,47 +72,16 @@ CharDialog::CharDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     builder->get_widget("table", m_table);
     builder->get_widget("page", m_page);
     builder->get_widget("info", m_info);
+    builder->get_widget("infoHtml", m_infoHtml);
+    builder->get_widget("box", m_box);
     builder->get_widget("entry", m_entry);
-
     set_transient_for(*parent);
 
     create_columns();
     m_table->set_model(m_list);
     fill_list();
     show_all();
-	m_entry->signal_changed().connect(	// allow display of info for char
-		[this] {
-			Glib::ustring text = m_entry->get_text();
-			Glib::ustring info;
-			auto iter = text.begin();
-			gunichar last = 0;
-			while (iter != text.end()) {
-				gunichar c = *iter;
-				info += char_info(c);
-				++iter;
-				last = c;
-			}
-            m_info->set_text(info);
-			if (last != 0) {
-				auto iter = m_page->get_active();
-			    auto row = *iter;
-			    std::shared_ptr<UnicodeBlock> unicodePage = row[m_combo_columns.m_value];
-				if (last < unicodePage->get_start()
-				 || last > unicodePage->get_end()) {	// if page does not match char
-					auto model = m_page->get_model();
-					for (auto i : model->children()) {	// find it
-						auto r = *i;
-					    std::shared_ptr<UnicodeBlock> uniPage = r[m_combo_columns.m_value];
-						if (last >= uniPage->get_start()
-						 && last <= uniPage->get_end() 	) {
-							m_page->set_active(i);		// and display
-							break;
-						}
-					}
-				}
-			}
-		}
-	);
+	m_entry->signal_changed().connect(sigc::mem_fun(*this, &CharDialog::char_info));
     //m_table->set_headers_clickable(true);
     // seems to be no column selection
     //Glib::RefPtr<TreeSelection> selection = m_table->get_selection();
@@ -162,14 +131,66 @@ CharDialog::create_columns()
     }
 }
 
-Glib::ustring
-CharDialog::char_info(ucs4_t uc)
+// allow display of infos for chars
+void
+CharDialog::char_info()
 {
-	const uc_script_t* info = uc_script(uc);
-    if (uc < 0x10000) {
-        return Glib::ustring::sprintf("%s \\u%04x &#%d;", info->name, uc, uc);
+    Glib::ustring text = m_entry->get_text();
+    Glib::ustring info;
+    Glib::ustring infoHtml;
+    auto model = Gio::ListStore<BlockRef>::create();
+    std::map<Glib::ustring, ucs4_t> m_infoMap;
+
+    for (auto iter = text.begin(); iter != text.end(); ++iter) {
+        gunichar c = *iter;
+        ucs4_t uc{c};
+        if (uc < 0x10000) {
+            info += Glib::ustring::sprintf("\\u%04x", uc);
+        }
+        else {
+            info += Glib::ustring::sprintf("\\U%08x", uc);
+        }
+        infoHtml += Glib::ustring::sprintf("&#%d;", uc);
+        // the script (a.k.a. writing system) is a more informative concept,
+        //   so here we remember all distinct scripts, and when clicking
+        //   we navigate to the block with the char the script was discovered with
+        //   best we can do as e.g. latin has multiple pages ...
+        const uc_script_t* info = uc_script(uc);
+        //const uc_block_t* block = uc_block(uc);
+        Glib::ustring name{info->name};
+        auto iterMap = m_infoMap.find(name);
+        if (iterMap == m_infoMap.end()) {
+            m_infoMap.insert(std::pair(name, uc));
+            auto block = BlockRef::create(name, uc);
+            model->append(block);
+        }
     }
-    return Glib::ustring::sprintf("%s \\U%08x &#%d;", info->name, uc, uc);
+    m_info->set_text(info);
+    m_infoHtml->set_text(infoHtml);
+    m_box->bind_list_store(model, sigc::mem_fun(*this, &CharDialog::createBoxItem));
+}
+
+Gtk::Widget*
+CharDialog::createBoxItem(const Glib::RefPtr<BlockRef>& blockRef)
+{
+    auto name = blockRef->getName();
+    ucs4_t uc{blockRef->getChar()};
+    auto pageButton = Gtk::make_managed<Gtk::Button>(name);
+    pageButton->signal_clicked().connect(
+        [this,uc] {
+            auto model = m_page->get_model();
+            auto chlds = model->children();
+            for (auto iter = chlds.begin(); iter != chlds.end(); ++iter) {
+                auto row = *iter;
+                std::shared_ptr<UnicodeBlock> unicodePage = row[m_combo_columns.m_value];
+                if (uc >= unicodePage->get_start()
+                 && uc <= unicodePage->get_end()) {
+                    m_page->set_active(row);		// and display
+                    break;
+                }
+            }
+        });
+    return pageButton;
 }
 
 void

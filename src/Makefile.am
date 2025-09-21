@@ -12,9 +12,10 @@ AM_CPPFLAGS = \
 
 calcpp_CFLAGS = -Wall
 calcpp_CXXFLAGS = -Wall \
+	-Wpedantic \
+	-Wconversion \
 	-Wextra \
-	-Wno-unused-parameter \
-	-pedantic
+	-Wno-unused-parameter
 
 calcpp_LDFLAGS = @EXTRA_LDFLAGS@
 

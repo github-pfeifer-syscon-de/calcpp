@@ -24,7 +24,7 @@
 /*
  * hold unicode block info got from unistring
  */
-class UnicodeBlock  {  
+class UnicodeBlock  {
 public:
     UnicodeBlock(ucs4_t start, ucs4_t end, const Glib::ustring& name);
     UnicodeBlock(const UnicodeBlock& other);
@@ -75,6 +75,34 @@ public:
     }
 };
 
+class BlockRef
+: public Glib::Object
+{
+public:
+    BlockRef(const Glib::ustring& name, ucs4_t uc)
+    : Glib::ObjectBase(typeid (BlockRef))
+    , m_name{name}
+    , m_uc{uc}
+    {
+    }
+    Glib::ustring getName()
+    {
+        return m_name;
+    }
+    ucs4_t getChar()
+    {
+        return m_uc;
+    }
+    static Glib::RefPtr<BlockRef> create(const Glib::ustring& name, ucs4_t uc)
+    {
+        return Glib::RefPtr<BlockRef> (new BlockRef(name, uc));
+    }
+private:
+    Glib::ustring m_name;
+    ucs4_t m_uc;
+
+};
+
 class CalcppWin;
 
 /*
@@ -86,6 +114,9 @@ class CharDialog : public Gtk::Dialog {
 public:
     CharDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, CalcppWin* parent, Glib::RefPtr<Gio::Settings> settings);
     virtual ~CharDialog();
+
+    Gtk::Widget* createBoxItem(const Glib::RefPtr<BlockRef>& blockRef);
+
 private:
     void create_columns();
     Glib::RefPtr<Gtk::ListStore> create_list();
@@ -93,13 +124,15 @@ private:
     void append_combo_row(const std::shared_ptr<UnicodeBlock>& blk);
     Glib::RefPtr<Gtk::ListStore> get_pages();
     void fill_list();
-    Glib::ustring char_info(ucs4_t uc);
+    void char_info();
 
     CharColumns m_char_columns;
     ComboColumns m_combo_columns;
     Gtk::TreeView* m_table;
     Gtk::ComboBox* m_page;
     Gtk::Entry* m_info;
+    Gtk::Entry* m_infoHtml;
+    Gtk::FlowBox* m_box;
     Gtk::Entry* m_entry;
     Glib::RefPtr<Gtk::ListStore> m_list; // characters display
     Glib::RefPtr<Gtk::ListStore> m_pages; // unicode pages selection
