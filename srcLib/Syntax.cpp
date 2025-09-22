@@ -21,10 +21,10 @@
 #include <stack>
 
 #include "Syntax.hpp"
-#include "ConversionContext.hpp"
+#include "BaseEval.hpp"
 #include "config.h"
 
-Syntax::Syntax(const NumberFormat* numberFormat, const std::shared_ptr<ConversionContext>& conversionContext)
+Syntax::Syntax(const NumberFormat* numberFormat, const std::shared_ptr<BaseEval>& conversionContext)
 : m_numberFormat{numberFormat}
 , m_conversionContext{conversionContext}
 {
@@ -91,7 +91,8 @@ Syntax::shuntingYard(std::list<std::shared_ptr<Token>> tokens)
 		std::shared_ptr<IdToken> idToken = std::dynamic_pointer_cast<IdToken>(token);
 		if (idToken) {
 			auto id = idToken->getId();
-			if (m_conversionContext->is_function(id)) {
+            auto funct = m_conversionContext->getFunction(id);
+			if (funct) {
 				//  - a function: push it onto the operator stack
 				idToken->set_function(true);
 				ops.push(idToken);

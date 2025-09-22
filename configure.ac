@@ -48,6 +48,7 @@ AC_CONFIG_FILES([
 po/Makefile.in
 Makefile
 srcLib/Makefile
+test/Makefile
 res/Makefile
 src/Makefile
 ])

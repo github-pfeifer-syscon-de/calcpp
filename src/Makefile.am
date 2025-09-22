@@ -53,8 +53,6 @@ calcpp_SOURCES = resources.c \
 	GaussDialog.hpp \
 	DateDialog.cpp \
 	DateDialog.hpp \
-	Function.cpp \
-	Function.hpp \
 	Matrix.cpp \
 	Matrix.hpp \
 	PrefDialog.cpp \

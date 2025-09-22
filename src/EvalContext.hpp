@@ -24,21 +24,10 @@
 
 #include "OutputForm.hpp"
 #include "AngleUnit.hpp"
-#include "ConversionContext.hpp"
 #include "Token.hpp"
 #include "Function.hpp"
+#include "BaseEval.hpp"
 
-
-/*
- * some string helpers i cound not find elsewhere
- */
-class StrUtil {
-public:
-    /* remove starting and trailing blanks */
-    static Glib::ustring strip(Glib::ustring str);
-    /*  */
-    static std::vector<Glib::ustring> split(Glib::ustring text, gunichar c);
-};
 
 /*
  * model of variable display
@@ -60,7 +49,7 @@ public:
  *   like output format, angle conversion and variable storage.
  *   Uses advanced setting types to store variable list.
  */
-class EvalContext : public Glib::Object, public ConversionContext // inherit Glib:object as we use properties
+class EvalContext : public Glib::Object, public BaseEval // inherit Glib:object as we use properties
 {
 public:
     EvalContext();
@@ -71,16 +60,15 @@ public:
     void remove(Glib::ustring name);
     void rename(Glib::ustring name, Glib::ustring newName);
     void set_value(Glib::ustring name, double val);
-    double toRadian(double in);
-    double fromRadian(double in);
-    double eval(std::list<std::shared_ptr<Token>> stack);
-    bool is_function(const Glib::ustring& fun) override;    // from ConversionContext
+    double toRadian(double in) override;
+    double fromRadian(double in) override;
+    std::shared_ptr<Function> getFunction(const Glib::ustring& fun) override;    // from ConversionContext
 
     //void set_angle_conv(AngleConversion* angleConv) ;
     AngleConversion *get_angle_conv();
     OutputForm* get_output_format();
-    bool get_variable(Glib::ustring name, double* val);
-    void set_variable(Glib::ustring name, double val);
+    bool get_variable(const Glib::ustring& name, double* val) override;
+    void set_variable(const Glib::ustring& name, double val) override;
 
     Glib::PropertyProxy<Glib::ustring> property_angle_conv_id();
     Glib::PropertyProxy_ReadOnly<Glib::ustring> property_angle_conv_id() const;
@@ -99,8 +87,6 @@ public:
 private:
     using FunctionMap = std::map<Glib::ustring, std::shared_ptr<Function>>;
     const FunctionMap& get_function_map();
-    int validate(std::list<std::shared_ptr<Token>>& stack);
-    std::shared_ptr<IdToken> assign_token(std::list<std::shared_ptr<Token>>& stack);
     AngleConversion* m_angleConv;
     OutputForm* m_output_format;
 

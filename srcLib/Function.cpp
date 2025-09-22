@@ -20,89 +20,89 @@
 #include <cmath>
 
 #include "Function.hpp"
-#include "EvalContext.hpp"
+#include "BaseEval.hpp"
 
 
 double
-FunctionSqrt::eval(double val, EvalContext *evalContext)
+FunctionSqrt::eval(double val, BaseEval *evalContext)
 {
 	return std::sqrt(val);
 }
 
 double
-FunctionCbrt::eval(double val, EvalContext *evalContext)
+FunctionCbrt::eval(double val, BaseEval *evalContext)
 {
 	return std::cbrt(val);
 }
 
 double
-FunctionLog::eval(double val, EvalContext *evalContext)
+FunctionLog::eval(double val, BaseEval *evalContext)
 {
 	return std::log(val);
 }
 
 double
-FunctionExp::eval(double val, EvalContext *evalContext)
+FunctionExp::eval(double val, BaseEval *evalContext)
 {
 	return std::exp(val);
 }
 
 double
-FunctionSin::eval(double val, EvalContext *evalContext)
+FunctionSin::eval(double val, BaseEval *evalContext)
 {
 	return std::sin(evalContext->toRadian(val));
 }
 
 double
-FunctionCos::eval(double val, EvalContext *evalContext)
+FunctionCos::eval(double val, BaseEval *evalContext)
 {
 	return std::cos(evalContext->toRadian(val));
 }
 
 double
-FunctionTan::eval(double val, EvalContext *evalContext)
+FunctionTan::eval(double val, BaseEval *evalContext)
 {
 	return std::tan(evalContext->toRadian(val));
 }
 
 double
-FunctionAsin::eval(double val, EvalContext *evalContext)
+FunctionAsin::eval(double val, BaseEval *evalContext)
 {
 	return evalContext->fromRadian(std::asin(val));
 }
 
 double
-FunctionAcos::eval(double val, EvalContext *evalContext)
+FunctionAcos::eval(double val, BaseEval *evalContext)
 {
 	return evalContext->fromRadian(std::acos(val));
 }
 
 double
-FunctionAtan::eval(double val, EvalContext *evalContext)
+FunctionAtan::eval(double val, BaseEval *evalContext)
 {
 	return evalContext->fromRadian(std::atan(val));
 }
 
 double
-FunctionLog2::eval(double val, EvalContext *evalContext)
+FunctionLog2::eval(double val, BaseEval *evalContext)
 {
 	return std::log2(val);
 }
 
 double
-FunctionLog10::eval(double val, EvalContext *evalContext)
+FunctionLog10::eval(double val, BaseEval *evalContext)
 {
 	return std::log10(val);
 }
 
 double
-FunctionAbs::eval(double val, EvalContext *evalContext)
+FunctionAbs::eval(double val, BaseEval *evalContext)
 {
 	return std::fabs(val);
 }
 
 double
-FunctionFactorial::eval(double val, EvalContext *evalContext)
+FunctionFactorial::eval(double val, BaseEval *evalContext)
 {
     double fac = 1.0;
     while (val > 1.0) {
@@ -113,7 +113,7 @@ FunctionFactorial::eval(double val, EvalContext *evalContext)
 }
 
 //std::vector<double>
-//FunctionPrimfact::eval(double argument, EvalContext *evalContext)
+//FunctionPrimfact::eval(double argument, BaseEval *evalContext)
 //{
 //    std::vector<double> ret;
 //    ret.reserve(16);

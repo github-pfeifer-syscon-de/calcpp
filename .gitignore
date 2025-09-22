@@ -52,7 +52,6 @@
 /test/math_test.log
 /test/test-suite.log
 /test/math_test.trs
-/test/
 /test-driver
 /po/Makefile
 /po/Makefile.in
@@ -65,3 +64,6 @@
 /src/srcLib/Makefile.in
 /po/de.gmo
 /nbproject/project.properties
+/test/calc_test
+/test/calc_test.trs
+/test/calc_test.log

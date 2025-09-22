@@ -18,8 +18,10 @@ libexpression_a_SOURCES = \
 	NumberFormat.hpp \
 	Token.cpp \
 	Token.hpp \
-	ConversionContext.cpp \
-	ConversionContext.hpp \
+	Function.cpp \
+	Function.hpp \
+	BaseEval.cpp \
+	BaseEval.hpp \
 	Syntax.cpp \
 	Syntax.hpp
 

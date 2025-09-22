@@ -31,11 +31,12 @@
 #include "NumberFormat.hpp"
 #include "Token.hpp"
 
-class ConversionContext;
+class BaseEval;
 
 class Syntax {
 public:
-    Syntax(const NumberFormat* numberFormat, const std::shared_ptr<ConversionContext>& conversionContext);
+    Syntax(const NumberFormat* numberFormat, const std::shared_ptr<BaseEval>& conversionContext);
+    ~Syntax() = default;
 
     std::list<std::shared_ptr<Token>> parse(Glib::ustring& input);
 
@@ -49,7 +50,7 @@ protected:
     void insertNegate(std::list<std::shared_ptr<Token>>& tokens);
 private:
     const NumberFormat* m_numberFormat;
-    std::shared_ptr<ConversionContext> m_conversionContext;
+    std::shared_ptr<BaseEval> m_conversionContext;
 };
 
 template <class T>
