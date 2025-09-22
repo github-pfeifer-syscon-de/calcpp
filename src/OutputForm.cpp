@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
  * Copyright (C) 2020 rpf
  *
@@ -129,7 +129,7 @@ OutformOctal::parse(const Glib::ustring& remain, double& value, std::string::siz
     }
     else {	// if both length are equal prefere integer that shoud include octal numbers
         *offs = iconv;
-        value = lout;
+        value = static_cast<double>(lout);
     }
 	return *offs > 0;
 }

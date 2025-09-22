@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
  * Copyright (C) 2020 rpf
  *
@@ -33,6 +33,7 @@
 #include "QuadDialog.hpp"
 #include "GaussDialog.hpp"
 #include "NumBaseDialog.hpp"
+#include "config.h"
 
 /*
  * slightly customized file chooser
@@ -94,10 +95,7 @@ public:
 CalcppWin::CalcppWin(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, CalcppApp *application)
 : Gtk::ApplicationWindow(cobject)       //Calls the base class constructor
 , m_application{application}
-, m_evalContext{new EvalContext()}
-, m_textView{nullptr}
-, m_paned{nullptr}
-, m_treeView{nullptr}
+, m_evalContext{std::make_shared<EvalContext>()}
 {
     set_title(_("Calculator"));
     auto pix = Gdk::Pixbuf::create_from_resource(m_application->get_resource_base_path() + "/calcpp.png");
@@ -119,15 +117,6 @@ CalcppWin::CalcppWin(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
     //m_textView->signal_key_press_event().connect(sigc::mem_fun(*this, &CalcppWin::key_pressed));
 
     show_all_children();
-}
-
-
-CalcppWin::~CalcppWin()
-{
-    if (m_evalContext != nullptr) {
-        delete m_evalContext;
-        m_evalContext = nullptr;
-    }
 }
 
 
@@ -513,8 +502,9 @@ CalcppWin::eval(Glib::ustring text, Gtk::TextIter& end)
             auto sline = line;
             StringUtils::trim(sline);
             if (!sline.empty()) { // not worth starting the whole thing up
-                if (DEBUG)
+                if (DEBUG) {
                     std::cout << "eval \"" << sline << "\"" << std::endl;
+                }
                 Syntax syntax(outputForm, m_evalContext);
 				auto stack = syntax.parse(line);
 				val = m_evalContext->eval(stack);

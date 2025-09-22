@@ -1,3 +1,4 @@
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
  * Copyright (C) 2020 rpf
  *
@@ -18,6 +19,7 @@
 #pragma once
 
 #include <gtkmm.h>
+#include <memory>
 
 class EvalContext;
 class CalcppWin;
@@ -27,8 +29,8 @@ class CalcppWin;
  */
 class CalcTreeView : public Gtk::TreeView {
 public:
-    CalcTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, EvalContext *evalContext, CalcppWin* calcppWin);
-    virtual ~CalcTreeView();
+    CalcTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, const std::shared_ptr<EvalContext>& evalContext, CalcppWin* calcppWin);
+    virtual ~CalcTreeView() = default;
 
     void value_cell_data_func(Gtk::CellRenderer* cell, const Gtk::TreeModel::iterator& iter, int model_column);
 
@@ -38,7 +40,7 @@ private:
 
     void create_column_value(Glib::ustring name, Gtk::TreeModelColumn<double>& col);
 
-    EvalContext *m_evalContext;
+    std::shared_ptr<EvalContext> m_evalContext;
     CalcppWin* m_calcppWin;
 };
 

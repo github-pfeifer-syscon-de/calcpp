@@ -1,3 +1,4 @@
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
  * Copyright (C) 2022 rpf
  *
@@ -34,7 +35,7 @@ class ConversionContext;
 
 class Syntax {
 public:
-    Syntax(const NumberFormat* numberFormat, ConversionContext* conversionContext);
+    Syntax(const NumberFormat* numberFormat, const std::shared_ptr<ConversionContext>& conversionContext);
 
     std::list<std::shared_ptr<Token>> parse(Glib::ustring& input);
 
@@ -48,7 +49,7 @@ protected:
     void insertNegate(std::list<std::shared_ptr<Token>>& tokens);
 private:
     const NumberFormat* m_numberFormat;
-    ConversionContext* m_conversionContext;
+    std::shared_ptr<ConversionContext> m_conversionContext;
 };
 
 template <class T>

@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
  * Copyright (C) 2020 rpf
  *
@@ -29,7 +29,7 @@
 class CalcppApp : public Gtk::Application {
 public:
     CalcppApp(int arc, char **argv);
-    virtual ~CalcppApp();
+    virtual ~CalcppApp() = default;
 
     void on_activate() override;
     void on_startup() override;

@@ -1,3 +1,4 @@
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
  * Copyright (C) 2022 rpf
  *
@@ -21,8 +22,9 @@
 
 #include "Syntax.hpp"
 #include "ConversionContext.hpp"
+#include "config.h"
 
-Syntax::Syntax(const NumberFormat* numberFormat, ConversionContext* conversionContext)
+Syntax::Syntax(const NumberFormat* numberFormat, const std::shared_ptr<ConversionContext>& conversionContext)
 : m_numberFormat{numberFormat}
 , m_conversionContext{conversionContext}
 {

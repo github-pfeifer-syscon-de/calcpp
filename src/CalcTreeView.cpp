@@ -1,3 +1,4 @@
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
  * Copyright (C) 2020 rpf
  *
@@ -24,7 +25,7 @@
 #include "EvalContext.hpp"
 #include "CalcppWin.hpp"
 
-CalcTreeView::CalcTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, EvalContext *evalContext, CalcppWin* calcppWin)
+CalcTreeView::CalcTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, const std::shared_ptr<EvalContext>& evalContext, CalcppWin* calcppWin)
 : Gtk::TreeView(cobject)
 , m_evalContext{evalContext}
 , m_calcppWin{calcppWin}
@@ -43,11 +44,6 @@ CalcTreeView::CalcTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	    cell->property_visible() = false;
 	    cell->property_visible() = true;	// render column with changed properties
 	});
-}
-
-
-CalcTreeView::~CalcTreeView()
-{
 }
 
 void

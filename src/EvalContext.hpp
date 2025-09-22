@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
  * Copyright (C) 2020 rpf
  *
@@ -64,7 +64,7 @@ class EvalContext : public Glib::Object, public ConversionContext // inherit Gli
 {
 public:
     EvalContext();
-    virtual ~EvalContext();
+    virtual ~EvalContext() = default;
 
     Glib::RefPtr<Gtk::ListStore> get_list();
     bool find(Glib::ustring name, Gtk::TreeModel::Row* ret);
@@ -97,7 +97,8 @@ public:
     static constexpr auto CONFIG_ANGLE_UNIT = "angle-unit";
     static constexpr auto CONFIG_OUTPUT_FORMAT = "output-format";
 private:
-    const std::map<Glib::ustring, std::shared_ptr<Function>>& get_function_map();
+    using FunctionMap = std::map<Glib::ustring, std::shared_ptr<Function>>;
+    const FunctionMap& get_function_map();
     int validate(std::list<std::shared_ptr<Token>>& stack);
     std::shared_ptr<IdToken> assign_token(std::list<std::shared_ptr<Token>>& stack);
     AngleConversion* m_angleConv;
@@ -109,6 +110,6 @@ private:
     std::map<Glib::ustring, double> m_variables;
     // list a listStore to display variables
     Glib::RefPtr<Gtk::ListStore> m_list;
-    const std::map<Glib::ustring, std::shared_ptr<Function>> m_functionMap;
+    FunctionMap m_functionMap;
 };
 

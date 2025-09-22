@@ -1,3 +1,4 @@
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
  * Copyright (C) 2022 rpf
  *
@@ -18,8 +19,6 @@
 #pragma once
 
 #include <glibmm.h>
-
-#define DEBUG false
 
 class ConversionContext {
 public:

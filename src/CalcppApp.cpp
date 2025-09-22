@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
  * Copyright (C) 2020 rpf
  *
@@ -31,10 +31,6 @@ CalcppApp::CalcppApp(int argc, char **argv)
 : Gtk::Application(argc, argv, "de.pfeifer_syscon.calcpp")
 , m_calcppAppWindow{nullptr}
 , m_exec{argv[0]}
-{
-}
-
-CalcppApp::~CalcppApp()
 {
 }
 

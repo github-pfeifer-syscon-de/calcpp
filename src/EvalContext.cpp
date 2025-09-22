@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
  * Copyright (C) 2020 rpf
  *
@@ -22,6 +22,7 @@
 #include <psc_i18n.hpp>
 
 #include "EvalContext.hpp"
+#include "config.h"
 
 EvalContext::EvalContext()
 : Glib::ObjectBase(typeid (EvalContext))
@@ -35,25 +36,31 @@ EvalContext::EvalContext()
 , m_functionMap{
           {"sqrt",   std::make_shared<FunctionSqrt>()}
     	, {"cbrt",   std::make_shared<FunctionCbrt>()}
-        , {"log",    std::make_shared<FunctionLog>()}
-        , {"ln",     std::make_shared<FunctionLog>()}
         , {"exp",    std::make_shared<FunctionExp>()}
         , {"sin",    std::make_shared<FunctionSin>()}
         , {"cos",    std::make_shared<FunctionCos>()}
         , {"tan",    std::make_shared<FunctionTan>()}
-        , {"asin",   std::make_shared<FunctionAsin>()}
-        , {"arcsin", std::make_shared<FunctionAsin>()}
-        , {"acos",   std::make_shared<FunctionAcos>()}
-        , {"arccos", std::make_shared<FunctionAcos>()}
-        , {"atan",   std::make_shared<FunctionAtan>()}
-        , {"arctan", std::make_shared<FunctionAtan>()}
         , {"log2",   std::make_shared<FunctionLog2>()}
-        , {"log10",  std::make_shared<FunctionLog10>()}
-        , {"lg",     std::make_shared<FunctionLog10>()}
         , {"abs",    std::make_shared<FunctionAbs>()}
         , {"fac",    std::make_shared<FunctionFactorial>()}
     }
 {
+    auto functLog = std::make_shared<FunctionLog>();
+    m_functionMap.insert(std::make_pair("log",    functLog));
+    m_functionMap.insert(std::make_pair("ln",     functLog));
+    auto functAsin = std::make_shared<FunctionAsin>();
+    m_functionMap.insert(std::make_pair("asin",   functAsin));
+    m_functionMap.insert(std::make_pair("arcsin", functAsin));
+    auto functAcos = std::make_shared<FunctionAcos>();
+    m_functionMap.insert(std::make_pair("acos",   functAcos));
+    m_functionMap.insert(std::make_pair("arccos", functAcos));
+    auto functAtan = std::make_shared<FunctionAtan>();
+    m_functionMap.insert(std::make_pair("atan",   functAtan));
+    m_functionMap.insert(std::make_pair("arctan", functAtan));
+    auto functLog10 = std::make_shared<FunctionLog10>();
+    m_functionMap.insert(std::make_pair("log10", functLog10));
+    m_functionMap.insert(std::make_pair("lg",    functLog10));
+
     set_value(StringUtils::u8str(u8"\u03c0"), G_PI); // π or pi set some defaults
     set_value("e", G_E);
     set_value(StringUtils::u8str(u8"\u03d5"), (1.0 + sqrt(5.0)) / 2.0); // ϕ or phi
@@ -77,10 +84,6 @@ EvalContext::EvalContext()
                 m_output_format = OutputForm::get_form(val);
             }
         });
-}
-
-EvalContext::~EvalContext()
-{
 }
 
 Glib::RefPtr<Gtk::ListStore>
@@ -348,7 +351,7 @@ EvalContext::eval(std::list<std::shared_ptr<Token>> stack)
 				//if (values.empty()) {	consistency was checked before
 				double valueR = values.back();
 				values.pop_back();
-				auto map = get_function_map();
+				auto& map = get_function_map();
 				auto entry = map.find(idToken->getId());
                 if (entry != map.end()) {
 					double result = entry->second->eval(valueR, this);
@@ -401,12 +404,12 @@ EvalContext::eval(std::list<std::shared_ptr<Token>> stack)
 bool
 EvalContext::is_function(const Glib::ustring& fun)
 {
-    auto map = get_function_map();
+    auto& map = get_function_map();
     auto iter = map.find(fun);
     return iter != map.end();
 }
 
-const std::map<Glib::ustring, std::shared_ptr<Function>>&
+const EvalContext::FunctionMap &
 EvalContext::get_function_map()
 {
     return m_functionMap;

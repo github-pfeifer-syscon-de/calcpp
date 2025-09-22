@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
  * Copyright (C) 2020 rpf
  *
@@ -19,6 +19,7 @@
 #pragma once
 
 #include <gtkmm.h>
+#include <memory>
 
 #include "EvalContext.hpp"
 #include "OutputForm.hpp"
@@ -37,7 +38,7 @@ class Token;
 class CalcppWin : public Gtk::ApplicationWindow {
 public:
     CalcppWin(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& refBuilder, CalcppApp *appl);
-    virtual ~CalcppWin();
+    virtual ~CalcppWin() = default;
 
     void on_hide() override;
     void show_error(const Glib::ustring& msg, Gtk::MessageType type = Gtk::MessageType::MESSAGE_WARNING);
@@ -51,10 +52,10 @@ private:
     void activate_actions();
 
     CalcppApp *m_application;
-    EvalContext *m_evalContext;
-    CalcTextView* m_textView;
-    Glib::RefPtr<Gtk::Paned> m_paned;
-    CalcTreeView* m_treeView;
+    std::shared_ptr<EvalContext> m_evalContext;
+    CalcTextView* m_textView{nullptr};
+    Glib::RefPtr<Gtk::Paned> m_paned{nullptr};
+    CalcTreeView* m_treeView{nullptr};
     Glib::RefPtr<Gio::Settings> m_settings;
     Glib::RefPtr<Gtk::TextTag> m_fontTag;
 };
