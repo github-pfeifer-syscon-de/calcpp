@@ -502,9 +502,9 @@ CalcppWin::eval(Glib::ustring text, Gtk::TextIter& end)
             auto sline = line;
             StringUtils::trim(sline);
             if (!sline.empty()) { // not worth starting the whole thing up
-                if (DEBUG) {
+#               ifdef DEBUG
                     std::cout << "eval \"" << sline << "\"" << std::endl;
-                }
+#               endif
                 Syntax syntax(outputForm, m_evalContext);
 				auto stack = syntax.parse(line);
 				val = m_evalContext->eval(stack);

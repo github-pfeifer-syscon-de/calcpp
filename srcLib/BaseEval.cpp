@@ -97,13 +97,13 @@ BaseEval::assign_token(std::list<std::shared_ptr<Token>>& stack)
 double
 BaseEval::eval(std::list<std::shared_ptr<Token>> stack)
 {
-	if (DEBUG) {
+#   ifdef DEBUG
 		std::cout << "Stack -------------" << std::endl;
 		for (auto token : stack) {
 			std::cout << token->show() << std::endl;
 		}
 		std::cout << "-------------------" << std::endl;
-	}
+#   endif
 	std::shared_ptr<IdToken> idAssignToken = assign_token(stack);
 	int cnt = validate(stack);
 	if (cnt != 1) {
@@ -166,8 +166,9 @@ BaseEval::eval(std::list<std::shared_ptr<Token>> stack)
 	//if (values.empty()) {	consistency was checked before
 	double total = values.back();
 	if (idAssignToken) {	// if this was a assignment assign value
-		if (DEBUG)
+#		ifdef DEBUG
 			std::cout << "Set " << idAssignToken->getId() << " = " << total << std::endl;
+#       endif
 		set_variable(idAssignToken->getId(), total);
 	}
 	//#pragma GCC diagnostic pop

@@ -59,12 +59,12 @@ Syntax::insertNegate(std::list<std::shared_ptr<Token>>& tokens)
 		negPossibleOp = (op && !op->is_right_paren()) && (op.operator bool() || assign.operator bool());
 		++iter;
 	}
-    if (DEBUG) {
+#   ifdef DEBUG
         std::cout << "after insertNegate ---------" << std::endl;
         for (auto token : tokens) {
             std::cout << type_name<decltype(token)>() << " " << token->show() << std::endl;
         }
-    }
+#   endif
 }
 
 
