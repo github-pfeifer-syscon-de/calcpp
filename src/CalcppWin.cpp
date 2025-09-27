@@ -34,6 +34,7 @@
 #include "GaussDialog.hpp"
 #include "NumBaseDialog.hpp"
 #include "config.h"
+#include "PlotDialog.hpp"
 
 /*
  * slightly customized file chooser
@@ -166,6 +167,26 @@ CalcppWin::activate_actions()
 			}
 		});
     add_action (calendar_action);
+
+    auto plot_action = Gio::SimpleAction::create("plot");
+    plot_action->signal_activate().connect(
+        [this]  (const Glib::VariantBase& value)
+		{
+			try {
+				auto builder = Gtk::Builder::create();
+				PlotDialog* plotDialog;
+				builder->add_from_resource(m_application->get_resource_base_path() + "/plot-dlg.ui");
+				builder->get_widget_derived("PlotDialog", plotDialog, m_evalContext);
+				plotDialog->run();
+				delete plotDialog;  // as this is a toplevel component shoud destroy -> works
+			}
+			catch (const Glib::Error &ex) {
+                show_error(psc::fmt::vformat(
+                        _("Unable to load {} error {}"),
+                          psc::fmt::make_format_args("plot-dlg",  ex)));
+			}
+		});
+    add_action (plot_action);
 
     auto pref_action = Gio::SimpleAction::create("preferences");
     pref_action->signal_activate().connect(

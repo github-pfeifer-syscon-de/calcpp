@@ -9,6 +9,7 @@ src/Matrix.cpp
 src/NumDialog.cpp
 src/OutputForm.cpp
 src/QuadDialog.cpp
+src/PlotDialog.cpp
 res/app-menu.ui
 res/abt-dlg.ui
 res/calc-win.ui

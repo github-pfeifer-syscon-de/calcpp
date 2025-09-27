@@ -105,6 +105,10 @@
 			  <attribute translatable="yes" name="label">Number Base</attribute>
 			  <attribute name="action">win.numBase</attribute>
 			</item>
+			<item>
+			  <attribute translatable="yes" name="label">Plot</attribute>
+			  <attribute name="action">win.plot</attribute>
+			</item>
 	  </submenu>
     <submenu>
       <attribute translatable="yes" name="label">Help</attribute>

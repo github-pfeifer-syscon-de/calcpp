@@ -119,6 +119,9 @@ EvalContext::remove(Glib::ustring name)
             m_list->erase(row);
         }
     }
+    else {
+        std::cout << "EvalContext::remove name " << name << " not found."  << std::endl;
+    }
 }
 
 void

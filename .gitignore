@@ -67,3 +67,6 @@
 /test/calc_test
 /test/calc_test.trs
 /test/calc_test.log
+/src/.save/
+/test/.save/
+/srcLib/.save/

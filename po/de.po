@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: calcpp 0.1\n"
 "Report-Msgid-Bugs-To: calcpp@pfeifer-syscon.de\n"
-"POT-Creation-Date: 2025-03-31 14:24+0200\n"
+"POT-Creation-Date: 2025-09-27 16:47+0200\n"
 "PO-Revision-Date: 2024-12-15 06:57+0100\n"
 "Last-Translator:  <calcpp@pfeifer-syscon.de>\n"
 "Language-Team: German <calcpp@pfeifer-syscon.de>\n"
@@ -17,48 +17,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/CalcppApp.cpp:122
+#: src/CalcppApp.cpp:118
 #, c++-format
 msgid "The README file {} could not be located."
 msgstr "Die README Datei {} wurde nicht gefunden."
 
-#: src/CalcppWin.cpp:45
+#: src/CalcppWin.cpp:47
 msgid "Save File"
 msgstr "Datei speichern"
 
-#: src/CalcppWin.cpp:46
+#: src/CalcppWin.cpp:48
 msgid "Open File"
 msgstr "Datei öffnen"
 
-#: src/CalcppWin.cpp:52
+#: src/CalcppWin.cpp:54
 msgid "_Cancel"
 msgstr "_Abbrechen"
 
-#: src/CalcppWin.cpp:54
+#: src/CalcppWin.cpp:56
 msgid "_Save"
 msgstr "_Speichern"
 
-#: src/CalcppWin.cpp:55
+#: src/CalcppWin.cpp:57
 msgid "_Open"
 msgstr "Ö_ffnen"
 
-#: src/CalcppWin.cpp:102
+#: src/CalcppWin.cpp:101
 msgid "Calculator"
 msgstr "Rechner"
 
-#: src/CalcppWin.cpp:155 src/CalcppWin.cpp:175 src/CalcppWin.cpp:195
-#: src/CalcppWin.cpp:214 src/CalcppWin.cpp:254 src/CalcppWin.cpp:275
-#: src/CalcppWin.cpp:296
+#: src/CalcppWin.cpp:145 src/CalcppWin.cpp:165 src/CalcppWin.cpp:185
+#: src/CalcppWin.cpp:205 src/CalcppWin.cpp:224 src/CalcppWin.cpp:264
+#: src/CalcppWin.cpp:285 src/CalcppWin.cpp:306
 #, c++-format
 msgid "Unable to load {} error {}"
 msgstr "{} wurde nicht geladen. Fehler {}"
 
-#: src/CalcppWin.cpp:233
+#: src/CalcppWin.cpp:243
 #, c++-format
 msgid "Unable to save {} error {}"
 msgstr "Fehler {1} beim speichen {0}"
 
-#: src/CalcppWin.cpp:372
+#: src/CalcppWin.cpp:382
 #, c++-format
 msgid ""
 "No settings coud be read! error {}\n"
@@ -67,29 +67,10 @@ msgstr ""
 "Einstellungen konnten nicht geladen werden! Fehler {}\n"
 "Einstellungen werden nicht funktionieren!"
 
-#: src/CalcppWin.cpp:532
+#: src/CalcppWin.cpp:543
 #, c++-format
 msgid "Parse error: {}"
 msgstr "Syntax nicht erkannt. Fehler {}"
-
-#: src/EvalContext.cpp:288
-msgid "Assignment operator only allowed once"
-msgstr "Zuweisung nur eimal erlaubt"
-
-#: src/EvalContext.cpp:334
-#, c++-format
-msgid "The calculation is not balanced {} (expect 1)"
-msgstr "Die Kalkulation ist nicht ausgeglichen {} (erwartet 1)"
-
-#: src/EvalContext.cpp:360
-#, c++-format
-msgid "No function named {}"
-msgstr "Keine Funktion mit dem Namen {}"
-
-#: src/EvalContext.cpp:369
-#, c++-format
-msgid "No variable named {}"
-msgstr "Keine Variable mit dem Namen {}"
 
 #: src/AngleUnit.cpp:72
 msgid "Radians"
@@ -103,15 +84,15 @@ msgstr "Grad (°)"
 msgid "Gon"
 msgstr "Gon"
 
-#: src/CalcTreeView.cpp:32
+#: src/CalcTreeView.cpp:33
 msgid "Name"
 msgstr "Name"
 
-#: src/CalcTreeView.cpp:33
+#: src/CalcTreeView.cpp:34
 msgid "Value"
 msgstr "Wert"
 
-#: src/CalcTreeView.cpp:142
+#: src/CalcTreeView.cpp:138
 #, c++-format
 msgid "not a valid number {}"
 msgstr "{} ist keine gültige Zahl"
@@ -180,6 +161,17 @@ msgstr ""
 "Kein Ergebnis (die Quadratwurzel einer negativen Zahl {:L} ist nicht "
 "berrechenbar)"
 
+#: src/PlotDialog.cpp:66 src/PlotDialog.cpp:76 src/PlotDialog.cpp:86
+#, fuzzy, c++-format
+#| msgid "Parse error: {}"
+msgid "Parse error {} for {}"
+msgstr "Syntaxfehler {} für {}"
+
+#: src/PlotDialog.cpp:95
+#, c++-format
+msgid "Error evaluating {}"
+msgstr "Fehler bei der Auswertung {}"
+
 #: res/app-menu.ui:6
 msgid "File"
 msgstr "Datei"
@@ -232,15 +224,19 @@ msgstr "Lineare Gleichungen"
 msgid "Number Base"
 msgstr "Zahlen Basis"
 
-#: res/app-menu.ui:110
+#: res/app-menu.ui:109
+msgid "Plot"
+msgstr ""
+
+#: res/app-menu.ui:114
 msgid "Help"
 msgstr "Hilfe"
 
-#: res/app-menu.ui:113
+#: res/app-menu.ui:117
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: res/app-menu.ui:117
+#: res/app-menu.ui:121
 msgid "_About"
 msgstr "Über"
 
@@ -254,11 +250,15 @@ msgstr "Einfacher Desktoprechner."
 msgid "Chars"
 msgstr "Zeichentabelle"
 
-#: res/char-dlg.ui:90
+#: res/char-dlg.ui:91
+msgid "Script"
+msgstr ""
+
+#: res/char-dlg.ui:129
 msgid "Info"
 msgstr "Information"
 
-#: res/char-dlg.ui:114
+#: res/char-dlg.ui:167
 msgid "Input"
 msgstr "Eingabe"
 
@@ -293,3 +293,18 @@ msgstr "Binär"
 #: res/num-dlg.ui:183
 msgid "Unicode"
 msgstr "Unicode"
+
+#~ msgid "Assignment operator only allowed once"
+#~ msgstr "Zuweisung nur eimal erlaubt"
+
+#, c++-format
+#~ msgid "The calculation is not balanced {} (expect 1)"
+#~ msgstr "Die Kalkulation ist nicht ausgeglichen {} (erwartet 1)"
+
+#, c++-format
+#~ msgid "No function named {}"
+#~ msgstr "Keine Funktion mit dem Namen {}"
+
+#, c++-format
+#~ msgid "No variable named {}"
+#~ msgstr "Keine Variable mit dem Namen {}"
