@@ -281,15 +281,16 @@ Dimensions::getDimensions()
 
 Dimension::Dimension()
 {
+    m_units.reserve(16);    
 }
 
 void
 Dimension::add(std::shared_ptr<Unit> unit)
 {
-    m_units.insert(std::pair(unit->getName(), unit));
+    m_units.push_back(unit);
 }
 
-std::map<Glib::ustring, std::shared_ptr<Unit>>
+std::vector<std::shared_ptr<Unit>>
 Dimension::getUnits()
 {
     return m_units;
@@ -311,9 +312,11 @@ std::shared_ptr<Unit>
 Dimension::find(const Glib::ustring& name)
 {
     std::shared_ptr<Unit> unit;
-    auto iter = m_units.find(name);
-    if (iter != m_units.end()) {
-        unit = iter->second;
+    for (auto& sunit : m_units) {
+        if (sunit->getName() == name) {
+            unit = sunit;
+            break;
+        }
     }
     return unit;
 }

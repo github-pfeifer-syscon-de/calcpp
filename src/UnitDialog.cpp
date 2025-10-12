@@ -77,17 +77,17 @@ UnitDialog::update()
         double lastFactor = std::numeric_limits<double>::max();
         auto unitList = Gtk::ListStore::create(m_unit_columns);
         auto all = dim->getUnits();
-        for (auto entry : all) {
-            auto& unit = entry.second;
+        for (auto& unit : all) {
             int row = static_cast<int>(unitList->children().size());
             //std::cout << "UnitDialog::update add row " << unit->getName() << std::endl;
             Gtk::TreeIter valIter = unitList->append();
             Gtk::TreeModel::Row valRow = *valIter;
             valRow[m_unit_columns.m_name] = unit->getName();
             valRow[m_unit_columns.m_value] = unit;
-            if (std::abs(1.0 - unit->getFactor()) < lastFactor) {
+            auto diff = std::abs(1.0 - unit->getFactor());
+            if (diff < lastFactor) {
                 prefVal = row;
-                lastFactor = unit->getFactor();
+                lastFactor = diff;
             }
         }
         m_valueUnit->set_model(unitList);

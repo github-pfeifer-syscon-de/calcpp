@@ -20,6 +20,7 @@
 
 #include <glibmm.h>
 #include <map>
+#include <vector>
 #include <memory>
 #include <JsonObj.hpp>
 #include <exception>
@@ -39,7 +40,7 @@ public:
     , swhat(error)
     {
     }
-    
+
     virtual const char * what() const noexcept
     {
         return swhat.c_str();
@@ -91,7 +92,7 @@ public:
     explicit Dimension(const Dimension& orig) = delete;
     virtual ~Dimension() = default;
     void add(std::shared_ptr<Unit> unit);
-    std::map<Glib::ustring, std::shared_ptr<Unit>> getUnits();
+    std::vector<std::shared_ptr<Unit>> getUnits();
 
     Glib::ustring getName();
     void setName(const Glib::ustring& name);
@@ -100,7 +101,7 @@ public:
     void loadJsonUnit(const psc::json::PtrJsonObj& unitVal);
 protected:
 
-    std::map<Glib::ustring, std::shared_ptr<Unit>> m_units;
+    std::vector<std::shared_ptr<Unit>> m_units;
     std::map<Glib::ustring, std::shared_ptr<Unit>> m_ids;
 private:
     Glib::ustring m_name;
