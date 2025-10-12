@@ -1,5 +1,5 @@
 
-SUBDIRS = res srcLib test src po
+SUBDIRS = res srcLib src test po
 
 dist_doc_DATA = \
 	README \

@@ -28,8 +28,10 @@ pixmap_DATA=$(icon_basename).png
 appicondir=$(datadir)/icons/hicolor/scalable/apps
 appicon_DATA=$(icon_basename).svg
 
+# place is ../shared
+dist_pkgdata_DATA = unit.js
 # include source for build
-EXTRA_DIST = $(gsettings_SCHEMAS) $(CALCPP_RESOURCE_XML) $(CALCPP_RESOURCES) $(desktop_in_files) $(pixmap_DATA) $(appicon_DATA)
+EXTRA_DIST = $(gsettings_SCHEMAS) $(CALCPP_RESOURCE_XML) $(CALCPP_RESOURCES) $(desktop_in_files) $(pixmap_DATA) $(appicon_DATA) $(dist_pkgdata_DATA)
 
 @GSETTINGS_RULES@
 

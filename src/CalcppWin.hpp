@@ -44,6 +44,7 @@ public:
     void show_error(const Glib::ustring& msg, Gtk::MessageType type = Gtk::MessageType::MESSAGE_WARNING);
     void eval(Glib::ustring text, Gtk::TextIter& end);
     void apply_font(bool defaultFont);
+    CalcppApp *getApplication();
 protected:
 private:
     void load_config();

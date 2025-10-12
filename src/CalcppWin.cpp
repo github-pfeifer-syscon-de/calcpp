@@ -35,6 +35,7 @@
 #include "NumBaseDialog.hpp"
 #include "config.h"
 #include "PlotDialog.hpp"
+#include "UnitDialog.hpp"
 
 /*
  * slightly customized file chooser
@@ -166,7 +167,7 @@ CalcppWin::activate_actions()
                           psc::fmt::make_format_args("date-dlg",  ex)));
 			}
 		});
-    add_action (calendar_action);
+    add_action(calendar_action);
 
     auto plot_action = Gio::SimpleAction::create("plot");
     plot_action->signal_activate().connect(
@@ -186,7 +187,27 @@ CalcppWin::activate_actions()
                           psc::fmt::make_format_args("plot-dlg",  ex)));
 			}
 		});
-    add_action (plot_action);
+    add_action(plot_action);
+
+    auto unit_action = Gio::SimpleAction::create("unit");
+    unit_action->signal_activate().connect(
+        [this]  (const Glib::VariantBase& value)
+		{
+			try {
+				auto builder = Gtk::Builder::create();
+				UnitDialog* unitDialog;
+				builder->add_from_resource(m_application->get_resource_base_path() + "/unit-dlg.ui");
+				builder->get_widget_derived("UnitDialog", unitDialog, this);
+				unitDialog->run();
+				delete unitDialog;  // as this is a toplevel component shoud destroy -> works
+			}
+			catch (const Glib::Error &ex) {
+                show_error(psc::fmt::vformat(
+                        _("Unable to load {} error {}"),
+                          psc::fmt::make_format_args("plot-dlg",  ex)));
+			}
+		});
+    add_action(unit_action);
 
     auto pref_action = Gio::SimpleAction::create("preferences");
     pref_action->signal_activate().connect(
@@ -337,6 +358,12 @@ CalcppWin::apply_font(bool defaultFont )
             //std::cout << "   clear font " << font << std::endl;
         }
     }
+}
+
+CalcppApp *
+CalcppWin::getApplication()
+{
+    return m_application;
 }
 
 void

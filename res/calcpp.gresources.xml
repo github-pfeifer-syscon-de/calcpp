@@ -12,6 +12,7 @@
     <file preprocess="xml-stripblanks">gauss-dlg.ui</file>
     <file preprocess="xml-stripblanks">num-dlg.ui</file>
     <file preprocess="xml-stripblanks">plot-dlg.ui</file>
+    <file preprocess="xml-stripblanks">unit-dlg.ui</file>
     <file>calcpp.png</file>
   </gresource>
 </gresources>

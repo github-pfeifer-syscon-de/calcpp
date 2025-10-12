@@ -10,6 +10,7 @@ src/NumDialog.cpp
 src/OutputForm.cpp
 src/QuadDialog.cpp
 src/PlotDialog.cpp
+src/Unit.cpp
 res/app-menu.ui
 res/abt-dlg.ui
 res/calc-win.ui
@@ -19,3 +20,4 @@ res/gauss-dlg.ui
 res/pref-dlg.ui
 res/quad-dlg.ui
 res/num-dlg.ui
+res/unit.js

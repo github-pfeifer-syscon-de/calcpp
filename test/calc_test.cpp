@@ -1,6 +1,6 @@
 /* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
- * Copyright (C) 2025 RPf 
+ * Copyright (C) 2025 RPf
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,17 @@
 #include <optional>
 #include <system_error>
 
+#include "CalcppApp.hpp"
 #include "calc_test.hpp"
 #include "Syntax.hpp"
+#include "Unit.hpp"
+
+static constexpr auto VALUE_LIMIT{0.000001};
+static constexpr auto VALUE_COARS{0.1};
 
 // eval basic expression
-static
-bool testEval()
+static bool
+testEval()
 {
     auto testEval = std::make_shared<TestEval>();
     TestFormat testFormat;
@@ -36,11 +41,11 @@ bool testEval()
     auto list = syntax.parse(expr);
     double res = testEval->eval(list);
     std::cout << "testEval " << res << std::endl;
-    return std::abs(res - 23.1) < 0.000001;
+    return std::abs(res - 23.1) < VALUE_LIMIT;
 }
 
-static
-bool testEvalBraced()
+static bool
+testEvalBraced()
 {
     auto testEval = std::make_shared<TestEval>();
     TestFormat testFormat;
@@ -49,7 +54,158 @@ bool testEvalBraced()
     auto list = syntax.parse(expr);
     double res = testEval->eval(list);
     std::cout << "testEvalBraced " << res << std::endl;
-    return std::abs(res - 35.5) < 0.000001;
+    return std::abs(res - 35.5) < VALUE_LIMIT;
+}
+
+static bool
+testLen(Dimensions& dims)
+{
+    auto len = dims.getLength();
+    auto km = len->find("km");
+    auto mi = len->find("mi");
+    auto valMi = mi->toUnit(km->fromUnit(1.609344));
+    std::cout << "testLen " << valMi << "mi" << std::endl;
+    if (std::abs(valMi - 1.0) > VALUE_LIMIT) {
+        return false;
+    }
+    return true;
+}
+
+static bool
+testArea(Dimensions& dims)
+{
+    auto area = dims.getArea();
+    auto km = area->find("km²");
+    auto mi = area->find("mi²");
+    auto valMi = mi->toUnit(km->fromUnit(1.609344 * 1.609344));
+    std::cout << "testArea " << valMi << "mi_sqr" << std::endl;
+    if (std::abs(valMi - 1.0) > VALUE_LIMIT) {
+        return false;
+    }
+    return true;
+}
+
+static bool
+testVol(Dimensions& dims)
+{
+    auto vol = dims.getVolume();
+    auto km = vol->find("km³");
+    auto mi = vol->find("mi³");
+    auto valMi = mi->toUnit(km->fromUnit(1.609344 * 1.609344 * 1.609344));
+    std::cout << "testVol " << valMi << "mi_cubic" << std::endl;
+    if (std::abs(valMi - 1.0) > VALUE_LIMIT) {
+        return false;
+    }
+    auto ya = vol->find("ya³");
+    auto valYa = ya->toUnit(mi->fromUnit(1.0));
+    std::cout << "testVol " << valMi << "ya_cubic" << std::endl;
+    if (std::abs(valYa - 5451776000.0) > VALUE_LIMIT) { // see wiki https://en.wikipedia.org/wiki/Cubic_mile
+        return false;
+    }
+    auto in = vol->find("in³");
+    auto ft = vol->find("ft³");
+    auto valFt = ft->toUnit(in->fromUnit(1728.0));
+    std::cout << "testVol " << valFt << "ft_cubic" << std::endl;
+    if (std::abs(valFt - 1.0) > VALUE_LIMIT) {
+        return false;
+    }
+    auto gal = vol->find("US.gallon");
+    auto flOunce = vol->find("US.fl.ounce");
+    auto valGal = gal->toUnit(flOunce->fromUnit(128.0));
+    std::cout << "testVol " << valGal << "US.gallon" << std::endl;
+	if (std::abs(valGal - 1.0) > VALUE_LIMIT) {
+        return false;
+    }
+
+    return true;
+}
+
+static bool
+testTemp(Dimensions& dims)
+{
+    auto temp = dims.getTemperature();
+    auto K = temp->find("K");
+    auto C = temp->find("°C");
+    auto valK = K->toUnit(C->fromUnit(0.0));
+    std::cout << "testTemp " << valK << "K" << std::endl;
+    if (std::abs(valK - 273.15) > VALUE_LIMIT) {
+        return false;
+    }
+    auto F = temp->find("°F");
+    auto valC = C->toUnit(F->fromUnit(212.0));
+    std::cout << "testTemp " << valC << "C" << std::endl;
+    if (std::abs(valC - 100.0) > VALUE_LIMIT) {
+        return false;
+    }
+    valC = C->toUnit(F->fromUnit(32.0));
+    std::cout << "testTemp " << valC << "C" << std::endl;
+    if (std::abs(valC - 0.0) > VALUE_LIMIT) {
+        return false;
+    }
+    auto R = temp->find("°R");
+    valC = C->toUnit(R->fromUnit(491.67));
+    std::cout << "testTemp " << valC << "C" << std::endl;
+    if (std::abs(valC - 0.0) > VALUE_LIMIT) {
+        return false;
+    }
+
+    return true;
+}
+
+static bool
+testSpeed(Dimensions& dims)
+{
+    auto speed = dims.getSpeed();
+    auto ms = speed->find("m/s");
+    auto kmh = speed->find("km/h");
+    auto valMs = ms->toUnit(kmh->fromUnit(3.6));
+    std::cout << "testSpeed " << valMs << "m/s" << std::endl;
+    if (std::abs(valMs - 1.0) > VALUE_LIMIT) {
+        return false;
+    }
+    auto mih = speed->find("mi/h");
+    auto valKmh = kmh->toUnit(mih->fromUnit(1));
+    std::cout << "testSpeed " << valKmh << "km/h" << std::endl;
+    if (std::abs(valKmh - 1.609344) > VALUE_LIMIT) {
+        return false;
+    }
+    auto kn = speed->find("knot");
+    valKmh = kmh->toUnit(kn->fromUnit(1));
+    std::cout << "testSpeed " << valKmh << "km/h" << std::endl;
+    if (std::abs(valKmh - 1.852) > VALUE_LIMIT) {
+        return false;
+    }
+
+    return true;
+}
+
+static bool
+testMass(Dimensions& dims)
+{
+    auto mass = dims.getMass();
+    auto kg = mass->find("kg");
+    auto pound = mass->find("pound");
+    auto valKg = kg->toUnit(pound->fromUnit(1.0));
+    std::cout << "testMass " << valKg << "kg" << std::endl;
+    if (std::abs(valKg - 0.45359237) > VALUE_LIMIT) {
+        return false;
+    }
+    return true;
+}
+
+
+static bool
+testTime(Dimensions& dims)
+{
+    auto time = dims.getTime();
+    auto h = time->find("hour");
+    auto min = time->find("minute");
+    auto valMin = min->toUnit(h->fromUnit(1.0));
+    std::cout << "testTime " << valMin << "min" << std::endl;
+    if (std::abs(valMin - 60.0) > VALUE_LIMIT) {
+        return false;
+    }
+    return true;
 }
 
 /*
@@ -57,11 +213,37 @@ bool testEvalBraced()
  */
 int main(int argc, char** argv)
 {
+    setlocale(LC_ALL, "");      // make locale dependent, and make glib accept u8 const !!!
+    Glib::init();
+
+    Dimensions dims{argv[0]};
+
     if (!testEval()) {
         return 1;
     }
     if (!testEvalBraced()) {
         return 2;
+    }
+    if (!testLen(dims)) {
+        return 3;
+    }
+    if (!testArea(dims)) {
+        return 4;
+    }
+    if (!testVol(dims)) {
+        return 5;
+    }
+    if (!testTemp(dims)) {
+        return 6;
+    }
+    if (!testSpeed(dims)) {
+        return 7;
+    }
+    if (!testMass(dims)) {
+        return 8;
+    }
+    if (!testTime(dims)) {
+        return 9;
     }
 
     return 0;

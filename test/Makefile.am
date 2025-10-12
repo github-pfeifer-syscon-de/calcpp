@@ -6,7 +6,8 @@ AM_CPPFLAGS = \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)."\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
 	$(GENERICIMG_CFLAGS) \
-	-I ../srcLib
+	-I ../srcLib \
+	-I ../src
 
 AM_CFLAGS= \
 	-Wall -Wpedantic
@@ -18,6 +19,7 @@ AM_LDFLAGS =
 
 calc_test_LDADD =  \
  	../srcLib/libexpression.a \
+	../src/calcpp-Unit.o \
 	$(GENERICIMG_LIBS)
 
 check_PROGRAMS = calc_test

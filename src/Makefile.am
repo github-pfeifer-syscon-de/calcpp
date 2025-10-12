@@ -55,6 +55,10 @@ calcpp_SOURCES = resources.c \
 	DateDialog.hpp \
 	Matrix.cpp \
 	Matrix.hpp \
+	Unit.cpp \
+	Unit.hpp \
+	UnitDialog.cpp \
+	UnitDialog.hpp \
 	PlotDialog.cpp \
 	PlotDialog.hpp \
 	PrefDialog.cpp \

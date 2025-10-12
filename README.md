@@ -63,6 +63,12 @@ click on the character.
 
 A simple calendar view is included.
 
+A simple option to convert units is included.
+Sorry i'am still not too deep into non SI units,
+please check your results, suggestions are welcome.
+In "../share/calcpp/unit.js" can be found if
+you want to add other units.
+
 Issues:
 * The parsing doesn't support grouping separators
   (and they are missing in output as well).
