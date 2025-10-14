@@ -89,6 +89,14 @@ public:
     Glib::ustring format(double val) override;
 };
 
+class OutformScientificHigh : public OutputForm {
+public:
+    OutformScientificHigh();
+
+    Glib::ustring format(double val) override;
+};
+
+
 class OutformDecimal : public OutputForm {
 public:
     OutformDecimal();
@@ -96,9 +104,24 @@ public:
     Glib::ustring format(double val) override;
 };
 
+class OutformDecimalHigh : public OutputForm {
+public:
+    OutformDecimalHigh();
+
+    Glib::ustring format(double val) override;
+};
+
+
 class OutformExponential : public OutputForm {
 public:
     OutformExponential();
+
+    Glib::ustring format(double val) override;
+};
+
+class OutformExponentialHigh : public OutputForm {
+public:
+    OutformExponentialHigh();
 
     Glib::ustring format(double val) override;
 };

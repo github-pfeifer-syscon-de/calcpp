@@ -59,5 +59,25 @@
       <summary>Variables</summary>
       <description>Variable names and values.</description>
     </key>
+    <key name="conversion-dimension" type='s'>
+      <default>'L'</default>
+      <summary>Conversion measure e.g. length,...</summary>
+      <description>Last used conversion measure</description>
+    </key>
+    <key name="conversion-source" type='s'>
+      <default>'L'</default>
+      <summary>Conversion unit e.g. mm,...</summary>
+      <description>Last used conversion source unit</description>
+    </key>
+    <key name="conversion-result" type='s'>
+      <default>'L'</default>
+      <summary>Conversion unit e.g. cm,...</summary>
+      <description>Last used conversion result unit</description>
+    </key>
+    <key name="conversion-value" type='d'>
+      <default>1.0</default>
+      <summary>Conversion value</summary>
+      <description>Last used conversion value</description>
+    </key>
   </schema>
 </schemalist>

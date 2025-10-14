@@ -81,6 +81,7 @@ Dimensions::loadJsonUnits(const psc::json::PtrJsonObj& unitObj)
         m_dimensions.push_back(dim);
     }
     dim->setName(unitsName);
+    dim->setDim(unitsDim);
     //std::cout << "Dimensions::loadJson found units " << unitsName << std::endl;
     auto unitArrVal = unitObj->getValue("unit");
     if (unitArrVal->isArray()) {
@@ -281,7 +282,7 @@ Dimensions::getDimensions()
 
 Dimension::Dimension()
 {
-    m_units.reserve(16);    
+    m_units.reserve(16);
 }
 
 void
@@ -308,15 +309,25 @@ Dimension::setName(const Glib::ustring& name)
     m_name = name;
 }
 
+Glib::ustring
+Dimension::getDim()
+{
+    return m_dim;
+}
+
+void
+Dimension::setDim(const Glib::ustring& dim)
+{
+    m_dim = dim;
+}
+
 std::shared_ptr<Unit>
-Dimension::find(const Glib::ustring& name)
+Dimension::findById(const Glib::ustring& id)
 {
     std::shared_ptr<Unit> unit;
-    for (auto& sunit : m_units) {
-        if (sunit->getName() == name) {
-            unit = sunit;
-            break;
-        }
+    auto entry = m_ids.find(id);
+    if (entry != m_ids.end()) {
+        unit = entry->second;
     }
     return unit;
 }
@@ -373,6 +384,10 @@ Dimension::loadJsonUnit(const psc::json::PtrJsonObj& uObj)
     if (unitId) {
         auto id = unitId->getString();
         m_ids.insert(std::pair(id, unit));
+        unit->setId(id);
+    }
+    else {
+        std::cout << "Id is ecpected this may not work ... " <<  std::endl;
     }
     add(unit);
 }
@@ -514,6 +529,18 @@ Glib::ustring
 Unit::getName() const
 {
     return m_name;
+}
+
+void
+Unit::setId(const Glib::ustring& id)
+{
+    m_id = id;
+}
+
+Glib::ustring
+Unit::getId() const
+{
+    return m_id;
 }
 
 double

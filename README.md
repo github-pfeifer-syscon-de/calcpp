@@ -72,6 +72,8 @@ you want to add other units.
 Issues:
 * The parsing doesn't support grouping separators
   (and they are missing in output as well).
+* on 14.10.25 there was a schema change so
+  this needs to be instelled before testing...
 
 To build on (Lin)ux use (as a prerequisite genericImg is required):
 <pre>

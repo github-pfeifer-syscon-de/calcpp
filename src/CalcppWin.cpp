@@ -198,7 +198,15 @@ CalcppWin::activate_actions()
 				UnitDialog* unitDialog;
 				builder->add_from_resource(m_application->get_resource_base_path() + "/unit-dlg.ui");
 				builder->get_widget_derived("UnitDialog", unitDialog, this);
-				unitDialog->run();
+				int res = unitDialog->run();
+                if (res == Gtk::RESPONSE_OK) {
+                    auto result = unitDialog->getValue();
+                    OutputForm* outputForm = m_evalContext->get_output_format();
+                    Glib::ustring res = outputForm->format(result);
+                    res += "\n";
+                    insertResult(res);
+                    unitDialog->save();
+                }
 				delete unitDialog;  // as this is a toplevel component shoud destroy -> works
 			}
 			catch (const Glib::Error &ex) {
@@ -458,6 +466,12 @@ CalcppWin::load_config()
     }
 }
 
+Glib::RefPtr<Gio::Settings>
+CalcppWin::getSettings()
+{
+    return m_settings;
+}
+
 void
 CalcppWin::save_config()
 {
@@ -490,7 +504,7 @@ void
 CalcppWin::on_hide()
 {
     save_config();
-    Gtk::Window::on_hide();
+    Gtk::ApplicationWindow::on_hide();
 }
 
 void
@@ -524,9 +538,8 @@ CalcppWin::build_menu()
     angleConvBuilder.build(convs, angleConvMenuItem, "win.angle-unit");
 }
 
-
 void
-CalcppWin::eval(Glib::ustring text, Gtk::TextIter& end)
+CalcppWin::insertResult(const Glib::ustring& res)
 {
     Glib::RefPtr<Gtk::TextBuffer> buffer = m_textView->get_buffer();
     // use anonym tags as there woud be a error when we use names and add them again
@@ -539,8 +552,22 @@ CalcppWin::eval(Glib::ustring text, Gtk::TextIter& end)
     tags.push_back(fg);
     tags.push_back(bg);
 
-    OutputForm* outputForm = m_evalContext->get_output_format();
+    // insert at cursor
+    Glib::RefPtr<Gtk::TextMark> cursor = buffer->get_insert();
+    Gtk::TextIter end = cursor->get_iter();
 
+    if (end.get_offset() == buffer->get_char_count()) {
+        end = buffer->insert(end, "\n\n");
+        end.backward_char();
+    }
+    end = buffer->insert_with_tags(end, res, tags);
+    m_textView->scroll_to(end);
+}
+
+void
+CalcppWin::eval(Glib::ustring text)
+{
+    OutputForm* outputForm = m_evalContext->get_output_format();
     try {
         std::vector<Glib::ustring> lines;
         StringUtils::split(text, '\n', lines);
@@ -562,7 +589,7 @@ CalcppWin::eval(Glib::ustring text, Gtk::TextIter& end)
         if (result) {         // only output last result for not clutter view
             Glib::ustring res = outputForm->format(val);
 			res += "\n";
-            buffer->insert_with_tags(end, res, tags);
+            insertResult(res);
         }
     }
     catch (const ParseError& err) {

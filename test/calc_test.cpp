@@ -21,6 +21,7 @@
 #include <charconv>
 #include <optional>
 #include <system_error>
+#include <psc_format.hpp>
 
 #include "CalcppApp.hpp"
 #include "calc_test.hpp"
@@ -61,8 +62,8 @@ static bool
 testLen(Dimensions& dims)
 {
     auto len = dims.getLength();
-    auto km = len->find("km");
-    auto mi = len->find("mi");
+    auto km = len->findById("km");
+    auto mi = len->findById("mi");
     auto valMi = mi->toUnit(km->fromUnit(1.609344));
     std::cout << "testLen " << valMi << "mi" << std::endl;
     if (std::abs(valMi - 1.0) > VALUE_LIMIT) {
@@ -75,8 +76,8 @@ static bool
 testArea(Dimensions& dims)
 {
     auto area = dims.getArea();
-    auto km = area->find("km²");
-    auto mi = area->find("mi²");
+    auto km = area->findById("km2");
+    auto mi = area->findById("mi2");
     auto valMi = mi->toUnit(km->fromUnit(1.609344 * 1.609344));
     std::cout << "testArea " << valMi << "mi_sqr" << std::endl;
     if (std::abs(valMi - 1.0) > VALUE_LIMIT) {
@@ -89,28 +90,28 @@ static bool
 testVol(Dimensions& dims)
 {
     auto vol = dims.getVolume();
-    auto km = vol->find("km³");
-    auto mi = vol->find("mi³");
+    auto km = vol->findById("km3");
+    auto mi = vol->findById("mi3");
     auto valMi = mi->toUnit(km->fromUnit(1.609344 * 1.609344 * 1.609344));
     std::cout << "testVol " << valMi << "mi_cubic" << std::endl;
     if (std::abs(valMi - 1.0) > VALUE_LIMIT) {
         return false;
     }
-    auto ya = vol->find("ya³");
+    auto ya = vol->findById("ya3");
     auto valYa = ya->toUnit(mi->fromUnit(1.0));
     std::cout << "testVol " << valMi << "ya_cubic" << std::endl;
     if (std::abs(valYa - 5451776000.0) > VALUE_LIMIT) { // see wiki https://en.wikipedia.org/wiki/Cubic_mile
         return false;
     }
-    auto in = vol->find("in³");
-    auto ft = vol->find("ft³");
+    auto in = vol->findById("in3");
+    auto ft = vol->findById("ft3");
     auto valFt = ft->toUnit(in->fromUnit(1728.0));
     std::cout << "testVol " << valFt << "ft_cubic" << std::endl;
     if (std::abs(valFt - 1.0) > VALUE_LIMIT) {
         return false;
     }
-    auto gal = vol->find("US.gallon");
-    auto flOunce = vol->find("US.fl.ounce");
+    auto gal = vol->findById("us.ga");
+    auto flOunce = vol->findById("us.fl.ou");
     auto valGal = gal->toUnit(flOunce->fromUnit(128.0));
     std::cout << "testVol " << valGal << "US.gallon" << std::endl;
 	if (std::abs(valGal - 1.0) > VALUE_LIMIT) {
@@ -124,14 +125,14 @@ static bool
 testTemp(Dimensions& dims)
 {
     auto temp = dims.getTemperature();
-    auto K = temp->find("K");
-    auto C = temp->find("°C");
+    auto K = temp->findById("K");
+    auto C = temp->findById("C");
     auto valK = K->toUnit(C->fromUnit(0.0));
     std::cout << "testTemp " << valK << "K" << std::endl;
     if (std::abs(valK - 273.15) > VALUE_LIMIT) {
         return false;
     }
-    auto F = temp->find("°F");
+    auto F = temp->findById("F");
     auto valC = C->toUnit(F->fromUnit(212.0));
     std::cout << "testTemp " << valC << "C" << std::endl;
     if (std::abs(valC - 100.0) > VALUE_LIMIT) {
@@ -142,7 +143,7 @@ testTemp(Dimensions& dims)
     if (std::abs(valC - 0.0) > VALUE_LIMIT) {
         return false;
     }
-    auto R = temp->find("°R");
+    auto R = temp->findById("R");
     valC = C->toUnit(R->fromUnit(491.67));
     std::cout << "testTemp " << valC << "C" << std::endl;
     if (std::abs(valC - 0.0) > VALUE_LIMIT) {
@@ -156,20 +157,20 @@ static bool
 testSpeed(Dimensions& dims)
 {
     auto speed = dims.getSpeed();
-    auto ms = speed->find("m/s");
-    auto kmh = speed->find("km/h");
+    auto ms = speed->findById("m/s");
+    auto kmh = speed->findById("km/h");
     auto valMs = ms->toUnit(kmh->fromUnit(3.6));
     std::cout << "testSpeed " << valMs << "m/s" << std::endl;
     if (std::abs(valMs - 1.0) > VALUE_LIMIT) {
         return false;
     }
-    auto mih = speed->find("mi/h");
+    auto mih = speed->findById("mi/h");
     auto valKmh = kmh->toUnit(mih->fromUnit(1));
     std::cout << "testSpeed " << valKmh << "km/h" << std::endl;
     if (std::abs(valKmh - 1.609344) > VALUE_LIMIT) {
         return false;
     }
-    auto kn = speed->find("knot");
+    auto kn = speed->findById("knot");
     valKmh = kmh->toUnit(kn->fromUnit(1));
     std::cout << "testSpeed " << valKmh << "km/h" << std::endl;
     if (std::abs(valKmh - 1.852) > VALUE_LIMIT) {
@@ -183,8 +184,8 @@ static bool
 testMass(Dimensions& dims)
 {
     auto mass = dims.getMass();
-    auto kg = mass->find("kg");
-    auto pound = mass->find("pound");
+    auto kg = mass->findById("kg");
+    auto pound = mass->findById("pound");
     auto valKg = kg->toUnit(pound->fromUnit(1.0));
     std::cout << "testMass " << valKg << "kg" << std::endl;
     if (std::abs(valKg - 0.45359237) > VALUE_LIMIT) {
@@ -198,13 +199,46 @@ static bool
 testTime(Dimensions& dims)
 {
     auto time = dims.getTime();
-    auto h = time->find("hour");
-    auto min = time->find("minute");
+    auto h = time->findById("h");
+    auto min = time->findById("mi");
     auto valMin = min->toUnit(h->fromUnit(1.0));
     std::cout << "testTime " << valMin << "min" << std::endl;
     if (std::abs(valMin - 60.0) > VALUE_LIMIT) {
         return false;
     }
+    return true;
+}
+
+static bool
+testFormat()
+{
+    // 249.382988/18.726708585
+    double val1{0.3},val2{0.3333333333333333333333333},val3{0.3333333333333333333333333e25};
+    std::cout << std::endl;
+    // check some format variations or how i learned g is the better f format...(makes only sense if you worked with java for some time)
+    std::cout << "spri f " << Glib::ustring::sprintf("%lf", val1)
+              << " " << Glib::ustring::sprintf("%lf", val2)
+              << " " << Glib::ustring::sprintf("%lf", val3)
+              << std::endl;
+    std::cout << "spri g " << Glib::ustring::sprintf("%.15lg", val1)
+              << " " << Glib::ustring::sprintf("%.15lg", val2)
+              << " " << Glib::ustring::sprintf("%.15lg", val3)
+              << std::endl;
+    std::cout << "spri e " << Glib::ustring::sprintf("%.15le", val1)
+              << " " << Glib::ustring::sprintf("%.15le", val2)
+              << " " << Glib::ustring::sprintf("%.15le", val3)
+              << std::endl;
+
+//    std::cout << std::endl;
+//    std::cout << "fmt {}    " << psc::fmt::format("{} {} {}", val1, val2, val3) << std::endl;
+//    std::cout << "fmt {:L}  " << psc::fmt::format(std::locale(""), "{:L} {:L} {:L}", val1, val2, val3) << std::endl;
+//    std::cout << "fmt {:Lf} " << psc::fmt::format(std::locale(""), "{:Lf} {:Lf} {:Lf}", val1, val2, val3) << std::endl;
+//    std::cout << "fmt {:Le} " << psc::fmt::format(std::locale(""), "{:Le} {:Le} {:Le}", val1, val2, val3) << std::endl;
+//    std::cout << "fmt {:Lg} " << psc::fmt::format(std::locale(""), "{:Lg} {:Lg} {:Lg}", val1, val2, val3) << std::endl;
+//    std::cout << "fmt {:La}    " << psc::fmt::format(std::locale(""), "{:La} {:La} {:La}", val1, val2, val3) << std::endl;
+//    std::cout << "fmt {:o}    " << psc::fmt::format("{:#o} ", 0x12345) << std::endl;
+//    std::cout << "fmt {:x}    " << psc::fmt::format("{:#x}", 0x12345) << std::endl;
+
     return true;
 }
 
@@ -244,6 +278,9 @@ int main(int argc, char** argv)
     }
     if (!testTime(dims)) {
         return 9;
+    }
+    if (!testFormat()) {
+        return 10;
     }
 
     return 0;

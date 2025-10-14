@@ -20,6 +20,7 @@
 #include <cstdint>
 #include <string>
 #include <psc_i18n.hpp>
+#include <psc_format.hpp>
 
 #include "OutputForm.hpp"
 
@@ -90,12 +91,12 @@ OutformHex::OutformHex()
 {
 }
 
-
 Glib::ustring
 OutformHex::format(double val)
 {
     return Glib::ustring::sprintf("0x%llx", (gint64) val);
 }
+
 
 OutformOctal::OutformOctal()
 : OutputForm("oct", _("Octal (integer)"))
@@ -142,30 +143,32 @@ OutformHexFp::OutformHexFp()
 Glib::ustring
 OutformHexFp::format(double val)
 {
-    return Glib::ustring::sprintf("%la", val);
+    return Glib::ustring::sprintf("%.15la", val);
 }
+
 
 OutformScientific::OutformScientific()
 : OutputForm("sci", _("Scientific"))
 {
 }
 
-
 Glib::ustring
 OutformScientific::format(double val)
 {
-    return Glib::ustring::sprintf("%lg", val);
+    return Glib::ustring::sprintf("%.15lg", val);
 }
+
 
 OutformDecimal::OutformDecimal()
 : OutputForm("dec", _("Decimal"))
 {
 }
 
-
-Glib::ustring OutformDecimal::format(double val)
+Glib::ustring
+OutformDecimal::format(double val)
 {
-    return Glib::ustring::sprintf("%lf", val);
+    // g is the most flexibel option,"f" would be fixed again
+    return Glib::ustring::sprintf("%.15lg", val);
 }
 
 OutformExponential::OutformExponential()
@@ -173,9 +176,9 @@ OutformExponential::OutformExponential()
 {
 }
 
-
-Glib::ustring OutformExponential::format(double val)
+Glib::ustring
+OutformExponential::format(double val)
 {
-    return Glib::ustring::sprintf("%le", val);
+    return Glib::ustring::sprintf("%.15le", val);
 }
 

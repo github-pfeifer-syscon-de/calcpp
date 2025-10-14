@@ -60,11 +60,20 @@ public:
     explicit UnitDialog(const UnitDialog& orig) = delete;
     virtual ~UnitDialog() = default;
 
+    double getValue(bool showError = false);
+    void save();
 protected:
     void evaluate() override;
     void update();
+    void updateSelect(const Glib::ustring& selSrc, const Glib::ustring& selRes);
+
     DimensionColumns m_dimension_columns;
     UnitColumns m_unit_columns;
+
+    static constexpr auto CONF_DIM{"conversion-dimension"};
+    static constexpr auto CONF_SOURCE{"conversion-source"};
+    static constexpr auto CONF_RESULT{"conversion-result"};
+    static constexpr auto CONF_VALUE{"conversion-value"};
 
 private:
     Gtk::ComboBox* m_dimension;

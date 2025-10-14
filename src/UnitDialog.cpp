@@ -37,7 +37,11 @@ UnitDialog::UnitDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     auto calcppApp = m_parent->getApplication();
     auto execPath = calcppApp->get_exec_path();
     try {
+        auto settings = m_parent->getSettings();
+        auto selectDimId = settings->get_string(CONF_DIM);
         auto dims = std::make_shared<Dimensions>(execPath);
+        int n{};
+        int selectDim{};
         auto dimList = Gtk::ListStore::create(m_dimension_columns);
         for (auto& dim : dims->getDimensions()) {
             Gtk::TreeIter iter = dimList->append();
@@ -45,14 +49,23 @@ UnitDialog::UnitDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
             // use column with text and value
             row[m_dimension_columns.m_name] = dim->getName();
             row[m_dimension_columns.m_value] = dim;
+            if (selectDimId == dim->getDim()) {
+                selectDim = n;
+            }
+            ++n;
             //std::cout << "UnitDialog::UnitDialog add row " << dim->getName() << std::endl;
         }
         m_dimension->set_model(dimList);
-        m_dimension->set_active(0);
+        m_dimension->set_active(selectDim);
         m_dimension->set_entry_text_column(m_dimension_columns.m_name);
         m_valueUnit->set_entry_text_column(m_unit_columns.m_name);
         m_resultUnit->set_entry_text_column(m_unit_columns.m_name);
-        update();
+        auto selectSourceId = settings->get_string(CONF_SOURCE);
+        auto selectResultId = settings->get_string(CONF_RESULT);
+        updateSelect(selectSourceId, selectResultId);
+        auto value = settings->get_double(CONF_VALUE);
+        m_value->set_text(format(value));
+        evaluate();
         m_dimension->signal_changed().connect(sigc::mem_fun(*this, &UnitDialog::update));
         m_valueUnit->signal_changed().connect(sigc::mem_fun(*this, &UnitDialog::evaluate));
         m_resultUnit->signal_changed().connect(sigc::mem_fun(*this, &UnitDialog::evaluate));
@@ -65,6 +78,12 @@ UnitDialog::UnitDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 void
 UnitDialog::update()
 {
+    updateSelect("", "");
+}
+
+void
+UnitDialog::updateSelect(const Glib::ustring& selSrc, const Glib::ustring& selRes)
+{
     auto iter = m_dimension->get_active();
     if (!iter) {
         std::cout << "UnitDialog::update not selected" << std::endl;
@@ -72,8 +91,12 @@ UnitDialog::update()
     }
     auto row = *iter;
     auto dim = row.get_value(m_dimension_columns.m_value);
+    //std::cout << "UnitDialog::updateSelect src " << selSrc
+    //          << " res " << selRes << std::endl;
     if (dim) {
-        int prefVal = -1;
+        int prefSrc = -1;
+        int prefRes = -1;
+        int prefDefl = -1;
         double lastFactor = std::numeric_limits<double>::max();
         auto unitList = Gtk::ListStore::create(m_unit_columns);
         auto all = dim->getUnits();
@@ -84,22 +107,34 @@ UnitDialog::update()
             Gtk::TreeModel::Row valRow = *valIter;
             valRow[m_unit_columns.m_name] = unit->getName();
             valRow[m_unit_columns.m_value] = unit;
+            //std::cout << "UnitDialog::updateSelect unit " << unit->getId() << std::endl;
+            if (!selSrc.empty()) {
+                if (unit->getId() == selSrc) {
+                    prefSrc = row;
+                }
+            }
+            if (!selRes.empty()) {
+                if (unit->getId() == selRes) {
+                    prefRes = row;
+                }
+            }
             auto diff = std::abs(1.0 - unit->getFactor());
             if (diff < lastFactor) {
-                prefVal = row;
+                prefDefl = row;
                 lastFactor = diff;
             }
         }
         m_valueUnit->set_model(unitList);
-        m_valueUnit->set_active(std::max(prefVal, 0));
+        m_valueUnit->set_active((prefSrc >= 0 ? prefSrc : prefDefl));
         m_resultUnit->set_model(unitList);
-        m_resultUnit->set_active(std::max(prefVal, 0));
+        m_resultUnit->set_active((prefRes >= 0 ? prefRes : prefDefl));
     }
 }
 
-void
-UnitDialog::evaluate()
+double
+UnitDialog::getValue(bool showError)
 {
+    double result{};
     auto iterVal = m_valueUnit->get_active();
     auto iterRes = m_resultUnit->get_active();
     if (iterVal && iterRes) {
@@ -107,17 +142,65 @@ UnitDialog::evaluate()
         auto valDim = valRow.get_value(m_unit_columns.m_value);
         auto resRow = *iterRes;
         auto resDim = resRow.get_value(m_unit_columns.m_value);
-        double res{0.0};
         try {
             double val = parse(m_value);
-            res = resDim->toUnit(valDim->fromUnit(val));
+            double res = resDim->toUnit(valDim->fromUnit(val));
+            result = res;
         }
         catch (const std::exception& err) {
             auto what = err.what();
-            m_parent->show_error(psc::fmt::vformat(_("Unable to calculate \"{}\""),
-                                                   psc::fmt::make_format_args(what)));
+            if (showError) {
+                m_parent->show_error(psc::fmt::vformat(_("Unable to calculate \"{}\""),
+                                                       psc::fmt::make_format_args(what)));
+            }
 
         }
-        m_result->set_text(Glib::ustring::sprintf("%lf", res));
     }
+    return result;
+}
+
+void
+UnitDialog::save()
+{
+    auto settings = m_parent->getSettings();
+    auto iter = m_dimension->get_active();
+    if (iter) {
+        auto row = *iter;
+        auto dim = row.get_value(m_dimension_columns.m_value);
+        settings->set_string(CONF_DIM, dim->getDim());
+    }
+    auto itrSrc = m_valueUnit->get_active();
+    if (itrSrc) {
+        auto srcRow = *itrSrc;
+        auto srcUnit = srcRow.get_value(m_unit_columns.m_value);
+        std::cout << "UnitDialog::save src " << srcUnit->getId() << std::endl;
+        settings->set_string(CONF_SOURCE, srcUnit->getId());
+    }
+    else {
+        std::cout << "UnitDialog::save no srcSel" << std::endl;
+    }
+    auto iterRes = m_resultUnit->get_active();
+    if (iterRes) {
+        auto resRow = *iterRes;
+        auto resUnit = resRow.get_value(m_unit_columns.m_value);
+        std::cout << "UnitDialog::save res " << resUnit->getId() << std::endl;
+        settings->set_string(CONF_RESULT, resUnit->getId());
+    }
+    else {
+        std::cout << "UnitDialog::save no resSel" << std::endl;
+    }
+    double val{};
+    try {
+        val = parse(m_value);
+    }
+    catch (const std::invalid_argument& exc) {
+    }
+    settings->set_double(CONF_VALUE, val);
+}
+
+
+void
+UnitDialog::evaluate()
+{
+    m_result->set_text(format(getValue(true)));
 }

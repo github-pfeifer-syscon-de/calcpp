@@ -1,6 +1,6 @@
 /* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
- * Copyright (C) 2024 RPf 
+ * Copyright (C) 2024 RPf
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -134,7 +134,7 @@ GaussDialog::evaluate()
                 //std::cout << "Setting row " << row
                 //          << " col " << m_n
                 //          << " row " << rows[row][m_n] << std::endl;
-                entry->set_text(Glib::ustring::sprintf("%lf", m[row][m_n]));
+                entry->set_text(format(m[row][m_n]));
             }
             else {
                 std::cout << "No out-entry at " << row+1 << " " << m_n+1 << std::endl;

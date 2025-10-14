@@ -19,6 +19,7 @@
 #include <string>   // stod
 #include <StringUtils.hpp>
 #include <psc_i18n.hpp>
+#include <cmath>
 
 #include "NumDialog.hpp"
 #include "CalcppWin.hpp"
@@ -49,4 +50,12 @@ NumDialog::parse(Gtk::Entry* entry)
         throw std::invalid_argument(_("Invalid number"));
     }
     return dbl;
+}
+
+Glib::ustring
+NumDialog::format(double value)
+{
+    // flexibel option, if possible will reduce number of empty digits
+    return Glib::ustring::sprintf("%.15lg", value);
+
 }

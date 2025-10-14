@@ -42,10 +42,13 @@ public:
 
     void on_hide() override;
     void show_error(const Glib::ustring& msg, Gtk::MessageType type = Gtk::MessageType::MESSAGE_WARNING);
-    void eval(Glib::ustring text, Gtk::TextIter& end);
+    void eval(Glib::ustring text);
     void apply_font(bool defaultFont);
     CalcppApp *getApplication();
+    Glib::RefPtr<Gio::Settings> getSettings();
 protected:
+    void insertResult(const Glib::ustring& res);
+
 private:
     void load_config();
     void save_config();

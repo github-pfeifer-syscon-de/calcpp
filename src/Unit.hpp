@@ -96,7 +96,9 @@ public:
 
     Glib::ustring getName();
     void setName(const Glib::ustring& name);
-    std::shared_ptr<Unit> find(const Glib::ustring& name);
+    Glib::ustring getDim();
+    void setDim(const Glib::ustring& dim);
+    std::shared_ptr<Unit> findById(const Glib::ustring& name);
     void loadJsonUnits(const psc::json::PtrJsonArr& unitArr);
     void loadJsonUnit(const psc::json::PtrJsonObj& unitVal);
 protected:
@@ -105,6 +107,7 @@ protected:
     std::map<Glib::ustring, std::shared_ptr<Unit>> m_ids;
 private:
     Glib::ustring m_name;
+    Glib::ustring m_dim;
 };
 
 
@@ -116,12 +119,15 @@ public:
     explicit Unit(const Unit& orig) = delete;
     virtual ~Unit() = default;
     Glib::ustring getName() const;
+    Glib::ustring getId() const;
+    void setId(const Glib::ustring& id);
     double getFactor() const;
     double getOffset() const;
     double toUnit(double val) const;
     double fromUnit(double val) const;
 protected:
     Glib::ustring m_name;
+    Glib::ustring m_id;
     double m_factor;
     double m_offset;
 };
