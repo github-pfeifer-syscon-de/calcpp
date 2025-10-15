@@ -60,7 +60,7 @@ public:
     explicit UnitDialog(const UnitDialog& orig) = delete;
     virtual ~UnitDialog() = default;
 
-    double getValue(bool showError = false);
+    Glib::ustring getValue(bool showError = false);
     void save();
 protected:
     void evaluate() override;

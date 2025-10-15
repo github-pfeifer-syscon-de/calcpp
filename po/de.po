@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: calcpp 0.1\n"
 "Report-Msgid-Bugs-To: calcpp@pfeifer-syscon.de\n"
-"POT-Creation-Date: 2025-10-12 15:25+0200\n"
+"POT-Creation-Date: 2025-10-15 17:27+0200\n"
 "PO-Revision-Date: 2024-12-15 06:57+0100\n"
 "Last-Translator:  <calcpp@pfeifer-syscon.de>\n"
 "Language-Team: German <calcpp@pfeifer-syscon.de>\n"
@@ -47,18 +47,18 @@ msgid "Calculator"
 msgstr "Rechner"
 
 #: src/CalcppWin.cpp:146 src/CalcppWin.cpp:166 src/CalcppWin.cpp:186
-#: src/CalcppWin.cpp:206 src/CalcppWin.cpp:226 src/CalcppWin.cpp:245
-#: src/CalcppWin.cpp:285 src/CalcppWin.cpp:306 src/CalcppWin.cpp:327
+#: src/CalcppWin.cpp:212 src/CalcppWin.cpp:232 src/CalcppWin.cpp:251
+#: src/CalcppWin.cpp:291 src/CalcppWin.cpp:312 src/CalcppWin.cpp:333
 #, c++-format
 msgid "Unable to load {} error {}"
 msgstr "{} wurde nicht geladen. Fehler {}"
 
-#: src/CalcppWin.cpp:264
+#: src/CalcppWin.cpp:270
 #, c++-format
 msgid "Unable to save {} error {}"
 msgstr "Fehler {1} beim speichen {0}"
 
-#: src/CalcppWin.cpp:409
+#: src/CalcppWin.cpp:415
 #, c++-format
 msgid ""
 "No settings coud be read! error {}\n"
@@ -67,7 +67,7 @@ msgstr ""
 "Einstellungen konnten nicht geladen werden! Fehler {}\n"
 "Einstellungen werden nicht funktionieren!"
 
-#: src/CalcppWin.cpp:570
+#: src/CalcppWin.cpp:595
 #, c++-format
 msgid "Parse error: {}"
 msgstr "Syntax nicht erkannt. Fehler {}"
@@ -106,7 +106,8 @@ msgstr "Zeile{}"
 msgid "Result"
 msgstr "Ergebnis"
 
-#: src/GaussDialog.cpp:111 src/NumDialog.cpp:49
+#: src/GaussDialog.cpp:111 src/NumDialog.cpp:51 src/Unit.cpp:524
+#: src/Unit.cpp:540 src/Unit.cpp:557 src/Unit.cpp:569 src/Unit.cpp:575
 msgid "Invalid number"
 msgstr "Keine gültige Zahl"
 
@@ -130,35 +131,36 @@ msgstr "Matrix Spalten {} muss Zeilen {}+1 enthalten"
 msgid "Value for col {} row {} is 0, matrix not solveable."
 msgstr "Wert for Spalte {} Zeile {} ist 0, nicht lösbar"
 
-#: src/OutputForm.cpp:89
+#: src/OutputForm.cpp:114
 msgid "Hexadecimal (integer)"
 msgstr "Hexdezimal (Ganzzahl)"
 
-#: src/OutputForm.cpp:101
+#: src/OutputForm.cpp:127
 msgid "Octal (integer)"
 msgstr "Oktal (Ganzzahl)"
 
-#: src/OutputForm.cpp:138
+#: src/OutputForm.cpp:167
 msgid "Hexadecimal (floating point)"
 msgstr "Hexdezimal (Gleitkommazahl)"
 
-#: src/OutputForm.cpp:149
+#: src/OutputForm.cpp:180
 msgid "Scientific"
 msgstr "Wissenschaftlich"
 
-#: src/OutputForm.cpp:161
+#: src/OutputForm.cpp:193
 msgid "Decimal"
 msgstr "Dezimal"
 
-#: src/OutputForm.cpp:172
+#: src/OutputForm.cpp:206
 msgid "Exponential"
 msgstr "Exponentailform"
 
-#: src/QuadDialog.cpp:63
-#, c++-format
-msgid "No result (square-root of negative number {:L} is undefined)"
+#: src/QuadDialog.cpp:66
+#, fuzzy, c++-format
+#| msgid "No result (square-root of negative number {:L} is undefined)"
+msgid "No result (square-root of negative number {} is undefined)"
 msgstr ""
-"Kein Ergebnis (die Quadratwurzel einer negativen Zahl {:L} ist nicht "
+"Kein Ergebnis (die Quadratwurzel einer negativen Zahl {} ist nicht "
 "berrechenbar)"
 
 #: src/PlotDialog.cpp:66 src/PlotDialog.cpp:76 src/PlotDialog.cpp:86
@@ -172,13 +174,13 @@ msgstr "Syntaxfehler {} für {}"
 msgid "Error evaluating {}"
 msgstr "Fehler bei der Auswertung {}"
 
-#: src/Unit.cpp:150
+#: src/Unit.cpp:154
 #, c-format
 msgid "The file %s had errors %s (please check console output)"
 msgstr ""
 "Die Datei %s hatte Fehler %s (bitte prüfen sie ggf. die Konsolenausgabe)"
 
-#: src/Unit.cpp:154
+#: src/Unit.cpp:158
 #, c-format
 msgid "A usable %s was not found searching %s"
 msgstr "Eine verwendbare %s Datei wurde nicht gefunden, gesucht %s"
@@ -317,241 +319,245 @@ msgstr "Längen"
 msgid "mm"
 msgstr "mm"
 
-#: res/unit.js:15
+#: res/unit.js:16
 msgid "cm"
 msgstr "cm"
 
-#: res/unit.js:19
+#: res/unit.js:21
 msgid "m"
 msgstr "m"
 
-#: res/unit.js:23
+#: res/unit.js:26
 msgid "km"
 msgstr "km"
 
-#: res/unit.js:27
+#: res/unit.js:31
 msgid "in"
 msgstr "Zoll"
 
-#: res/unit.js:31
+#: res/unit.js:36
 msgid "ft"
 msgstr "Fuss"
 
-#: res/unit.js:35
+#: res/unit.js:41
 msgid "mi"
 msgstr "Meile"
 
-#: res/unit.js:39
+#: res/unit.js:46
 msgid "naut.mi"
 msgstr "Nautische Meile"
 
-#: res/unit.js:43
+#: res/unit.js:51
 msgid "AU"
 msgstr "AU"
 
-#: res/unit.js:47
+#: res/unit.js:56
 msgid "Light year"
 msgstr "Lichtjahr"
 
-#: res/unit.js:53
+#: res/unit.js:63
 msgid "Temperature"
 msgstr ""
 
-#: res/unit.js:57
+#: res/unit.js:67
 msgid "K"
 msgstr "K"
 
-#: res/unit.js:61
+#: res/unit.js:72
 msgid "°C"
 msgstr "°C"
 
-#: res/unit.js:66
+#: res/unit.js:78
 msgid "°F"
 msgstr "°F"
 
-#: res/unit.js:71
+#: res/unit.js:84
 msgid "°R"
 msgstr "°R"
 
-#: res/unit.js:77
+#: res/unit.js:91
 msgid "Area"
 msgstr "Fläche"
 
-#: res/unit.js:81
+#: res/unit.js:95
 msgid "mm²"
 msgstr "mm²"
 
-#: res/unit.js:85
+#: res/unit.js:100
 msgid "cm²"
 msgstr "cm²"
 
-#: res/unit.js:89
+#: res/unit.js:105
 msgid "m²"
 msgstr "m²"
 
-#: res/unit.js:93
+#: res/unit.js:110
 msgid "km²"
 msgstr "km²"
 
-#: res/unit.js:97
+#: res/unit.js:115
 msgid "in²"
 msgstr "Zoll²"
 
-#: res/unit.js:101
+#: res/unit.js:120
 msgid "ft²"
 msgstr "Fuss²"
 
-#: res/unit.js:105
+#: res/unit.js:125
 msgid "ya²"
 msgstr "Yard²"
 
-#: res/unit.js:109
+#: res/unit.js:130
 msgid "mi²"
 msgstr "Meile²"
 
-#: res/unit.js:113
+#: res/unit.js:135
 msgid "ha"
 msgstr "ha"
 
-#: res/unit.js:119
+#: res/unit.js:142
 msgid "Speed"
 msgstr "Geschwindigkeit"
 
-#: res/unit.js:123
+#: res/unit.js:146
 msgid "m/s"
 msgstr "m/s"
 
-#: res/unit.js:127
+#: res/unit.js:151
 msgid "km/h"
 msgstr ""
 
-#: res/unit.js:131
+#: res/unit.js:156
 msgid "mi/h"
 msgstr "Meilen/h"
 
-#: res/unit.js:135
+#: res/unit.js:161
 msgid "knot"
 msgstr "Knoten"
 
-#: res/unit.js:139
+#: res/unit.js:166
 msgid "speed of light"
 msgstr "Lichtgeschwindigkeit"
 
-#: res/unit.js:145
+#: res/unit.js:173
 msgid "Mass"
 msgstr "Masse"
 
-#: res/unit.js:149
+#: res/unit.js:177
 msgid "kg"
 msgstr "kg"
 
-#: res/unit.js:153
+#: res/unit.js:182
 msgid "t"
 msgstr "t"
 
-#: res/unit.js:157
+#: res/unit.js:187
 msgid "pound"
 msgstr "Pfund"
 
-#: res/unit.js:163
+#: res/unit.js:194
 msgid "Time"
 msgstr "Zeit"
 
-#: res/unit.js:167
+#: res/unit.js:198
+msgid "h:m:s"
+msgstr "std.:mi.:sek."
+
+#: res/unit.js:203
 msgid "ns"
 msgstr "ns"
 
-#: res/unit.js:171
+#: res/unit.js:208
 msgid "µs"
 msgstr "µs"
 
-#: res/unit.js:175
+#: res/unit.js:213
 msgid "ms"
 msgstr "ms"
 
-#: res/unit.js:179
+#: res/unit.js:218
 msgid "second"
 msgstr "Sekunde"
 
-#: res/unit.js:183
+#: res/unit.js:223
 msgid "minute"
 msgstr "Minute"
 
-#: res/unit.js:187
+#: res/unit.js:228
 msgid "hour"
 msgstr "Stunde"
 
-#: res/unit.js:191
+#: res/unit.js:233
 msgid "day"
 msgstr "Tag"
 
-#: res/unit.js:197
+#: res/unit.js:240
 msgid "Volume"
 msgstr "Volmen"
 
-#: res/unit.js:201
+#: res/unit.js:244
 msgid "mm³"
 msgstr "mm³"
 
-#: res/unit.js:205
+#: res/unit.js:249
 msgid "cm³"
 msgstr "cm³"
 
-#: res/unit.js:209
+#: res/unit.js:254
 msgid "m³"
 msgstr "m³"
 
-#: res/unit.js:213
+#: res/unit.js:259
 msgid "l"
 msgstr "l"
 
-#: res/unit.js:218
+#: res/unit.js:264
 msgid "ml"
 msgstr "ml"
 
-#: res/unit.js:223
+#: res/unit.js:269
 msgid "imper.fl.ounce"
 msgstr "Unze(flüssig,UK)"
 
-#: res/unit.js:228
+#: res/unit.js:275
 msgid "imper.pint"
 msgstr "Pint(UK)"
 
-#: res/unit.js:233
+#: res/unit.js:281
 msgid "imper.gallon"
 msgstr "Gallon(UK)"
 
-#: res/unit.js:238
+#: res/unit.js:287
 msgid "US.fl.ounce"
 msgstr "Unze(flüssig,US)"
 
-#: res/unit.js:243
+#: res/unit.js:293
 msgid "US.liq.pint"
 msgstr "Pint(flüssig,US)"
 
-#: res/unit.js:248
+#: res/unit.js:299
 msgid "US.gallon"
 msgstr "Gallon(US)"
 
-#: res/unit.js:253
+#: res/unit.js:305
 msgid "km³"
 msgstr "km³"
 
-#: res/unit.js:257
+#: res/unit.js:310
 msgid "in³"
 msgstr "Zoll³"
 
-#: res/unit.js:262
+#: res/unit.js:316
 #, fuzzy
 #| msgid "ft"
 msgid "ft³"
 msgstr "Fuss³"
 
-#: res/unit.js:266
+#: res/unit.js:321
 msgid "ya³"
 msgstr "Yard³"
 
-#: res/unit.js:270
+#: res/unit.js:326
 msgid "mi³"
 msgstr "Meile³"
 

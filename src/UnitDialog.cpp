@@ -131,10 +131,10 @@ UnitDialog::updateSelect(const Glib::ustring& selSrc, const Glib::ustring& selRe
     }
 }
 
-double
+Glib::ustring
 UnitDialog::getValue(bool showError)
 {
-    double result{};
+    Glib::ustring result;
     auto iterVal = m_valueUnit->get_active();
     auto iterRes = m_resultUnit->get_active();
     if (iterVal && iterRes) {
@@ -143,9 +143,8 @@ UnitDialog::getValue(bool showError)
         auto resRow = *iterRes;
         auto resDim = resRow.get_value(m_unit_columns.m_value);
         try {
-            double val = parse(m_value);
-            double res = resDim->toUnit(valDim->fromUnit(val));
-            result = res;
+            double base = valDim->fromUnit(m_value, this);
+            result = resDim->toUnit(base, this);
         }
         catch (const std::exception& err) {
             auto what = err.what();
@@ -173,7 +172,7 @@ UnitDialog::save()
     if (itrSrc) {
         auto srcRow = *itrSrc;
         auto srcUnit = srcRow.get_value(m_unit_columns.m_value);
-        std::cout << "UnitDialog::save src " << srcUnit->getId() << std::endl;
+        //std::cout << "UnitDialog::save src " << srcUnit->getId() << std::endl;
         settings->set_string(CONF_SOURCE, srcUnit->getId());
     }
     else {
@@ -183,7 +182,7 @@ UnitDialog::save()
     if (iterRes) {
         auto resRow = *iterRes;
         auto resUnit = resRow.get_value(m_unit_columns.m_value);
-        std::cout << "UnitDialog::save res " << resUnit->getId() << std::endl;
+        //std::cout << "UnitDialog::save res " << resUnit->getId() << std::endl;
         settings->set_string(CONF_RESULT, resUnit->getId());
     }
     else {
@@ -202,5 +201,5 @@ UnitDialog::save()
 void
 UnitDialog::evaluate()
 {
-    m_result->set_text(format(getValue(true)));
+    m_result->set_text(getValue(true));
 }

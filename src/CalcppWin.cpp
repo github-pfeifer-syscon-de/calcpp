@@ -201,10 +201,8 @@ CalcppWin::activate_actions()
 				int res = unitDialog->run();
                 if (res == Gtk::RESPONSE_OK) {
                     auto result = unitDialog->getValue();
-                    OutputForm* outputForm = m_evalContext->get_output_format();
-                    Glib::ustring res = outputForm->format(result);
-                    res += "\n";
-                    insertResult(res);
+                    result += "\n";
+                    insertResult(result);
                     unitDialog->save();
                 }
 				delete unitDialog;  // as this is a toplevel component shoud destroy -> works

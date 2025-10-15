@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <glibmm.h>
+#include <gtkmm.h>
 #include <map>
 #include <vector>
 #include <memory>
@@ -30,6 +30,7 @@
 
 class Unit;
 class Dimension;
+class NumDialog;
 
 class UnitException
 : public std::exception
@@ -123,6 +124,8 @@ public:
     void setId(const Glib::ustring& id);
     double getFactor() const;
     double getOffset() const;
+    virtual Glib::ustring toUnit(double val, NumDialog* numDialog) const;
+    virtual double fromUnit(Gtk::Entry* entry, NumDialog* numDialog) const;
     double toUnit(double val) const;
     double fromUnit(double val) const;
 protected:
@@ -132,3 +135,14 @@ protected:
     double m_offset;
 };
 
+class UnitHms
+: public Unit
+{
+public:
+    UnitHms(const Glib::ustring& name, double factor, double offset = 0.0);
+    explicit UnitHms(const Unit& orig) = delete;
+    virtual ~UnitHms() = default;
+    Glib::ustring toUnit(double val, NumDialog* numDialog) const override;
+    double fromUnit(Gtk::Entry* entry, NumDialog* numDialog) const override;
+
+};

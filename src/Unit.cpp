@@ -19,11 +19,14 @@
 #include <giomm.h>
 #include <iostream>
 #include <psc_i18n.hpp>
+#include <psc_format.hpp>
 #include <JsonHelper.hpp>
 #include <string.h>
 #include <cstddef>
+#include <cmath>
 
 #include "Unit.hpp"
+#include "NumDialog.hpp"
 
 
 Dimensions::Dimensions(const std::string& exec_path)
@@ -379,142 +382,27 @@ Dimension::loadJsonUnit(const psc::json::PtrJsonObj& uObj)
     if (uOffsVal) {
         offs = uOffsVal->getDouble();
     }
-    auto unit = std::make_shared<Unit>(uName, fact, offs);
+    Glib::ustring id;
     auto unitId = uObj->getValue("id");
     if (unitId) {
-        auto id = unitId->getString();
+        id = unitId->getString();
+    }
+    std::shared_ptr<Unit> unit;
+    if (id == "hms") {
+        unit = std::make_shared<UnitHms>(uName, fact, offs);
+    }
+    else {
+        unit = std::make_shared<Unit>(uName, fact, offs);
+    }
+    if (!id.empty()) {
         m_ids.insert(std::pair(id, unit));
         unit->setId(id);
     }
     else {
-        std::cout << "Id is ecpected this may not work ... " <<  std::endl;
+        std::cout << "Id is expected, this may not work ... " <<  std::endl;
     }
     add(unit);
 }
-
-
-// Length
-//    auto mm = std::make_shared<Unit>("mm", 1.0/1000.0);
-//    add(mm);
-//    auto cm = std::make_shared<Unit>("cm", 1.0/100.0);
-//    add(cm);
-//    auto m = std::make_shared<Unit>("m", 1.0);
-//    add(m);
-//    auto km = std::make_shared<Unit>("km", 1000.0);
-//    add(km);
-//    auto in = std::make_shared<Unit>("in", 25.4/1000.0);
-//    add(in);
-//    auto ft = std::make_shared<Unit>("ft", 0.3048);
-//    add(ft);
-//    auto mi = std::make_shared<Unit>("mi", 1609.344);
-//    add(mi);
-//    auto nmi = std::make_shared<Unit>("naut.mi", 1852.0);
-//    add(nmi);
-//    auto au = std::make_shared<Unit>("AU", 149597870700.0 );
-//    add(au);
-//    auto lj = std::make_shared<Unit>("lj", 9460730472580800.0);
-//    add(lj);
-//
-//
-//Area
-//    auto mm2 = std::make_shared<Unit>("mm²", 1.0/1000000.0);
-//    add(mm2);
-//    auto cm2 = std::make_shared<Unit>("cm²", 1.0/10000.0);
-//    add(cm2);
-//    auto m2 = std::make_shared<Unit>("m²", 1.0);
-//    add(m2);
-//    auto km2 = std::make_shared<Unit>("km²", 1000000.0);
-//    add(km2);
-//    auto in2 = std::make_shared<Unit>("in²", 0.00064516);
-//    add(in2);
-//    auto ft2 = std::make_shared<Unit>("ft²", 0.09290304);
-//    add(ft2);
-//    auto ya2 = std::make_shared<Unit>("ya²", 0.83612736);
-//    add(ya2);
-//    auto mi2 = std::make_shared<Unit>("mi²", 2589988.110336 );
-//    add(mi2);
-//    auto ha = std::make_shared<Unit>("ha", 10000.0);
-//    add(ha);
-//
-//Volume
-//    auto mm3 = std::make_shared<Unit>("mm³", 1.0/1000000000.0);
-//    add(mm3);
-//    auto cm3 = std::make_shared<Unit>("cm³", 1.0/1000000.0);
-//    add(cm3);
-//    auto m3 = std::make_shared<Unit>("m³", 1.0);
-//    add(m3);
-//    auto L = std::make_shared<Unit>("L", 1.0/1000.0);
-//    add(L);
-//    auto mL = std::make_shared<Unit>("mL", 1.0/1000000.0);
-//    add(mL);
-//    auto imFlUn = std::make_shared<Unit>("imper.fl.ounce", mL->fromUnit(28.4130625));
-//    add(imFlUn);
-//    auto imPint = std::make_shared<Unit>("imper.pint",  mL->fromUnit(568.26125));
-//    add(imPint);
-//    auto imGal = std::make_shared<Unit>("imper.gallon", L->fromUnit(4.54609));
-//    add(imGal);
-//    auto usFlUn = std::make_shared<Unit>("US.fl.ounce", mL->fromUnit(29.5735295625));
-//    add(usFlUn);
-//    auto usPint = std::make_shared<Unit>("US.liq.pint", mL->fromUnit(473.176473));
-//    add(usPint);
-//    auto usGal = std::make_shared<Unit>("US.gallon", L->fromUnit(3.785411784));
-//    add(usGal);
-//    auto km3 = std::make_shared<Unit>("km³", 1000000000.0);
-//    add(km3);
-//    auto in3 = std::make_shared<Unit>("in³", mL->fromUnit(16.387064));
-//    add(in3);
-//    auto ft3 = std::make_shared<Unit>("ft³", 0.028316846592);
-//    add(ft3);
-//    auto ya3 = std::make_shared<Unit>("ya³", 0.764554857984);
-//    add(ya3);
-//    auto mi3 = std::make_shared<Unit>("mi³", 1609.344 * 1609.344 * 1609.344);
-//    add(mi3);
-//
-// Temperature
-//    auto K = std::make_shared<Unit>("K", 1.0, 0.0); // Kelvin
-//    add(K);
-//    auto C = std::make_shared<Unit>("°C", 1.0, 273.15); // Celsius
-//    add(C);
-//    auto F = std::make_shared<Unit>("°F", 5.0 / 9.0, 459.67); // Fahrenheit
-//    add(F);
-//    auto R = std::make_shared<Unit>("°R", 5.0 / 9.0); // Rankine
-//    add(R);
-//
-//Speed
-//    auto ms = std::make_shared<Unit>("m/s", 1.0);
-//    add(ms);
-//    auto kmh = std::make_shared<Unit>("km/h", 1000.0/3600.0);
-//    add(kmh);
-//    auto mih = std::make_shared<Unit>("mi/h", 1609.344/3600.0);
-//    add(mih);
-//    auto knot = std::make_shared<Unit>("knot", 1852.0/3600.0);
-//    add(knot);
-//    auto ls = std::make_shared<Unit>("lightspeed", 299792458.0);
-//    add(ls);
-//
-//Mass
-//    auto kg = std::make_shared<Unit>("kg", 1.0);
-//    add(kg);
-//    auto t = std::make_shared<Unit>("c", 1000.0);
-//    add(t);
-//    auto p = std::make_shared<Unit>("pound", 0.45359237);
-//    add(p);
-//
-//Time
-//   auto ns = std::make_shared<Unit>("ns", 1.0E-9);
-//   add(ns);
-//   auto us = std::make_shared<Unit>("µs", 1.0E-6);
-//   add(us);
-//   auto ms = std::make_shared<Unit>("ms", 1.0E-3);
-//   add(ms);
-//   auto s = std::make_shared<Unit>("second", 1.0);
-//   add(s);
-//   auto mi = std::make_shared<Unit>("minute", 60.0);
-//   add(mi);
-//   auto h = std::make_shared<Unit>("hour", 60.0*60.0);
-//   add(h);
-//   auto day = std::make_shared<Unit>("day", 24.0*60.0*60.0);
-//   add(day);
 
 
 Unit::Unit(const Glib::ustring& name, double factor, double offset)
@@ -555,6 +443,20 @@ Unit::getOffset() const
     return m_offset;
 }
 
+Glib::ustring
+Unit::toUnit(double val, NumDialog* numDialog) const
+{
+    auto result = toUnit(val);
+    return numDialog->format(result);
+}
+
+double
+Unit::fromUnit(Gtk::Entry* entry, NumDialog* numDialog) const
+{
+    double val = numDialog->parse(entry);
+    return fromUnit(val);
+}
+
 double
 Unit::toUnit(double val) const
 {
@@ -568,3 +470,113 @@ Unit::fromUnit(double val) const
 }
 
 
+UnitHms::UnitHms(const Glib::ustring& name, double factor, double offset)
+: Unit(name, factor, offset)
+{
+}
+
+Glib::ustring
+UnitHms::toUnit(double val, NumDialog* numDialog) const
+{
+   auto result = Unit::toUnit(val);
+   bool negative = false;
+   if (result < 0.0) {
+       result = std::abs(result);
+       negative = true;
+   }
+   auto s = std::fmod(result, 60.0);
+   Glib::ustring sval = psc::fmt::format(std::locale(""), "{:Lg}", s);
+   result -= s;
+   result /= 60.0;
+   auto m = std::fmod(result, 60.0);
+   sval.insert(0, psc::fmt::format("{:d}:", static_cast<uint32_t>(m)));
+   result -= m;
+   result /= 60.0;
+   auto h = std::fmod(result, 24.0);
+   sval.insert(0, psc::fmt::format("{:d}:", static_cast<uint32_t>(h)));
+   result -= h;
+   auto d = result / 24.0;
+   if (d > 0.0) {
+        sval.insert(0, psc::fmt::format("{:d}:", static_cast<uint32_t>(d)));
+   }
+   if (negative) {
+       sval.insert(0, "-");
+   }
+   return sval;
+}
+
+double
+UnitHms::fromUnit(Gtk::Entry* entry, NumDialog* numDialog) const
+{
+    Glib::ustring sval = entry->get_text();
+    auto pos = sval.rfind(':');
+    if (pos == sval.npos) { // without separator consider all as seconds
+        pos = 0;
+    }
+    else {
+        ++pos;
+    }
+    std::string::size_type offs;
+    auto spart = sval.substr(pos);
+    auto secVal = std::stod(spart, &offs);      // allow locale sensitive decimals e.g. 1.2
+    if (offs != spart.size()) {
+        entry->grab_focus();
+        throw std::invalid_argument(_("Invalid number"));
+    }
+    if (pos > 0) {
+        --pos;
+        sval = sval.substr(0, pos);
+        pos = sval.rfind(':');
+        if (pos == sval.npos) { // without separator consider all as minutes
+            pos = 0;
+        }
+        else {
+            ++pos;
+        }
+        spart = sval.substr(pos);
+        auto m = std::stoi(spart, &offs);
+        if (offs != spart.size()) {
+            entry->grab_focus();
+            throw std::invalid_argument(_("Invalid number"));
+        }
+        secVal += 60.0 * m;
+        if (pos > 0) {
+            --pos;
+            sval = sval.substr(0, pos);
+            pos = sval.rfind(':');
+            if (pos == sval.npos) { // without separator consider all as hours
+                pos = 0;
+            }
+            else {
+                ++pos;
+            }
+            spart = sval.substr(pos);
+            auto h = std::stoi(spart, &offs);
+            if (offs != spart.size()) {
+                entry->grab_focus();
+                throw std::invalid_argument(_("Invalid number"));
+            }
+            secVal += 60.0 * 60.0 * h;
+            if (pos > 0) {
+                --pos;
+                sval = sval.substr(0, pos);
+                pos = sval.rfind(':');
+                if (pos == sval.npos) { // without separator consider all as days
+                    pos = 0;
+                }
+                else {  // with a : before day we are in unknown territory
+                    entry->grab_focus();
+                    throw std::invalid_argument(_("Invalid number"));
+                }
+                spart = sval.substr(pos);
+                auto d = std::stoi(spart, &offs);
+                if (offs != spart.size()) {
+                    entry->grab_focus();
+                    throw std::invalid_argument(_("Invalid number"));
+                }
+                secVal += 24.0 * 60.0 * 60.0 * d;
+            }
+        }
+    }
+    return Unit::fromUnit(secVal);
+}

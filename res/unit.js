@@ -195,6 +195,11 @@ obj =
         ,"dim": "t"
         ,"unit":[
             {
+               "name":_("h:m:s")
+            ,  "id":"hms"
+            ,  "fact":1.0
+            }
+            ,{
                "name":_("ns")
             ,  "id":"ns"
             ,  "fact":1.0e-9

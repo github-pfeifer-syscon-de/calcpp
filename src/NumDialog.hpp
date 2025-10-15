@@ -30,10 +30,10 @@ public:
     explicit NumDialog(const NumDialog& orig) = delete;
     virtual ~NumDialog() = default;
 
-protected:
-    virtual void evaluate() = 0;
     double parse(Gtk::Entry* entry);
     Glib::ustring format(double value);
+protected:
+    virtual void evaluate() = 0;
     CalcppWin* m_parent;
 
 private:
