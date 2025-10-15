@@ -20,6 +20,7 @@ AM_LDFLAGS =
 calc_test_LDADD =  \
  	../srcLib/libexpression.a \
 	../src/calcpp-Unit.o \
+	../src/calcpp-NumDialog.o \
 	$(GENERICIMG_LIBS)
 
 check_PROGRAMS = calc_test
