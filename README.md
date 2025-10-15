@@ -69,11 +69,10 @@ please check your results, suggestions are welcome.
 In "../share/calcpp/unit.js" can be found if
 you want to add other units.
 
-Issues:
-* The parsing doesn't support grouping separators
-  (and they are missing in output as well).
+Changes:
 * on 14.10.25 there was a schema change so
   this needs to be instelled before testing...
+* on 15.10.25 added numeric grouping chars.
 
 To build on (Lin)ux use (as a prerequisite genericImg is required):
 <pre>

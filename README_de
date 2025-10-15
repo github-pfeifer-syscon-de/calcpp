@@ -60,6 +60,11 @@ aus einer Unicodeseite, mit dem Klick auf das ensprechende Zeichen.
 
 Eine einfache Kalendaransicht ist ebenso verfübar.
 
+Änderungen:
+* am 14.10.25 enthält eine Änderung des Konfigurationsschemas
+  dies muss zum test installiert werden...
+* am 15.10.25 hinzugefügt numerische Trennzeichen.
+
 Probleme:
 * Beim Parsen werden keine numerischen Gruppierungstrennzeichen unterstüzt
   (sie erscheinen auch nicht in der Ausgabe).

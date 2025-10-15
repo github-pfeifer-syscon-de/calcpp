@@ -94,9 +94,9 @@ UnitDialog::updateSelect(const Glib::ustring& selSrc, const Glib::ustring& selRe
     //std::cout << "UnitDialog::updateSelect src " << selSrc
     //          << " res " << selRes << std::endl;
     if (dim) {
-        int prefSrc = -1;
-        int prefRes = -1;
-        int prefDefl = -1;
+        int prefSrc{-1};
+        int prefRes{-1};
+        int prefDefl{-1};
         double lastFactor = std::numeric_limits<double>::max();
         auto unitList = Gtk::ListStore::create(m_unit_columns);
         auto all = dim->getUnits();

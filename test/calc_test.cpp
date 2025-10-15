@@ -17,6 +17,7 @@
  */
 
 #include <iostream>
+#include <iomanip>
 #include <cstdlib>
 #include <charconv>
 #include <optional>
@@ -224,20 +225,58 @@ testFormat()
               << " " << Glib::ustring::sprintf("%.15lg", val2)
               << " " << Glib::ustring::sprintf("%.15lg", val3)
               << std::endl;
+    std::cout << "spri a " << Glib::ustring::sprintf("%.15la", val1)
+              << " " << Glib::ustring::sprintf("%.15la", val2)
+              << " " << Glib::ustring::sprintf("%.15la", val3)
+              << std::endl;
     std::cout << "spri e " << Glib::ustring::sprintf("%.15le", val1)
               << " " << Glib::ustring::sprintf("%.15le", val2)
               << " " << Glib::ustring::sprintf("%.15le", val3)
               << std::endl;
-
+//    // there seems to be on option for e to grows modulo 3 ...
 //    std::cout << std::endl;
-//    std::cout << "fmt {}    " << psc::fmt::format("{} {} {}", val1, val2, val3) << std::endl;
-//    std::cout << "fmt {:L}  " << psc::fmt::format(std::locale(""), "{:L} {:L} {:L}", val1, val2, val3) << std::endl;
-//    std::cout << "fmt {:Lf} " << psc::fmt::format(std::locale(""), "{:Lf} {:Lf} {:Lf}", val1, val2, val3) << std::endl;
-//    std::cout << "fmt {:Le} " << psc::fmt::format(std::locale(""), "{:Le} {:Le} {:Le}", val1, val2, val3) << std::endl;
-//    std::cout << "fmt {:Lg} " << psc::fmt::format(std::locale(""), "{:Lg} {:Lg} {:Lg}", val1, val2, val3) << std::endl;
-//    std::cout << "fmt {:La}    " << psc::fmt::format(std::locale(""), "{:La} {:La} {:La}", val1, val2, val3) << std::endl;
-//    std::cout << "fmt {:o}    " << psc::fmt::format("{:#o} ", 0x12345) << std::endl;
-//    std::cout << "fmt {:x}    " << psc::fmt::format("{:#x}", 0x12345) << std::endl;
+//    std::cout << "co sc " << std::scientific
+//              << " " << val1
+//              << " " << val2
+//              << " " << val3 << std::endl;
+//    std::cout << "co fi " << std::fixed << std::setprecision(8)
+//              << " " << val1
+//              << " " << val2
+//              << " " << val3 << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "fmt {}    " << psc::fmt::format("{} {} {}", val1, val2, val3) << std::endl;
+    std::cout << "fmt {:L}  " << psc::fmt::format(std::locale(""), "{:L} {:L} {:L}", val1, val2, val3) << std::endl;
+    std::cout << "fmt {:Lf} " << psc::fmt::format(std::locale(""), "{:Lf} {:Lf} {:Lf}", val1, val2, val3) << std::endl;
+    std::cout << "fmt {:Le} " << psc::fmt::format(std::locale(""), "{:Le} {:Le} {:Le}", val1, val2, val3) << std::endl;
+    std::cout << "fmt {:Lg} " << psc::fmt::format(std::locale(""), "{:Lg} {:Lg} {:Lg}", val1, val2, val3) << std::endl;
+    std::cout << "fmt {:La} " << psc::fmt::format(std::locale(""), "{:#La} {:#La} {:#La}", val1, val2, val3) << std::endl;
+    std::cout << "fmt {:o}  " << psc::fmt::format("{:#o} ", 0x12345) << std::endl;
+    std::cout << "fmt {:x}  " << psc::fmt::format("{:#x}", 0x12345) << std::endl;
+
+    std::istringstream ins(" 3.333.333.333.333.333.277.409.280,00abc");
+    auto s = ins.tellg();
+    ins.imbue(std::locale(""));
+    double f2;
+    ins >> (f2);
+    auto e = ins.tellg();
+    std::cout << "parsed f2 " << f2 << " s " << s << " e " << e << std::endl;
+
+    std::string num{"0x1234"};  //" 0x1,60ee2e58aae16p+81"
+    std::istringstream ins3(num);
+    //ins3.imbue(std::locale(""));
+    double f3;
+    ins3 >> std::hex;
+    if (!(ins3 >> f3)) {   //
+        size_t offs;
+        f3 = std::stod(num, &offs);	// c++ way ;), honors local, parses hex (prefix 0x), still no thousands separator
+        std::cout << "parSOD  h3 " << f3 << " offs " << offs << std::endl;
+
+    }
+    else {
+        e = ins3.tellg();
+        std::cout << "parsed f3 " << f3 << " e " << e << std::endl;
+    }
 
     return true;
 }

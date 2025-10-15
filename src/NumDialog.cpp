@@ -41,14 +41,21 @@ NumDialog::parse(Gtk::Entry* entry)
 {
     auto val = entry->get_text();
     StringUtils::trim(val);
-    //char* end;
-    //double dbl = std::strtod(val.c_str(), &end);
-    std::string::size_type offs;
-    double dbl = std::stod(val, &offs);
-    if (offs != val.size()) {   // expect number to be completely parsable
+    // go with the stream abilities e.g. separator's ...
+    std::stringstream ins(val);
+    ins.imbue(std::locale(""));
+    double dbl;
+    ins >> dbl;
+    if (ins.fail()) {
         entry->grab_focus();
         throw std::invalid_argument(_("Invalid number"));
     }
+//    std::string::size_type offs;
+//    double dbl = std::stod(val, &offs);
+//    if (offs != val.size()) {   // expect number to be completely parsable
+//        entry->grab_focus();
+//        throw std::invalid_argument(_("Invalid number"));
+//    }
     return dbl;
 }
 
@@ -56,6 +63,6 @@ Glib::ustring
 NumDialog::format(double value)
 {
     // flexibel option, if possible will reduce number of empty digits
-    return Glib::ustring::sprintf("%.15lg", value);
-
+    //return Glib::ustring::sprintf("%.15lg", value);
+    return psc::fmt::format(std::locale(""), "{:.15Lg}", value);
 }
