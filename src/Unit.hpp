@@ -145,4 +145,7 @@ public:
     Glib::ustring toUnit(double val, NumDialog* numDialog) const override;
     double fromUnit(Gtk::Entry* entry, NumDialog* numDialog) const override;
 
+protected:
+    double splitPart(Gtk::Entry* entry, size_t& pos, Glib::ustring& sval) const;
+
 };

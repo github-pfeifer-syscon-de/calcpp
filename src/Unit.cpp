@@ -506,6 +506,27 @@ UnitHms::toUnit(double val, NumDialog* numDialog) const
 }
 
 double
+UnitHms::splitPart(Gtk::Entry* entry, size_t& pos, Glib::ustring& sval) const
+{
+    sval = sval.substr(0, pos);
+    pos = sval.rfind(':');
+    if (pos == sval.npos) { // without separator consider all as value
+        pos = 0;
+    }
+    else {
+        ++pos;
+    }
+    auto spart = sval.substr(pos);
+    std::string::size_type offs;
+    unsigned long val = std::stoul(spart, &offs);
+    if (offs != spart.size()) {
+        entry->grab_focus();
+        throw std::invalid_argument(_("Invalid number"));
+    }
+    return static_cast<double>(val);
+}
+
+double
 UnitHms::fromUnit(Gtk::Entry* entry, NumDialog* numDialog) const
 {
     Glib::ustring sval = entry->get_text();
@@ -525,55 +546,15 @@ UnitHms::fromUnit(Gtk::Entry* entry, NumDialog* numDialog) const
     }
     if (pos > 0) {
         --pos;
-        sval = sval.substr(0, pos);
-        pos = sval.rfind(':');
-        if (pos == sval.npos) { // without separator consider all as minutes
-            pos = 0;
-        }
-        else {
-            ++pos;
-        }
-        spart = sval.substr(pos);
-        auto m = std::stoi(spart, &offs);
-        if (offs != spart.size()) {
-            entry->grab_focus();
-            throw std::invalid_argument(_("Invalid number"));
-        }
+        auto m = splitPart(entry, pos, sval);
         secVal += 60.0 * m;
         if (pos > 0) {
             --pos;
-            sval = sval.substr(0, pos);
-            pos = sval.rfind(':');
-            if (pos == sval.npos) { // without separator consider all as hours
-                pos = 0;
-            }
-            else {
-                ++pos;
-            }
-            spart = sval.substr(pos);
-            auto h = std::stoi(spart, &offs);
-            if (offs != spart.size()) {
-                entry->grab_focus();
-                throw std::invalid_argument(_("Invalid number"));
-            }
+            auto h = splitPart(entry, pos, sval);
             secVal += 60.0 * 60.0 * h;
             if (pos > 0) {
                 --pos;
-                sval = sval.substr(0, pos);
-                pos = sval.rfind(':');
-                if (pos == sval.npos) { // without separator consider all as days
-                    pos = 0;
-                }
-                else {  // with a : before day we are in unknown territory
-                    entry->grab_focus();
-                    throw std::invalid_argument(_("Invalid number"));
-                }
-                spart = sval.substr(pos);
-                auto d = std::stoi(spart, &offs);
-                if (offs != spart.size()) {
-                    entry->grab_focus();
-                    throw std::invalid_argument(_("Invalid number"));
-                }
+                auto d = splitPart(entry, pos, sval);
                 secVal += 24.0 * 60.0 * 60.0 * d;
             }
         }
