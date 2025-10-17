@@ -66,8 +66,9 @@ A simple calendar view is included.
 A simple option to convert units is included.
 Sorry i'am still not too deep into non SI units,
 please check your results, suggestions are welcome.
-In "../share/calcpp/unit.js" can be found if
-you want to add other units.
+In INSTALL_DIR/share/calcpp/unit.js can be found if
+it is copied to ~/.local/share/calcpp/unit.js
+you can modify it or add other units.
 
 Changes:
 * on 14.10.25 there was a schema change so

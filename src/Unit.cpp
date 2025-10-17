@@ -99,25 +99,33 @@ Dimensions::loadJsonUnits(const psc::json::PtrJsonObj& unitObj)
 void
 Dimensions::loadJson(const std::string& execPath)
 {
-    // this effort is done to run from source dir (without installed package data)
-    std::string fullPath = g_canonicalize_filename(execPath.c_str(), Glib::get_current_dir().c_str());
-    Glib::RefPtr<Gio::File> jsonDir = Gio::File::create_for_path(fullPath);
-    auto bin_dir = jsonDir->get_parent();
-    std::vector<std::string> relResPath;
-    if (G_DIR_SEPARATOR == '\\') {
-        relResPath.push_back("..");	// have to escape .libs on windows
+    const std::string unitName{"unit.js"};
+    auto userFullPath = Glib::canonicalize_filename("calcpp/", Glib::get_user_data_dir());
+    auto userConfig = Gio::File::create_for_path(userFullPath);
+    if (!userConfig->query_exists()) {
+        userConfig->make_directory_with_parents();
     }
-    relResPath.push_back("..");
-    relResPath.push_back("res");
-    std::string resRel = Glib::build_filename(relResPath);
-    std::string resPath = g_canonicalize_filename(resRel.c_str(), bin_dir->get_path().c_str());
-    // this file identifies the development resources dir, beside executable
-
-    std::string unitName{"unit.js"};
-    auto jsonFile = Gio::File::create_for_path(resPath + "/" + unitName);
-    //std::cout << "Dimensions::loadJson trying " << jsonFile->get_path() << std::boolalpha << " found " << jsonFile->query_exists() << std::endl;
+    auto jsonFile = userConfig->get_child(unitName);    // prefere a local copy if it exists
     if (!jsonFile->query_exists()) {
-        jsonFile = Gio::File::create_for_path(PACKAGE_DATA_DIR "/" + unitName);
+        // this effort is done to run from source dir (without installed package data)
+        std::string fullPath = Glib::canonicalize_filename(execPath, Glib::get_current_dir());
+        Glib::RefPtr<Gio::File> jsonDir = Gio::File::create_for_path(fullPath);
+        auto bin_dir = jsonDir->get_parent();
+        std::vector<std::string> relResPath;
+        if (G_DIR_SEPARATOR == '\\') {
+            relResPath.push_back("..");	// have to escape .libs on windows
+        }
+        relResPath.push_back("..");
+        relResPath.push_back("res");
+        std::string resRel = Glib::build_filename(relResPath);
+        std::string resPath = Glib::canonicalize_filename(resRel, bin_dir->get_path());
+        // this file identifies the development resources dir, beside executable
+
+        jsonFile = Gio::File::create_for_path(resPath + "/" + unitName);
+        //std::cout << "Dimensions::loadJson trying " << jsonFile->get_path() << std::boolalpha << " found " << jsonFile->query_exists() << std::endl;
+        if (!jsonFile->query_exists()) {
+            jsonFile = Gio::File::create_for_path(PACKAGE_DATA_DIR "/" + unitName);
+        }
     }
     size_t len;
     std::string etag;

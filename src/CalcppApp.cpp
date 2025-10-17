@@ -37,6 +37,13 @@ CalcppApp::CalcppApp(int argc, char **argv)
 void
 CalcppApp::on_activate()
 {
+    auto windows = get_windows();
+    if (windows.size() > 0) {
+        auto appwindow = dynamic_cast<CalcppWin*>(windows[0]);
+        if (appwindow) {    // on second activation do nothing
+            return;
+        }
+    }
     auto builder = Gtk::Builder::create();
     try {
         builder->add_from_resource(get_resource_base_path() + "/calc-win.ui");

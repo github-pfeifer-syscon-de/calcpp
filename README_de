@@ -60,15 +60,20 @@ aus einer Unicodeseite, mit dem Klick auf das ensprechende Zeichen.
 
 Eine einfache Kalendaransicht ist ebenso verfübar.
 
+Ein einfache Option zum Konvertieren von Einheiten
+ist verfügbar, leider bin ich mit den nich SI-Einheiten
+nicht so vertraut, somit bitte die Ergebnisse prüfen,
+Vorschläge sind willkommen.
+Unter INSTALL_DIR/share/calcpp/unit.js sind die
+Konvertierugsparameter verfügbar
+wenn es nach ~/.local/share/calcpp/unit.js
+kopiert wird können diese für die eigenen Bedürfnisse
+modifiziert werden.
+
 Änderungen:
 * am 14.10.25 enthält eine Änderung des Konfigurationsschemas
-  dies muss zum test installiert werden...
+  dies muss vor dem testen installiert werden...
 * am 15.10.25 hinzugefügt numerische Trennzeichen.
-
-Probleme:
-* Beim Parsen werden keine numerischen Gruppierungstrennzeichen unterstüzt
-  (sie erscheinen auch nicht in der Ausgabe).
-
 
 Zum erstellen verwenden (als Voraussetzung wird genericImg benötigt):
 <pre>
