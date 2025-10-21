@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <giomm.h>
 #include <iostream>
 #include <psc_i18n.hpp>
 #include <psc_format.hpp>
