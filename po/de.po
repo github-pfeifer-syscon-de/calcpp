@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: calcpp 0.1\n"
 "Report-Msgid-Bugs-To: calcpp@pfeifer-syscon.de\n"
-"POT-Creation-Date: 2025-10-15 17:27+0200\n"
+"POT-Creation-Date: 2025-11-07 14:18+0100\n"
 "PO-Revision-Date: 2024-12-15 06:57+0100\n"
 "Last-Translator:  <calcpp@pfeifer-syscon.de>\n"
 "Language-Team: German <calcpp@pfeifer-syscon.de>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/CalcppApp.cpp:118
+#: src/CalcppApp.cpp:125
 #, c++-format
 msgid "The README file {} could not be located."
 msgstr "Die README Datei {} wurde nicht gefunden."
@@ -106,8 +106,8 @@ msgstr "Zeile{}"
 msgid "Result"
 msgstr "Ergebnis"
 
-#: src/GaussDialog.cpp:111 src/NumDialog.cpp:51 src/Unit.cpp:524
-#: src/Unit.cpp:540 src/Unit.cpp:557 src/Unit.cpp:569 src/Unit.cpp:575
+#: src/GaussDialog.cpp:111 src/NumDialog.cpp:51 src/Unit.cpp:531
+#: src/Unit.cpp:552
 msgid "Invalid number"
 msgstr "Keine gültige Zahl"
 
@@ -174,13 +174,13 @@ msgstr "Syntaxfehler {} für {}"
 msgid "Error evaluating {}"
 msgstr "Fehler bei der Auswertung {}"
 
-#: src/Unit.cpp:154
+#: src/Unit.cpp:161
 #, c-format
 msgid "The file %s had errors %s (please check console output)"
 msgstr ""
 "Die Datei %s hatte Fehler %s (bitte prüfen sie ggf. die Konsolenausgabe)"
 
-#: src/Unit.cpp:158
+#: src/Unit.cpp:165
 #, c-format
 msgid "A usable %s was not found searching %s"
 msgstr "Eine verwendbare %s Datei wurde nicht gefunden, gesucht %s"
