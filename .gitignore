@@ -71,3 +71,6 @@
 /test/.save/
 /srcLib/.save/
 /test/.deps/
+/test/lin_test.trs
+/test/lin_test
+/test/lin_test.log

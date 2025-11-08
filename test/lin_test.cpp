@@ -23,7 +23,7 @@
 #include <cmath>
 
 #include "Matrix.hpp"
-#include "Quad.hpp"
+#include "QuadraticEquation.hpp"
 
 static constexpr auto VALUE_LIMIT{0.000001};
 
@@ -59,7 +59,7 @@ check_gaus()
 static bool
 check_quad()
 {
-    Quad quad;
+    psc::math::QuadraticEquation<double> quad;
     quad.setA(2.0);
     quad.setB(4.0);
     quad.setC(-4.0);

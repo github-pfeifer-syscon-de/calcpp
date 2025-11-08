@@ -1,6 +1,6 @@
 /* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
 /*
- * Copyright (C) 2024 RPf 
+ * Copyright (C) 2024 RPf
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@
 #include <glibmm.h>
 
 
-namespace psc {
-namespace mat {
+namespace psc::mat
+{
 
 template<typename T>
 class Matrix
@@ -149,5 +149,6 @@ public:
 
 };
 
-} /* namespace mat */
-} /* namespace psc */
+
+} /* namespace psc::mat */
+

@@ -1,4 +1,4 @@
-/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4; coding: utf-8; -*-  */
+/* -*- Mode: c++; c-basic-offset: 4; tab-width: 4;  coding: utf-8; -*-  */
 /*
  * Copyright (C) 2025 RPf
  *
@@ -16,51 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cmath>
+#pragma once
 
-#include "Quad.hpp"
-
-
-void
-Quad::setA(double a)
+namespace psc::math
 {
-    this->a = a;
-}
 
-void
-Quad::setB(double b)
-{
-    this->b = b;
-}
 
-void
-Quad::setC(double c)
+template<typename T>
+class QuadraticEquation
 {
-    this->c = c;
-}
+public:
+    QuadraticEquation() = default;
+    explicit QuadraticEquation(const QuadraticEquation& orig) = delete;
+    virtual ~QuadraticEquation() = default;
 
-double
-Quad::getInnerRoot()
-{
-    return b * b - 4.0 * a * c;
-}
+    void setA(T a);
+    void setB(T b);
+    void setC(T c);
+    T getInnerRoot();
+    bool isRootPositive();
+    T getX1();
+    T getX2();
+protected:
+    T a{};
+    T b{};
+    T c{};
+};
 
-bool
-Quad::isRootPositive()
-{
-    return getInnerRoot() >= 0.0;
-}
-
-double
-Quad::getX1()
-{
-    double sqrt = std::sqrt(getInnerRoot());
-    return (- b + sqrt) / (2.0 * a);
-}
-
-double
-Quad::getX2()
-{
-    double sqrt = std::sqrt(getInnerRoot());
-    return (- b - sqrt) / (2.0 * a);
-}
+} /* end namespace psc::math */

@@ -32,7 +32,7 @@ calc_test_SOURCES = \
 
 lin_test_LDADD =  \
 	../src/calcpp-Matrix.o \
-	../src/calcpp-Quad.o \
+	../src/calcpp-QuadraticEquation.o \
 	$(GENERICIMG_LIBS)
 
 lin_test_SOURCES = \

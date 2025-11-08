@@ -25,7 +25,7 @@
 #include <StringUtils.hpp>
 
 #include "QuadDialog.hpp"
-#include "Quad.hpp"
+#include "QuadraticEquation.hpp"
 
 
 QuadDialog::QuadDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, CalcppWin* parent)
@@ -50,7 +50,7 @@ QuadDialog::evaluate()
         //std::cout << "a " << a
         //          << " b " << b
         //          << " c " << c << std::endl;
-        Quad quad;
+        psc::math::QuadraticEquation<double> quad;
         quad.setA(a);
         quad.setB(b);
         quad.setC(c);
