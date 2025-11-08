@@ -21,6 +21,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <random>
 
 #include "Matrix.hpp"
 #include "QuadraticEquation.hpp"
@@ -68,8 +69,8 @@ check_quad()
         return false;
     }
     double sqrt3 = std::sqrt(3.0);
-    double expX1 = -1.0 - sqrt3;
-    double expX2 = -1.0 + sqrt3;
+    double expX1 = -1.0 + sqrt3;
+    double expX2 = -1.0 - sqrt3;
     if (std::abs(quad.getX1() - expX1) > VALUE_LIMIT
      || std::abs(quad.getX2() - expX2) > VALUE_LIMIT) {
         std::cout << "Expecting x1 " << expX1 << " x2 " << expX2 << std::endl;
@@ -79,6 +80,43 @@ check_quad()
     return true;
 }
 
+
+static bool
+check_quad_rng(size_t cnt)
+{
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    psc::math::QuadraticEquation<double> quad;
+
+    for (size_t i = 0; i < cnt; ++i) {
+        auto a = static_cast<double>(rng() % 10000l) / static_cast<double>(rng() % 1000l);
+        auto b = static_cast<double>(rng() % 10000l) / static_cast<double>(rng() % 1000l);
+        auto x = static_cast<double>(rng() % 10000l) / static_cast<double>(rng() % 1000l);
+        auto c = -(a * x * x + b * x);
+        quad.setA(a);
+        quad.setB(b);
+        quad.setC(c);
+        if (std::abs(quad.getX1() - x) > VALUE_LIMIT) {
+            std::cout << "not expected x for a " << a
+                      << " b " << b
+                      << " c " << c
+                      << " x " << x
+                      << " x1 " << quad.getX1() << std::endl;
+            return false;
+        }
+        auto tc = -(a * quad.getX2() * quad.getX2() + b * quad.getX2());
+        if (std::abs(tc - c) > VALUE_LIMIT) {
+            std::cout << "not expected c for a " << a
+                      << " b " << b
+                      << " c " << c
+                      << " x " << x
+                      << " tc " << tc
+                      << " x2 " << quad.getX2() << std::endl;
+            return false;
+        }
+    }
+    return true;
+}
 /*
  *
  */
@@ -89,6 +127,12 @@ int main(int argc, char** argv)
 
     if (!check_gaus()) {
         return 1;
+    }
+    if (!check_quad()) {
+        return 2;
+    }
+    if (!check_quad_rng(1000)) {
+        return 3;
     }
 
     return 0;
