@@ -80,6 +80,11 @@ check_quad()
     return true;
 }
 
+static double
+random(std::mt19937& rng)
+{
+    return static_cast<double>(rng() % 10000u) / static_cast<double>(rng() % 1000u + 1u);
+}
 
 static bool
 check_quad_rng(size_t cnt)
@@ -89,9 +94,9 @@ check_quad_rng(size_t cnt)
     psc::math::QuadraticEquation<double> quad;
 
     for (size_t i = 0; i < cnt; ++i) {
-        auto a = static_cast<double>(rng() % 10000l) / static_cast<double>(rng() % 1000l);
-        auto b = static_cast<double>(rng() % 10000l) / static_cast<double>(rng() % 1000l);
-        auto x = static_cast<double>(rng() % 10000l) / static_cast<double>(rng() % 1000l);
+        auto a = random(rng);
+        auto b = random(rng);
+        auto x = random(rng);
         auto c = -(a * x * x + b * x);
         quad.setA(a);
         quad.setB(b);
@@ -104,14 +109,15 @@ check_quad_rng(size_t cnt)
                       << " x1 " << quad.getX1() << std::endl;
             return false;
         }
-        auto tc = -(a * quad.getX2() * quad.getX2() + b * quad.getX2());
+        auto x2 = quad.getX2();
+        auto tc = -(a * x2 * x2 + b * x2);
         if (std::abs(tc - c) > VALUE_LIMIT) {
             std::cout << "not expected c for a " << a
                       << " b " << b
                       << " c " << c
                       << " x " << x
                       << " tc " << tc
-                      << " x2 " << quad.getX2() << std::endl;
+                      << " x2 " << x2 << std::endl;
             return false;
         }
     }
