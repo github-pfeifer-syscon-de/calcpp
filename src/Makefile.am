@@ -61,6 +61,8 @@ calcpp_SOURCES = resources.c \
 	UnitDialog.hpp \
 	PlotDialog.cpp \
 	PlotDialog.hpp \
+	Quad.cpp \
+	Quad.hpp \
 	PrefDialog.cpp \
 	PrefDialog.hpp
 

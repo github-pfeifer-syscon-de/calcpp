@@ -1,5 +1,7 @@
 
-TESTS = calc_test
+TESTS = calc_test lin_test
+
+check_PROGRAMS = calc_test lin_test
 
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
@@ -13,7 +15,9 @@ AM_CFLAGS= \
 	-Wall -Wpedantic
 
 AM_CXXFLAGS = \
-	-Wall -Wpedantic
+	-Wall \
+	-Wconversion \
+	-Wpedantic
 
 AM_LDFLAGS =
 
@@ -23,9 +27,13 @@ calc_test_LDADD =  \
 	../src/calcpp-NumDialog.o \
 	$(GENERICIMG_LIBS)
 
-check_PROGRAMS = calc_test
-
 calc_test_SOURCES = \
     calc_test.cpp
 
+lin_test_LDADD =  \
+	../src/calcpp-Matrix.o \
+	../src/calcpp-Quad.o \
+	$(GENERICIMG_LIBS)
 
+lin_test_SOURCES = \
+    lin_test.cpp

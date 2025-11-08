@@ -25,6 +25,7 @@
 #include <StringUtils.hpp>
 
 #include "QuadDialog.hpp"
+#include "Quad.hpp"
 
 
 QuadDialog::QuadDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, CalcppWin* parent)
@@ -49,18 +50,18 @@ QuadDialog::evaluate()
         //std::cout << "a " << a
         //          << " b " << b
         //          << " c " << c << std::endl;
-        double insqrt = b * b - 4.0 * a * c;
-        if (insqrt >= 0) {
-            double sqrt = std::sqrt(insqrt);
-            double x1 = (- b + sqrt) / (2.0 * a);
-            double x2 = (- b - sqrt) / (2.0 * a);
-            //std::cout << "x1 " << x1
-            //          << " x2 " << x2 << std::endl;
-            text1 = format(x1);
-            text2 = format(x2);
+        Quad quad;
+        quad.setA(a);
+        quad.setB(b);
+        quad.setC(c);
+        if (quad.isRootPositive()) {
+            //std::cout << "x1 " << quad.getX1()
+            //          << " x2 " << quad.getX2() << std::endl;
+            text1 = format(quad.getX1());
+            text2 = format(quad.getX2());
         }
         else {
-            auto fmtd = format(insqrt);
+            auto fmtd = format(quad.getInnerRoot());
             m_parent->show_error(
                 psc::fmt::vformat(
                   _("No result (square-root of negative number {} is undefined)")
