@@ -24,69 +24,35 @@
 namespace psc::mat
 {
 
-
 template<typename T>
-MatrixV<T>::MatrixV(size_t rows)
-: MatrixV(rows, rows+1)  // create default layout for system of linear equations
-{
-}
-
-template<typename T>
-MatrixV<T>::MatrixV(size_t rows, size_t cols)
-: m_rows{rows}
+Row<T>::Row(T* ptr, size_t cols)
+: m_ptr{ptr}
 , m_cols{cols}
-, m_elem(rows * cols, static_cast<T>(0))
 {
 }
 
-template<typename T> T*
-MatrixV<T>::operator[](size_t row)
+template<typename T> T&
+Row<T>::operator[](size_t col)
 {
-    if (row >= m_rows) {
+    if (col >= m_cols) {
         throw std::invalid_argument(psc::fmt::vformat(
-                _("Matrix row index {} exceeds limit {}")
-                , psc::fmt::make_format_args(row, m_rows)));
+                _("Row column index {} exceeds limit {}")
+                , psc::fmt::make_format_args(col, m_cols)));
     }
-    return &m_elem[row * m_cols];
+    return m_ptr[col];
 }
 
-template<typename T> void
-MatrixV<T>::swapRow(size_t a, size_t b)
+template<typename T> const T
+Row<T>::operator[](size_t col) const
 {
-    auto ra = operator[](a);
-    auto rb = operator[](b);
-    for (size_t l = 0; l < m_cols; ++l) {
-        std::swap(ra[l], rb[l]);
+    if (col >= m_cols) {
+        throw std::invalid_argument(psc::fmt::vformat(
+                _("Row column index {} exceeds limit {}")
+                , psc::fmt::make_format_args(col, m_cols)));
     }
+    return m_ptr[col];
 }
 
-template<typename T> T
-MatrixV<T>::get(size_t row, size_t col)
-{
-    return m_elem[row * m_cols + col];
-}
-
-template<typename T> void
-MatrixV<T>::set(size_t row, size_t col, T val)
-{
-    m_elem[row * m_cols + col] = val;
-}
-
-template<typename T> size_t
-MatrixV<T>::getColumns()
-{
-    return m_cols;
-}
-
-template<typename T> size_t
-MatrixV<T>::getRows()
-{
-    return m_rows;
-}
-
-// should be useful with these
-template class MatrixV<double>;
-template class MatrixV<float>;
 
 template<typename T>
 MatrixU<T>::MatrixU(size_t rows)
@@ -103,7 +69,7 @@ MatrixU<T>::MatrixU(size_t rows, size_t cols)
     //make_unique cares for init :)
 }
 
-template<typename T> T*
+template<typename T> Row<T>
 MatrixU<T>::operator[](size_t row)
 {
     if (row >= m_rows) {
@@ -111,8 +77,25 @@ MatrixU<T>::operator[](size_t row)
                 _("Matrix row index {} exceeds limit {}")
                 , psc::fmt::make_format_args(row, m_rows)));
     }
-    return &m_elem[row * m_cols];
+    return Row(&m_elem[row * m_cols], m_cols);
 }
+
+template<typename T> T&
+MatrixU<T>::operator()(size_t row, size_t col)
+{
+    if (row >= m_rows) {
+        throw std::invalid_argument(psc::fmt::vformat(
+                _("Matrix row index {} exceeds limit {}")
+                , psc::fmt::make_format_args(row, m_rows)));
+    }
+    if (col >= m_cols) {
+        throw std::invalid_argument(psc::fmt::vformat(
+                _("Matrix column index {} exceeds limit {}")
+                , psc::fmt::make_format_args(col, m_cols)));
+    }
+    return m_elem[row * m_cols + col];
+}
+
 
 template<typename T> T
 MatrixU<T>::get(size_t row, size_t col)
@@ -167,20 +150,20 @@ Gauss::eliminate(Matrix<double>& m)
     }
     // following wikipedia to avoid numeric instability (but may still have issues, but it is as far as it is feasible at the moment)
     // https://en.wikipedia.org/wiki/Gaussian_elimination
-	size_t h = 0; /* Initialization of the pivot row */
-	size_t k = 0; /* Initialization of the pivot column */
+	size_t h{}; /* Initialization of the pivot row */
+	size_t k{}; /* Initialization of the pivot column */
 	while (h < m.getRows() && k < m.getColumns()) {
 	    /* Find the k-th pivot: */
-	    size_t i_max = 0;
-	    double max = 0.0;
+	    size_t i_max{};
+	    double max{};
         for (size_t i = h; i < m.getRows(); ++i) {
-            double abs = std::abs(m[i][k]);
+            double abs = std::abs(m(i, k));
             if (abs > max) {
                 max = abs;
                 i_max = i;
             }
 	    }
-	    if (m[i_max][k] == 0.0) {
+	    if (m(i_max, k) == 0.0) {
             // as we decided to provied the exact number of cols,rows so they should be <> 0
             throw std::invalid_argument(psc::fmt::vformat(
                     _("Value for col {} row {} is 0, matrix not solveable.")
@@ -191,12 +174,12 @@ Gauss::eliminate(Matrix<double>& m)
             m.swapRow(h, i_max);
             /* Do for all rows below pivot: */
             for (size_t i = h + 1; i < m.getRows(); ++i) {
-                double f = m[i][k] / m[h][k];   // mat[i][k] might be 0, so f will also, continue and get Nan on output?
+                auto f = m(i, k) / m(h, k);   // mat[i][k] might be 0, so f will also, continue and get Nan on output?
                 /* Fill with zeros the lower part of pivot column: */
-                m[i][k] = 0.0;
+                m(i, k) = 0.0;
                 /* Do for all remaining elements in current row: */
                 for (size_t j = k + 1; j < m.getColumns(); ++j) {
-                    m[i][j] = m[i][j] - m[h][j] * f;
+                    m(i, j) = m(i, j) - m(h, j) * f;
                 }
             }
             ++h;    /* Increase pivot row and column */
@@ -207,11 +190,11 @@ Gauss::eliminate(Matrix<double>& m)
 	for (size_t row = m.getRows()-1; row < m.getRows(); --row) {  // the condition would be >= 0 but as this is unsigned expect overflow
 	    double sum = 0.0;
 	    for (size_t col = row+1; col < m.getRows(); ++col) {
-            sum += m[row][col] * m[col][m.getColumns()-1];
-            m[row][col] = 0.0;	// as we canceling these out
+            sum += m(row, col) * m(col, m.getColumns()-1);
+            m(row,col) = 0.0;	// as we canceling these out
 	    }
-	    m[row][m.getColumns()-1] =  (m[row][m.getColumns()-1] - sum) / m[row][row];
-	    m[row][row] = 1.0;
+	    m(row, m.getColumns()-1) =  (m(row, m.getColumns()-1) - sum) / m(row, row);
+	    m(row, row) = 1.0;
 	}
 }
 

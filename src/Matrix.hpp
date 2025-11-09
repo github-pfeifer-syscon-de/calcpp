@@ -24,9 +24,29 @@
 #include <stdexcept>
 #include <glibmm.h>
 
+#include <span>
 
 namespace psc::mat
 {
+
+
+// this is basically a std::span
+//   but using exceptions in case of a out of range access
+template<typename T>
+class Row
+{
+public:
+    Row(T* ptr, size_t cols);
+    ~Row() = default;
+
+    T& operator[](size_t col);  // rhs
+    const T operator[](size_t col) const;  // lhs
+
+protected:
+    T* m_ptr;
+    size_t m_cols;
+};
+
 
 template<typename T>
 class Matrix
@@ -34,7 +54,10 @@ class Matrix
 public:
     virtual ~Matrix() = default;
 
-    virtual T* operator[](size_t row) = 0;
+    // with c++23 we may use operator[](size_t row, size_t col)
+    virtual Row<T> operator[](size_t row) = 0;
+    // compound (fortran) style access
+    virtual T& operator()(size_t row, size_t col) = 0;
     virtual T get(size_t row, size_t col) = 0;
     virtual void set(size_t row, size_t col, T val) = 0;
     virtual size_t getColumns() = 0;
@@ -42,31 +65,6 @@ public:
     virtual void swapRow(size_t a, size_t b) = 0;
 protected:
 private:
-};
-
-
-// allows compact storage
-template<typename T>
-class MatrixV
-: public Matrix<T>
-{
-public:
-    MatrixV(size_t rows);
-    MatrixV(size_t rows, size_t cols);
-    explicit MatrixV(const MatrixV& orig) = delete;
-    virtual ~MatrixV() = default;
-
-    T* operator[](size_t row);
-    T get(size_t row, size_t col);
-    void set(size_t row, size_t col, T val);
-    size_t getColumns();
-    size_t getRows();
-    void swapRow(size_t a, size_t b);
-protected:
-private:
-    size_t m_rows;
-    size_t m_cols;
-    std::vector<T> m_elem;
 };
 
 
@@ -81,12 +79,13 @@ public:
     explicit MatrixU(const MatrixU& orig) = delete;
     virtual ~MatrixU() = default;
 
-    T* operator[](size_t row);
-    T get(size_t row, size_t col);
-    void set(size_t row, size_t col, T val);
-    size_t getColumns();
-    size_t getRows();
-    void swapRow(size_t a, size_t b);
+    Row<T> operator[](size_t row) override;
+    T& operator()(size_t row, size_t col) override;
+    T get(size_t row, size_t col) override;
+    void set(size_t row, size_t col, T val) override;
+    size_t getColumns() override;
+    size_t getRows() override;
+    void swapRow(size_t a, size_t b) override;
 
 protected:
 private:

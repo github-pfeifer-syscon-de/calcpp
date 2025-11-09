@@ -42,7 +42,7 @@ check_gauss()
         psc::mat::Gauss::eliminate(m);
         if (std::abs(m[0][rows] - 2.0) > VALUE_LIMIT
          || std::abs(m[1][rows] - 3.0) > VALUE_LIMIT
-         || std::abs(m[2][rows] - -1.0) > VALUE_LIMIT) {
+         || std::abs(m[2][rows] - (-1.0)) > VALUE_LIMIT) {
             std::cout << "expecting 2,3,-1 got:" << std::endl;
             for (int row = 0; row < static_cast<int32_t>(m.getRows()); ++row) {
                 std::cout << "val[" << row <<  "] = " << m[row][rows] << std::endl;
@@ -56,6 +56,30 @@ check_gauss()
     }
     return false;
 }
+
+static bool
+check_matrix()
+{
+    psc::mat::MatrixU<double> m(3);
+    m(1, 1) = 1.234;
+    if (m[1][1] != 1.234) {
+        std::cout << "check_matrix exp " << 1.234 << " got " << m[1][1] << std::endl;
+        return false;
+    }
+    try {
+        size_t col{4};
+        auto a = m[1][col];
+        if (col >= m.getColumns()) {
+            std::cout << "The access for the element 4 beyond limit did succeed!" << std::endl;
+            return false;
+        }
+    }
+    catch (const std::exception& exc) {   // expected exception
+        std::cout << "Exception " << exc.what() << std::endl;
+    }
+    return true;
+}
+
 
 static bool
 check_quad()
@@ -183,6 +207,9 @@ int main(int argc, char** argv)
     }
     if (!check_gauss_rng(1000u)) {
         return 4;
+    }
+    if (!check_matrix()) {
+        return 5;
     }
 
     return 0;
