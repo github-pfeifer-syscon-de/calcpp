@@ -132,7 +132,7 @@ CalcppWin::build(const std::string& resName, std::function<void(const Glib::RefP
     catch (const Glib::Error &ex) {
         show_error(psc::fmt::vformat(
                 _("Unable to load {} error {}"),
-                  psc::fmt::make_format_args("char-dlg", resName)));
+                  psc::fmt::make_format_args(resName, ex)));
     }
 }
 
