@@ -37,10 +37,12 @@ class Row
 {
 public:
     Row(T* ptr, size_t cols);
+    explicit Row(const Row& row) = delete;  // allow this to be just temporary
     ~Row() = default;
 
     T& operator[](size_t col);  // rhs
-    const T operator[](size_t col) const;  // lhs
+    T operator[](size_t col) const;  // lhs
+    size_t getColumns();
 
 protected:
     T* m_ptr;

@@ -42,7 +42,7 @@ Row<T>::operator[](size_t col)
     return m_ptr[col];
 }
 
-template<typename T> const T
+template<typename T> T
 Row<T>::operator[](size_t col) const
 {
     if (col >= m_cols) {
@@ -53,6 +53,11 @@ Row<T>::operator[](size_t col) const
     return m_ptr[col];
 }
 
+template<typename T> size_t
+Row<T>::getColumns()
+{
+    return m_cols;
+}
 
 template<typename T>
 MatrixU<T>::MatrixU(size_t rows)

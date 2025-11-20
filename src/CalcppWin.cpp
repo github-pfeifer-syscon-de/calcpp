@@ -121,6 +121,20 @@ CalcppWin::CalcppWin(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
     show_all_children();
 }
 
+void
+CalcppWin::build(const std::string& resName, std::function<void(const Glib::RefPtr<Gtk::Builder>&)> function)
+{
+    try {
+        auto builder = Gtk::Builder::create();
+        builder->add_from_resource(m_application->get_resource_base_path() + "/" + resName);
+        function(builder);
+    }
+    catch (const Glib::Error &ex) {
+        show_error(psc::fmt::vformat(
+                _("Unable to load {} error {}"),
+                  psc::fmt::make_format_args("char-dlg", resName)));
+    }
+}
 
 void
 CalcppWin::activate_actions()
@@ -132,20 +146,13 @@ CalcppWin::activate_actions()
     char_action->signal_activate().connect (
         [this] (const Glib::VariantBase& value)
 		{
-			try {
-				auto builder = Gtk::Builder::create();
-				CharDialog* charDialog;
-				builder->add_from_resource(m_application->get_resource_base_path() + "/char-dlg.ui");
+            build("char-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
+                CharDialog* charDialog;
 				builder->get_widget_derived("CharDialog", charDialog, this, m_settings);
 				charDialog->run();
                 charDialog->hide();
 				delete charDialog;  // as this is a toplevel component shoud destroy -> works
-			}
-			catch (const Glib::Error &ex) {
-				show_error(psc::fmt::vformat(
-                        _("Unable to load {} error {}"),
-                          psc::fmt::make_format_args("char-dlg", ex)));
-			}
+            });
 		});
     add_action(char_action);
 
@@ -153,19 +160,12 @@ CalcppWin::activate_actions()
     calendar_action->signal_activate().connect(
         [this]  (const Glib::VariantBase& value)
 		{
-			try {
-				auto builder = Gtk::Builder::create();
-				DateDialog* dateDialog;
-				builder->add_from_resource(m_application->get_resource_base_path() + "/date-dlg.ui");
+            build("date-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
+                DateDialog* dateDialog;
 				builder->get_widget_derived("DateDialog", dateDialog, this, m_settings);
 				dateDialog->run();
 				delete dateDialog;  // as this is a toplevel component shoud destroy -> works
-			}
-			catch (const Glib::Error &ex) {
-                show_error(psc::fmt::vformat(
-                        _("Unable to load {} error {}"),
-                          psc::fmt::make_format_args("date-dlg",  ex)));
-			}
+            });
 		});
     add_action(calendar_action);
 
@@ -173,19 +173,12 @@ CalcppWin::activate_actions()
     plot_action->signal_activate().connect(
         [this]  (const Glib::VariantBase& value)
 		{
-			try {
-				auto builder = Gtk::Builder::create();
-				PlotDialog* plotDialog;
-				builder->add_from_resource(m_application->get_resource_base_path() + "/plot-dlg.ui");
+            build("plot-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
+                PlotDialog* plotDialog;
 				builder->get_widget_derived("PlotDialog", plotDialog, m_evalContext);
 				plotDialog->run();
 				delete plotDialog;  // as this is a toplevel component shoud destroy -> works
-			}
-			catch (const Glib::Error &ex) {
-                show_error(psc::fmt::vformat(
-                        _("Unable to load {} error {}"),
-                          psc::fmt::make_format_args("plot-dlg",  ex)));
-			}
+            });
 		});
     add_action(plot_action);
 
@@ -193,10 +186,8 @@ CalcppWin::activate_actions()
     unit_action->signal_activate().connect(
         [this]  (const Glib::VariantBase& value)
 		{
-			try {
-				auto builder = Gtk::Builder::create();
-				UnitDialog* unitDialog;
-				builder->add_from_resource(m_application->get_resource_base_path() + "/unit-dlg.ui");
+            build("unit-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
+                UnitDialog* unitDialog;
 				builder->get_widget_derived("UnitDialog", unitDialog, this);
 				int res = unitDialog->run();
                 if (res == Gtk::RESPONSE_OK) {
@@ -206,12 +197,7 @@ CalcppWin::activate_actions()
                     unitDialog->save();
                 }
 				delete unitDialog;  // as this is a toplevel component shoud destroy -> works
-			}
-			catch (const Glib::Error &ex) {
-                show_error(psc::fmt::vformat(
-                        _("Unable to load {} error {}"),
-                          psc::fmt::make_format_args("plot-dlg",  ex)));
-			}
+            });
 		});
     add_action(unit_action);
 
@@ -219,19 +205,13 @@ CalcppWin::activate_actions()
     pref_action->signal_activate().connect(
         [this]  (const Glib::VariantBase& value)
 		{
-			try {
-				auto builder = Gtk::Builder::create();
-				PrefDialog* prefDialog;
-				builder->add_from_resource(m_application->get_resource_base_path() + "/pref-dlg.ui");
+            build("pref-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
+                PrefDialog* prefDialog;
 				builder->get_widget_derived("PrefDialog", prefDialog, this, m_settings);
 				prefDialog->run();
 				delete prefDialog;  // as this is a toplevel component shoud destroy -> works
-			}
-			catch (const Glib::Error &ex) {
-                show_error(psc::fmt::vformat(
-                        _("Unable to load {} error {}"),
-                          psc::fmt::make_format_args("pref-dlg", ex)));
-			}
+
+            });
 		});
     add_action(pref_action);
 
@@ -277,20 +257,13 @@ CalcppWin::activate_actions()
     quad_action->signal_activate().connect(
         [this] (const Glib::VariantBase& value)
 		{
-			try {
-				auto builder = Gtk::Builder::create();
+            build("quad-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
 				QuadDialog* quadDialog;
-				builder->add_from_resource(m_application->get_resource_base_path() + "/quad-dlg.ui");
 				builder->get_widget_derived("QuadDialog", quadDialog, this);
 				quadDialog->run();
                 quadDialog->hide();
 				delete quadDialog;
-			}
-			catch (const Glib::Error &ex) {
-                show_error(psc::fmt::vformat(
-                        _("Unable to load {} error {}"),
-                          psc::fmt::make_format_args("quad-dlg", ex)));
-			}
+            });
 		});
     add_action(quad_action);
 
@@ -298,20 +271,13 @@ CalcppWin::activate_actions()
     gauss_action->signal_activate().connect(
         [this] (const Glib::VariantBase& value)
 		{
-			try {
-				auto builder = Gtk::Builder::create();
+            build("gauss-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
 				GaussDialog* gaussDialog;
-				builder->add_from_resource(m_application->get_resource_base_path() + "/gauss-dlg.ui");
 				builder->get_widget_derived("GaussDialog", gaussDialog, this);
 				gaussDialog->run();
                 gaussDialog->hide();
 				delete gaussDialog;
-			}
-			catch (const Glib::Error &ex) {
-                show_error(psc::fmt::vformat(
-                        _("Unable to load {} error {}"),
-                          psc::fmt::make_format_args("gauss-dlg", ex)));
-			}
+            });
 		});
     add_action(gauss_action);
 
@@ -319,20 +285,13 @@ CalcppWin::activate_actions()
     numbase_action->signal_activate().connect(
         [this] (const Glib::VariantBase& value)
 		{
-			try {
-				auto builder = Gtk::Builder::create();
-				NumBaseDialog* numBaseDialog;
-				builder->add_from_resource(m_application->get_resource_base_path() + "/num-dlg.ui");
+            build("num-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
+                NumBaseDialog* numBaseDialog;
 				builder->get_widget_derived("NumDialog", numBaseDialog, this);
 				numBaseDialog->run();
                 numBaseDialog->hide();
 				delete numBaseDialog;
-			}
-			catch (const Glib::Error &ex) {
-                show_error(psc::fmt::vformat(
-                        _("Unable to load {} error {}"),
-                          psc::fmt::make_format_args("num-dlg", ex)));
-			}
+            });
 		});
     add_action(numbase_action);
 }
