@@ -122,7 +122,8 @@ Glib::ustring CalcppApp::getReadmeText()
 }
 
 void
-CalcppApp::on_action_help() {
+CalcppApp::on_action_help()
+{
     auto builder = Gtk::Builder::create();
     try {
         builder->add_from_resource(get_resource_base_path() + "/help-dlg.ui");

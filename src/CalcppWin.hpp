@@ -48,8 +48,12 @@ public:
     Glib::RefPtr<Gio::Settings> getSettings();
 protected:
     void insertResult(const Glib::ustring& res);
-    void build(const std::string& resName, std::function<void(const Glib::RefPtr<Gtk::Builder>&)> function);
 
+    template<typename T, typename...Args>
+    void build(const std::string& resName
+             , const std::string& compName
+             , std::function<void(T*)> function
+             , Args&&... args);
 private:
     void load_config();
     void save_config();

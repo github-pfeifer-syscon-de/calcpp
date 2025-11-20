@@ -121,13 +121,20 @@ CalcppWin::CalcppWin(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
     show_all_children();
 }
 
-void
-CalcppWin::build(const std::string& resName, std::function<void(const Glib::RefPtr<Gtk::Builder>&)> function)
+template<typename T, typename...Args> void
+CalcppWin::build(const std::string& resName
+          , const std::string& compName
+          , std::function<void(T*)> function
+          , Args&&... args)
 {
     try {
         auto builder = Gtk::Builder::create();
         builder->add_from_resource(m_application->get_resource_base_path() + "/" + resName);
-        function(builder);
+        T* tDialog;
+        builder->get_widget_derived(compName, tDialog, std::forward<Args>(args)...);
+        function(tDialog);
+        tDialog->hide();
+        delete tDialog;  // as this is a toplevel component shoud destroy -> works
     }
     catch (const Glib::Error &ex) {
         show_error(psc::fmt::vformat(
@@ -146,13 +153,9 @@ CalcppWin::activate_actions()
     char_action->signal_activate().connect (
         [this] (const Glib::VariantBase& value)
 		{
-            build("char-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
-                CharDialog* charDialog;
-				builder->get_widget_derived("CharDialog", charDialog, this, m_settings);
-				charDialog->run();
-                charDialog->hide();
-				delete charDialog;  // as this is a toplevel component shoud destroy -> works
-            });
+            build<CharDialog>("char-dlg.ui", "CharDialog", [this] (CharDialog* charDialog) {
+            	charDialog->run();
+            }, this, m_settings);
 		});
     add_action(char_action);
 
@@ -160,12 +163,9 @@ CalcppWin::activate_actions()
     calendar_action->signal_activate().connect(
         [this]  (const Glib::VariantBase& value)
 		{
-            build("date-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
-                DateDialog* dateDialog;
-				builder->get_widget_derived("DateDialog", dateDialog, this, m_settings);
+            build<DateDialog>("date-dlg.ui", "DateDialog", [this] (DateDialog* dateDialog) {
 				dateDialog->run();
-				delete dateDialog;  // as this is a toplevel component shoud destroy -> works
-            });
+            }, this, m_settings);
 		});
     add_action(calendar_action);
 
@@ -173,12 +173,9 @@ CalcppWin::activate_actions()
     plot_action->signal_activate().connect(
         [this]  (const Glib::VariantBase& value)
 		{
-            build("plot-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
-                PlotDialog* plotDialog;
-				builder->get_widget_derived("PlotDialog", plotDialog, m_evalContext);
+            build<PlotDialog>("plot-dlg.ui", "PlotDialog", [this] (PlotDialog* plotDialog) {
 				plotDialog->run();
-				delete plotDialog;  // as this is a toplevel component shoud destroy -> works
-            });
+            }, m_evalContext);
 		});
     add_action(plot_action);
 
@@ -186,9 +183,7 @@ CalcppWin::activate_actions()
     unit_action->signal_activate().connect(
         [this]  (const Glib::VariantBase& value)
 		{
-            build("unit-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
-                UnitDialog* unitDialog;
-				builder->get_widget_derived("UnitDialog", unitDialog, this);
+            build<UnitDialog>("unit-dlg.ui", "UnitDialog", [this] (UnitDialog* unitDialog) {
 				int res = unitDialog->run();
                 if (res == Gtk::RESPONSE_OK) {
                     auto result = unitDialog->getValue();
@@ -196,8 +191,7 @@ CalcppWin::activate_actions()
                     insertResult(result);
                     unitDialog->save();
                 }
-				delete unitDialog;  // as this is a toplevel component shoud destroy -> works
-            });
+            }, this);
 		});
     add_action(unit_action);
 
@@ -205,13 +199,9 @@ CalcppWin::activate_actions()
     pref_action->signal_activate().connect(
         [this]  (const Glib::VariantBase& value)
 		{
-            build("pref-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
-                PrefDialog* prefDialog;
-				builder->get_widget_derived("PrefDialog", prefDialog, this, m_settings);
+            build<PrefDialog>("pref-dlg.ui", "PrefDialog", [this] (PrefDialog* prefDialog) {
 				prefDialog->run();
-				delete prefDialog;  // as this is a toplevel component shoud destroy -> works
-
-            });
+            }, this, m_settings);
 		});
     add_action(pref_action);
 
@@ -257,13 +247,9 @@ CalcppWin::activate_actions()
     quad_action->signal_activate().connect(
         [this] (const Glib::VariantBase& value)
 		{
-            build("quad-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
-				QuadDialog* quadDialog;
-				builder->get_widget_derived("QuadDialog", quadDialog, this);
+            build<QuadDialog>("quad-dlg.ui", "QuadDialog", [this] (QuadDialog* quadDialog) {
 				quadDialog->run();
-                quadDialog->hide();
-				delete quadDialog;
-            });
+            }, this);
 		});
     add_action(quad_action);
 
@@ -271,13 +257,9 @@ CalcppWin::activate_actions()
     gauss_action->signal_activate().connect(
         [this] (const Glib::VariantBase& value)
 		{
-            build("gauss-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
-				GaussDialog* gaussDialog;
-				builder->get_widget_derived("GaussDialog", gaussDialog, this);
+            build<GaussDialog>("gauss-dlg.ui", "GaussDialog", [this] (GaussDialog* gaussDialog) {
 				gaussDialog->run();
-                gaussDialog->hide();
-				delete gaussDialog;
-            });
+            }, this);
 		});
     add_action(gauss_action);
 
@@ -285,13 +267,9 @@ CalcppWin::activate_actions()
     numbase_action->signal_activate().connect(
         [this] (const Glib::VariantBase& value)
 		{
-            build("num-dlg.ui", [this] (const Glib::RefPtr<Gtk::Builder>& builder) {
-                NumBaseDialog* numBaseDialog;
-				builder->get_widget_derived("NumDialog", numBaseDialog, this);
-				numBaseDialog->run();
-                numBaseDialog->hide();
-				delete numBaseDialog;
-            });
+            build<NumBaseDialog>("num-dlg.ui", "NumDialog", [this] (NumBaseDialog* numBaseDialog) {
+            	numBaseDialog->run();
+            }, this);
 		});
     add_action(numbase_action);
 }
