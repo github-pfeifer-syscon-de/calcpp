@@ -62,23 +62,34 @@ CalcppApp::on_action_quit()
     quit();
 }
 
-void
-CalcppApp::on_action_about() {
-    auto builder = Gtk::Builder::create();
+template<typename T> void
+CalcppApp::build(const std::string& resName
+                , const std::string& compName
+                , std::function<void(const Glib::RefPtr<T>& dialog, const Glib::RefPtr<Gtk::Builder>& builder)> function)
+{
     try {
-        builder->add_from_resource(get_resource_base_path() + "/abt-dlg.ui");
-        auto dlgObj = builder->get_object("abt-dlg");
-        auto dialog = Glib::RefPtr<Gtk::AboutDialog>::cast_dynamic(dlgObj);
-        auto icon = Gdk::Pixbuf::create_from_resource(get_resource_base_path() + "/calcpp.png");
-        dialog->set_logo(icon);
+        auto builder = Gtk::Builder::create();
+        builder->add_from_resource(get_resource_base_path() + "/" + resName);
+        auto dlgObj = builder->get_object(compName);
+        auto dialog = Glib::RefPtr<T>::cast_dynamic(dlgObj);
+        function(dialog, builder);
         dialog->set_transient_for(*m_calcppAppWindow);
         dialog->show_all();
         dialog->run();
         dialog->hide();
     }
     catch (const Glib::Error &ex) {
-        std::cerr << "Unable to load about-dialog: " << ex.what() << std::endl;
+        std::cerr << "Unable to load " << resName << " error " << ex.what() << std::endl;
     }
+}
+
+void
+CalcppApp::on_action_about() {
+    build<Gtk::AboutDialog>("abt-dlg.ui", "abt-dlg", [this] (const Glib::RefPtr<Gtk::AboutDialog>& dialog, const Glib::RefPtr<Gtk::Builder>& builder)
+    {
+        auto icon = Gdk::Pixbuf::create_from_resource(get_resource_base_path() + "/calcpp.png");
+        dialog->set_logo(icon);
+    });
 }
 
 std::string
@@ -124,23 +135,12 @@ Glib::ustring CalcppApp::getReadmeText()
 void
 CalcppApp::on_action_help()
 {
-    auto builder = Gtk::Builder::create();
-    try {
-        builder->add_from_resource(get_resource_base_path() + "/help-dlg.ui");
-        auto dlgObj = builder->get_object("help-dlg");
-        auto dialog = Glib::RefPtr<Gtk::Dialog>::cast_dynamic(dlgObj);
+    build<Gtk::Dialog>("help-dlg.ui", "help-dlg", [this] (const Glib::RefPtr<Gtk::Dialog>& dialog, const Glib::RefPtr<Gtk::Builder>& builder)
+    {
         auto textObj = builder->get_object("text");
         auto text = Glib::RefPtr<Gtk::TextView>::cast_dynamic(textObj);
-
         text->get_buffer()->set_text(getReadmeText());
-        dialog->set_transient_for(*m_calcppAppWindow);
-        dialog->show_all();
-        dialog->run();
-        dialog->hide();
-    }
-    catch (const Glib::Error &ex) {
-        std::cerr << "Unable to load help-dlg: " << ex.what() << std::endl;
-    }
+    });
 }
 
 Glib::RefPtr<Gtk::Builder>

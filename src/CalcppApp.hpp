@@ -37,6 +37,12 @@ public:
     Glib::RefPtr<Gtk::Builder> get_menu_builder();
     Glib::ustring get_exec_path();
     Glib::ustring getReadmeText();
+protected:
+    template<typename T>
+    void build(const std::string& resName
+                , const std::string& compName
+                , std::function<void(const Glib::RefPtr<T>& dialog, const Glib::RefPtr<Gtk::Builder>& builder)> function);
+
 private:
     CalcppWin *m_calcppAppWindow;
     Glib::ustring m_exec;
