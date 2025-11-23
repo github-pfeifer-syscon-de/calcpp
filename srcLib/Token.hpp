@@ -74,6 +74,7 @@ private:
 };
 
 class NumberFormat;
+using PtrNumberFormat = std::shared_ptr<NumberFormat>;
 
 class NumToken : public Token
 {
@@ -82,7 +83,7 @@ public:
 
     static std::shared_ptr<NumToken> create(const Glib::ustring& val,
                                         Glib::ustring::iterator& i,
-                                        const NumberFormat* m_numberFormat);
+                                        const PtrNumberFormat& numberFormat);
     Glib::ustring show() override;
     double getValue();
 private:

@@ -21,8 +21,8 @@
 
 #include "AngleUnit.hpp"
 
-// static collection of all angle conversions  (as pointer as they live as long as the application)
-std::vector<AngleConversion *> AngleConversion::conversions;
+// static collection of all angle conversions  
+std::vector<PtrAngleConversion> AngleConversion::conversions;
 
 AngleConversion::AngleConversion(const char* id, const char* name)
 : m_id{id}
@@ -30,17 +30,14 @@ AngleConversion::AngleConversion(const char* id, const char* name)
 {
 }
 
-AngleConversion::~AngleConversion()
-{
-}
-
-std::vector<AngleConversion *>
+std::vector<PtrAngleConversion>
 AngleConversion::get_conversions()
 {
     if (conversions.empty()) {
-        conversions.push_back(new RadianConversion());
-        conversions.push_back(new DegreeConversion());
-        conversions.push_back(new GonConversion());
+        conversions.reserve(4);
+        conversions.emplace_back(std::move(std::make_shared<RadianConversion>()));
+        conversions.emplace_back(std::move(std::make_shared<DegreeConversion>()));
+        conversions.emplace_back(std::move(std::make_shared<GonConversion>()));
     }
     return conversions;
 }
@@ -57,11 +54,11 @@ AngleConversion::get_name()
     return m_name;
 }
 
-AngleConversion *
+PtrAngleConversion
 AngleConversion::get_conversion(Glib::ustring id)
 {
-    std::vector<AngleConversion *> convs = get_conversions();
-    for (AngleConversion* conv : convs) {
+    auto convs = get_conversions();
+    for (auto& conv : convs) {
         if (conv->get_id() == id)
             return conv;
     }

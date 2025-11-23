@@ -20,6 +20,8 @@
 #include <StringUtils.hpp>
 #include <psc_i18n.hpp>
 #include <Log.hpp>  // formatter Glib::Error
+#include <type_traits>
+
 
 #include "CalcppWin.hpp"
 #include "CalcppApp.hpp"
@@ -80,11 +82,11 @@ template <class T>
 class MenuBuilder {
 // assert not exactly needed, but nice to get a clear error for what base class this was build
 //   (and a java lower-bound reminiscent)
-static_assert(std::is_base_of<Named, T>::value, "Required template Named.");
+static_assert(std::is_base_of<Named, typename T::element_type>::value, "Requires template based on Named!");
 public:
-    void build(std::vector<T *> entries, Glib::RefPtr<Gio::Menu> section, Glib::ustring action)
+    void build(std::vector<T> entries, Glib::RefPtr<Gio::Menu> section, Glib::ustring action)
     {
-        for (T* named : entries) {
+        for (auto& named : entries) {
             //std::cout << "menu " << named->get_id() << std::endl;
             Glib::RefPtr<Gio::MenuItem> item = Gio::MenuItem::create(named->get_name(), action);
             item->set_action_and_target(action, Glib::Variant<Glib::ustring>::create(named->get_id()));
@@ -460,16 +462,16 @@ CalcppWin::build_menu()
     auto outFormObj = builder->get_object("output-format");
     auto outFormMenuItem = Glib::RefPtr<Gio::Menu>::cast_dynamic(outFormObj);
 
-    std::vector<OutputForm *> forms = OutputForm::get_forms();
-    MenuBuilder<OutputForm> outFormBuilder;
+    std::vector<PtrOutputForm> forms = OutputForm::get_forms();
+    MenuBuilder<PtrOutputForm> outFormBuilder;
     outFormBuilder.build(forms, outFormMenuItem, "win.output-format");
 
     // angle
     auto angleConvObj = builder->get_object("angle-unit");
     auto angleConvMenuItem = Glib::RefPtr<Gio::Menu>::cast_dynamic(angleConvObj);
 
-    std::vector<AngleConversion *> convs = AngleConversion::get_conversions();
-    MenuBuilder<AngleConversion> angleConvBuilder;
+    auto convs = AngleConversion::get_conversions();
+    MenuBuilder<PtrAngleConversion> angleConvBuilder;
     angleConvBuilder.build(convs, angleConvMenuItem, "win.angle-unit");
 }
 
@@ -502,7 +504,7 @@ CalcppWin::insertResult(const Glib::ustring& res)
 void
 CalcppWin::eval(Glib::ustring text)
 {
-    OutputForm* outputForm = m_evalContext->get_output_format();
+    auto outputForm = m_evalContext->get_output_format();
     try {
         std::vector<Glib::ustring> lines;
         StringUtils::split(text, '\n', lines);

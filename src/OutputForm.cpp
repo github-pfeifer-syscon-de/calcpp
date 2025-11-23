@@ -26,7 +26,7 @@
 #include "OutputForm.hpp"
 
 // static collection of all  output formats
-std::vector<OutputForm *> OutputForm::forms;
+std::vector<PtrOutputForm> OutputForm::forms;
 
 OutputForm::OutputForm(const char* id, const char* name)
 : m_id{id}
@@ -34,29 +34,26 @@ OutputForm::OutputForm(const char* id, const char* name)
 {
 }
 
-OutputForm::~OutputForm()
-{
-}
-
-std::vector<OutputForm *>
+std::vector<PtrOutputForm>
 OutputForm::get_forms()
 {
     if (forms.empty()) {
-        forms.push_back(new OutformDecimal());
-        forms.push_back(new OutformScientific());
-        forms.push_back(new OutformExponential());
-        forms.push_back(new OutformHex());
-        forms.push_back(new OutformHexFp());
-        forms.push_back(new OutformOctal());
+        forms.reserve(8);
+        forms.emplace_back(std::move(std::make_shared<OutformDecimal>()));
+        forms.emplace_back(std::move(std::make_shared<OutformScientific>()));
+        forms.emplace_back(std::move(std::make_shared<OutformExponential>()));
+        forms.emplace_back(std::move(std::make_shared<OutformHex>()));
+        forms.emplace_back(std::move(std::make_shared<OutformHexFp>()));
+        forms.emplace_back(std::move(std::make_shared<OutformOctal>()));
     }
     return forms;
 }
 
-OutputForm *
+PtrOutputForm
 OutputForm::get_form(Glib::ustring id)
 {
-    std::vector<OutputForm *> forms = get_forms();
-    for (OutputForm* form : forms) {
+    auto forms = get_forms();
+    for (auto& form : forms) {
         if (form->get_id() == id)
             return form;
     }
@@ -83,7 +80,7 @@ OutputForm::parse(const Glib::ustring& remain, double& value, std::string::size_
         if (remain.size() >= 2 && remain.substr(0, 2) == "0x") {
             // still have to rely on this as hexes are not recognized
     		value = std::stod(remain, offs);	// c++ way ;), honors local, parses hex (prefix 0x), still no thousands separator
-            std::cout << "used stod val " << value << " offs " << *offs << std::endl;
+            //std::cout << "used stod val " << value << " offs " << *offs << std::endl;
         }
         else {
             std::stringstream ins(remain);

@@ -19,7 +19,9 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include <glibmm.h>
+
 
 #include "NumberFormat.hpp"
 
@@ -36,16 +38,19 @@ protected:
 
 };
 
+class OutputForm;
+
+using PtrOutputForm = std::shared_ptr<OutputForm>;
 /*
  * output format, used to build menu if you want to add your own implementation
  *   extends this class, assign a unique id, and add in get_forms.
  */
 class OutputForm : public Named, public NumberFormat {
 public:
-    virtual ~OutputForm();
+    virtual ~OutputForm() = default;
 
-    static std::vector<OutputForm *> get_forms();
-    static OutputForm* get_form(Glib::ustring id);
+    static std::vector<PtrOutputForm> get_forms();
+    static PtrOutputForm get_form(Glib::ustring id);
     Glib::ustring get_id() override;
     Glib::ustring get_name() override;
     virtual Glib::ustring format(double val) = 0;
@@ -54,7 +59,7 @@ public:
 protected:
     OutputForm(const char* id, const char* name);
 private:
-    static std::vector<OutputForm *> forms;
+    static std::vector<PtrOutputForm> forms;
 
     Glib::ustring m_id;
     Glib::ustring m_name;
@@ -89,14 +94,6 @@ public:
     Glib::ustring format(double val) override;
 };
 
-class OutformScientificHigh : public OutputForm {
-public:
-    OutformScientificHigh();
-
-    Glib::ustring format(double val) override;
-};
-
-
 class OutformDecimal : public OutputForm {
 public:
     OutformDecimal();
@@ -104,24 +101,9 @@ public:
     Glib::ustring format(double val) override;
 };
 
-class OutformDecimalHigh : public OutputForm {
-public:
-    OutformDecimalHigh();
-
-    Glib::ustring format(double val) override;
-};
-
-
 class OutformExponential : public OutputForm {
 public:
     OutformExponential();
-
-    Glib::ustring format(double val) override;
-};
-
-class OutformExponentialHigh : public OutputForm {
-public:
-    OutformExponentialHigh();
 
     Glib::ustring format(double val) override;
 };

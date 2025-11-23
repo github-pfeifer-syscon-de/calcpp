@@ -19,36 +19,43 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "OutputForm.hpp"
+
+
+class AngleConversion;
+using PtrAngleConversion = std::shared_ptr<AngleConversion>;
 
 /*
  * base to allow conversion of angle units as the trigometric functions work on
  *   radian only. Used also to build menu so extra implementations just need a
  *   unique id and get added in get_conversions.
  */
-class AngleConversion : public Named
+class AngleConversion
+: public Named
 {
 public:
-    virtual ~AngleConversion();
+    virtual ~AngleConversion() = default;
 
     virtual double convert_to_radian(double in) = 0;
     virtual double convert_from_radian(double in) = 0;
     Glib::ustring get_id();
     Glib::ustring get_name();
 
-    static std::vector<AngleConversion *>get_conversions();
-    static AngleConversion *get_conversion(Glib::ustring unit);
+    static std::vector<PtrAngleConversion> get_conversions();
+    static PtrAngleConversion get_conversion(Glib::ustring unit);
 protected:
     AngleConversion(const char* id, const char* name);
 
 private:
-    static std::vector<AngleConversion *> conversions;
+    static std::vector<PtrAngleConversion> conversions;
     Glib::ustring m_id;
     Glib::ustring m_name;
 };
 
-class RadianConversion : public AngleConversion
+class RadianConversion
+: public AngleConversion
 {
 public:
     RadianConversion();
@@ -57,7 +64,8 @@ public:
     double convert_from_radian(double in) override;
 };
 
-class DegreeConversion : public AngleConversion
+class DegreeConversion
+: public AngleConversion
 {
 public:
     DegreeConversion();
@@ -66,7 +74,8 @@ public:
     double convert_from_radian(double in) override;
 };
 
-class GonConversion : public AngleConversion
+class GonConversion
+: public AngleConversion
 {
 public:
     GonConversion();

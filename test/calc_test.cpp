@@ -37,8 +37,8 @@ static bool
 testEval()
 {
     auto testEval = std::make_shared<TestEval>();
-    TestFormat testFormat;
-    Syntax syntax(&testFormat, testEval);
+    auto testFormat = std::make_shared<TestFormat>();
+    Syntax syntax(testFormat, testEval);
     Glib::ustring expr{"3.1+4*5"};
     auto list = syntax.parse(expr);
     double res = testEval->eval(list);
@@ -50,8 +50,8 @@ static bool
 testEvalBraced()
 {
     auto testEval = std::make_shared<TestEval>();
-    TestFormat testFormat;
-    Syntax syntax(&testFormat, testEval);
+    auto testFormat = std::make_shared<TestFormat>();
+    Syntax syntax(testFormat, testEval);
     Glib::ustring expr{"(3+4.1)*5"};
     auto list = syntax.parse(expr);
     double res = testEval->eval(list);

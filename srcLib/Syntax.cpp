@@ -24,7 +24,7 @@
 #include "BaseEval.hpp"
 #include "config.h"
 
-Syntax::Syntax(const NumberFormat* numberFormat, const std::shared_ptr<BaseEval>& conversionContext)
+Syntax::Syntax(const PtrNumberFormat& numberFormat, const std::shared_ptr<BaseEval>& conversionContext)
 : m_numberFormat{numberFormat}
 , m_conversionContext{conversionContext}
 {

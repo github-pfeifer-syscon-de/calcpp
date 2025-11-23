@@ -188,19 +188,13 @@ double EvalContext::fromRadian(double in)
 	return m_angleConv->convert_from_radian(in);
 }
 
-//void
-//EvalContext::set_angle_conv(AngleConversion* angleConv)
-//{
-//    m_angleConv = angleConv;
-//}
-
-AngleConversion *
+PtrAngleConversion
 EvalContext::get_angle_conv()
 {
     return m_angleConv;
 }
 
-OutputForm*
+PtrOutputForm
 EvalContext::get_output_format()
 {
     return m_output_format;

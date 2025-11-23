@@ -65,6 +65,9 @@ public:
     virtual size_t getColumns() = 0;
     virtual size_t getRows() = 0;
     virtual void swapRow(size_t a, size_t b) = 0;
+    Glib::ustring toString();
+
+    static constexpr T VALUE_LIMIT{1e-6};
 protected:
 private:
 };

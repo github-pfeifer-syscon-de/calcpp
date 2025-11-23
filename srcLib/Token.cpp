@@ -45,7 +45,7 @@ NumToken::getValue()
 }
 
 std::shared_ptr<NumToken>
-NumToken::create(const Glib::ustring& val, Glib::ustring::iterator& i, const NumberFormat* m_numberFormat)
+NumToken::create(const Glib::ustring& val, Glib::ustring::iterator& i, const PtrNumberFormat& numberFormat)
 {
 	std::shared_ptr<NumToken> numToken;
     gunichar c = *i;
@@ -53,7 +53,7 @@ NumToken::create(const Glib::ustring& val, Glib::ustring::iterator& i, const Num
     if (g_unichar_isdigit(c) || c == static_cast<gunichar>(lconv->decimal_point[0])) {
     	std::string::size_type conv;
 		double num;
-        if (!m_numberFormat->parse(val, num, &conv)) {
+        if (!numberFormat->parse(val, num, &conv)) {
             Glib::ustring err = Glib::ustring::sprintf("Cound not read number at %d", *i);
             throw LexingError(err);
         }

@@ -31,3 +31,4 @@ private:
 
 };
 
+using PtrNumberFormat = std::shared_ptr<NumberFormat>;

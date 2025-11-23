@@ -64,9 +64,8 @@ public:
     double fromRadian(double in) override;
     std::shared_ptr<Function> getFunction(const Glib::ustring& fun) override;    // from ConversionContext
 
-    //void set_angle_conv(AngleConversion* angleConv) ;
-    AngleConversion *get_angle_conv();
-    OutputForm* get_output_format();
+    PtrAngleConversion get_angle_conv();
+    PtrOutputForm get_output_format();
     bool get_variable(const Glib::ustring& name, double* val) override;
     void set_variable(const Glib::ustring& name, double val) override;
 
@@ -87,8 +86,8 @@ public:
 private:
     using FunctionMap = std::map<Glib::ustring, std::shared_ptr<Function>>;
     const FunctionMap& get_function_map();
-    AngleConversion* m_angleConv;
-    OutputForm* m_output_format;
+    PtrAngleConversion m_angleConv;
+    PtrOutputForm m_output_format;
 
     Glib::Property<Glib::ustring> property_angle_conv_id_;
     Glib::Property<Glib::ustring> output_format_id_;

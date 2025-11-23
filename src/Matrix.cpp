@@ -59,6 +59,24 @@ Row<T>::getColumns()
     return m_cols;
 }
 
+template<typename T> Glib::ustring
+Matrix<T>::toString()
+{
+    Glib::ustring sMat;
+    sMat.reserve(256);
+    for (size_t r = 0; r < getRows(); ++r) {
+        for (size_t c = 0; c < getColumns(); ++c) {
+            sMat += Glib::ustring::sprintf("%f\t", get(r, c));
+        }
+        sMat += "\n";
+    }
+    return sMat;
+}
+
+// should be useful with these
+template class Matrix<double>;
+
+
 template<typename T>
 MatrixU<T>::MatrixU(size_t rows)
 : MatrixU(rows, rows+1)
@@ -158,40 +176,57 @@ Gauss::eliminate(Matrix<double>& m)
 	size_t h{}; /* Initialization of the pivot row */
 	size_t k{}; /* Initialization of the pivot column */
 	while (h < m.getRows() && k < m.getColumns()) {
-	    /* Find the k-th pivot: */
-	    size_t i_max{};
-	    double max{};
+        /* Find the k-th pivot: */
+        size_t i_max{};
+        //std::cout << "h " << h << " k " << k << std::endl;
+        double max{};
         for (size_t i = h; i < m.getRows(); ++i) {
             double abs = std::abs(m(i, k));
             if (abs > max) {
                 max = abs;
                 i_max = i;
             }
-	    }
+        }
+        if (h != i_max) {    // don't swap identical
+            //std::cout << "swapRow " << h << " " << r_max << std::endl;
+            m.swapRow(h, i_max);
+        }
+        //std::cout << "i_max " << r_max << std::endl;
 	    if (m(i_max, k) == 0.0) {
             // as we decided to provied the exact number of cols,rows so they should be <> 0
             throw std::invalid_argument(psc::fmt::vformat(
                     _("Value for col {} row {} is 0, matrix not solveable.")
                     , psc::fmt::make_format_args(i_max, k)));
             //++k;    /* No pivot in this column, pass to next column, or throw exception? */
-	    }
-	    else {
-            m.swapRow(h, i_max);
-            /* Do for all rows below pivot: */
-            for (size_t i = h + 1; i < m.getRows(); ++i) {
-                auto f = m(i, k) / m(h, k);   // mat[i][k] might be 0, so f will also, continue and get Nan on output?
-                /* Fill with zeros the lower part of pivot column: */
-                m(i, k) = 0.0;
-                /* Do for all remaining elements in current row: */
-                for (size_t j = k + 1; j < m.getColumns(); ++j) {
-                    m(i, j) = m(i, j) - m(h, j) * f;
-                }
+        }
+        //std::cout << "now " << m.toString() << "-------------------" << std::endl;
+        /* Do for all rows below pivot: */
+        //std::cout << "res " << m.toString()
+        //          << "dividing by " << m(h, k) << std::endl;
+        for (size_t i = h + 1; i < m.getRows(); ++i) {
+            auto f = m(i, k) / m(h, k);   // mat[i][k] might be 0, so f will also, continue and get Nan on output?
+            /* Fill with zeros the lower part of pivot column: */
+            m(i, k) = 0.0;
+            /* Do for all remaining elements in current row: */
+            for (size_t j = k + 1; j < m.getColumns(); ++j) {
+                m(i, j) = m(i, j) - m(h, j) * f;
             }
-            ++h;    /* Increase pivot row and column */
-            ++k;
-	    }
+        }
+        ++h;    /* Increase pivot row and column */
+        ++k;
 	}
+    // check row echolon
+    for (size_t r = 1; r < m.getRows(); ++r) {
+        for (size_t c = 0; c < r; ++c) {
+            if (std::abs(m(r, c)) > Matrix<double>::VALUE_LIMIT) {
+                    throw std::invalid_argument(psc::fmt::vformat(
+                            _("Value for row {} col {}  is {}, matrix not in not in row echolon form.")
+                            , psc::fmt::make_format_args(r, c, m(r, c ))));
+            }
+        }
+    }
 	// back substitution
+    //std::cout << "back subs \n" << m.toString() << std::endl;
 	for (size_t row = m.getRows()-1; row < m.getRows(); --row) {  // the condition would be >= 0 but as this is unsigned expect overflow
 	    double sum = 0.0;
 	    for (size_t col = row+1; col < m.getRows(); ++col) {
@@ -200,8 +235,8 @@ Gauss::eliminate(Matrix<double>& m)
 	    }
 	    m(row, m.getColumns()-1) =  (m(row, m.getColumns()-1) - sum) / m(row, row);
 	    m(row, row) = 1.0;
+        //std::cout << "subs " << row << "\n" << m.toString() << "-------------------" << std::endl;
 	}
 }
-
 
 } /* namespace psc::mat */
