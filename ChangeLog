@@ -1,8 +1,15 @@
+
+2025-11-24  (this will reappear so better just do it)
+    there was a config-schema change so
+    this needs to be installed before testing,
+    if you had a previous version installed,
+    this is config schema requirement...
+
 2025-10-15 added numeric grouping chars.
 
 2025-10-14
     there was a schema change so
-    this needs to be instelled before testing...
+    this needs to be installed before testing...
 
 2025-03-31  gettextize  <bug-gnu-gettext@gnu.org>
 
