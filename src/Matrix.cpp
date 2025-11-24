@@ -193,7 +193,7 @@ Gauss::eliminate(Matrix<double>& m)
         }
         //std::cout << "i_max " << r_max << std::endl;
 	    if (m(i_max, k) == 0.0) {
-            // as we decided to provied the exact number of cols,rows so they should be <> 0
+            // as we decided to provide the exact number of cols,rows so they should be <> 0
             throw std::invalid_argument(psc::fmt::vformat(
                     _("Value for col {} row {} is 0, matrix not solveable.")
                     , psc::fmt::make_format_args(i_max, k)));

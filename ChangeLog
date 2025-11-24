@@ -1,3 +1,9 @@
+2025-10-15 added numeric grouping chars.
+
+2025-10-14
+    there was a schema change so
+    this needs to be instelled before testing...
+
 2025-03-31  gettextize  <bug-gnu-gettext@gnu.org>
 
 	* m4/build-to-host.m4: Upgrade to gettext-0.24.

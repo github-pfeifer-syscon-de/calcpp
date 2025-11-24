@@ -70,11 +70,6 @@ In INSTALL_DIR/share/calcpp/unit.js can be found if
 it is copied to ~/.local/share/calcpp/unit.js
 you can modify it or add other units.
 
-Changes:
-* on 14.10.25 there was a schema change so
-  this needs to be instelled before testing...
-* on 15.10.25 added numeric grouping chars.
-
 To build on (Lin)ux use (as a prerequisite genericImg is required):
 <pre>
 autoreconf -fis
