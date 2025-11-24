@@ -46,6 +46,7 @@ public:
     void apply_font(bool defaultFont);
     CalcppApp *getApplication();
     Glib::RefPtr<Gio::Settings> getSettings();
+    PtrEvalContext getEvalContext();
 protected:
     void insertResult(const Glib::ustring& res);
 
@@ -61,7 +62,7 @@ private:
     void activate_actions();
 
     CalcppApp *m_application;
-    std::shared_ptr<EvalContext> m_evalContext;
+    PtrEvalContext m_evalContext;
     CalcTextView* m_textView{nullptr};
     Glib::RefPtr<Gtk::Paned> m_paned{nullptr};
     CalcTreeView* m_treeView{nullptr};

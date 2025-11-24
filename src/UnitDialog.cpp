@@ -23,6 +23,8 @@
 
 #include "UnitDialog.hpp"
 #include "Unit.hpp"
+#include "EvalContext.hpp"
+#include "Syntax.hpp"
 
 UnitDialog::UnitDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, CalcppWin* parent)
 : NumDialog(cobject, builder, parent)
@@ -63,15 +65,15 @@ UnitDialog::UnitDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
         auto selectSourceId = settings->get_string(CONF_SOURCE);
         auto selectResultId = settings->get_string(CONF_RESULT);
         updateSelect(selectSourceId, selectResultId);
-        auto value = settings->get_double(CONF_VALUE);
-        m_value->set_text(format(value));
+        auto expr = settings->get_string(CONF_EXPR);
+        m_value->set_text(expr);
         evaluate();
         m_dimension->signal_changed().connect(sigc::mem_fun(*this, &UnitDialog::update));
         m_valueUnit->signal_changed().connect(sigc::mem_fun(*this, &UnitDialog::evaluate));
         m_resultUnit->signal_changed().connect(sigc::mem_fun(*this, &UnitDialog::evaluate));
     }
     catch (const std::exception& exc) {
-        m_parent->show_error(exc.what(), Gtk::MessageType::MESSAGE_ERROR);
+        show_error(exc.what(), Gtk::MessageType::MESSAGE_ERROR);
     }
 }
 
@@ -131,6 +133,12 @@ UnitDialog::updateSelect(const Glib::ustring& selSrc, const Glib::ustring& selRe
     }
 }
 
+PtrEvalContext
+UnitDialog::getEvalContext()
+{
+    return m_parent->getEvalContext();
+}
+
 Glib::ustring
 UnitDialog::getValue(bool showError)
 {
@@ -143,19 +151,46 @@ UnitDialog::getValue(bool showError)
         auto resRow = *iterRes;
         auto resDim = resRow.get_value(m_unit_columns.m_value);
         try {
-            double base = valDim->fromUnit(m_value, this);
+
+            double base{};
+            if (valDim->useOwnParse()) {
+                base = valDim->fromUnit(m_value, this);
+            }
+            else {
+                try {
+                    // allow simple expressions as input
+                    auto evalContext = getEvalContext();
+                    auto outputForm = evalContext->get_output_format();
+                    Syntax syntax(outputForm, evalContext);
+                    auto txt = m_value->get_text();
+                    auto stack = syntax.parse(txt);
+                    auto val  = evalContext->eval(stack);
+                    base = valDim->fromUnit(val);
+                }
+                catch (const ParseError& err) {
+                    auto what = err.what();
+                    show_error(psc::fmt::vformat(_("Parse error: {}")
+                                , psc::fmt::make_format_args(what)));
+                }
+            }
             result = resDim->toUnit(base, this);
         }
         catch (const std::exception& err) {
             auto what = err.what();
             if (showError) {
-                m_parent->show_error(psc::fmt::vformat(_("Unable to calculate \"{}\""),
+                show_error(psc::fmt::vformat(_("Unable to calculate \"{}\""),
                                                        psc::fmt::make_format_args(what)));
             }
 
         }
     }
     return result;
+}
+
+void
+UnitDialog::show_error(const Glib::ustring& msg, Gtk::MessageType type)
+{
+    m_parent->show_error(msg, type);
 }
 
 void
@@ -188,13 +223,7 @@ UnitDialog::save()
     else {
         std::cout << "UnitDialog::save no resSel" << std::endl;
     }
-    double val{};
-    try {
-        val = parse(m_value);
-    }
-    catch (const std::invalid_argument& exc) {
-    }
-    settings->set_double(CONF_VALUE, val);
+    settings->set_string(CONF_EXPR, m_value->get_text());
 }
 
 

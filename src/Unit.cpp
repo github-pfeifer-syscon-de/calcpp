@@ -457,6 +457,12 @@ Unit::toUnit(double val, NumDialog* numDialog) const
     return numDialog->format(result);
 }
 
+bool
+Unit::useOwnParse()
+{
+    return false;
+}
+
 double
 Unit::fromUnit(Gtk::Entry* entry, NumDialog* numDialog) const
 {
@@ -480,6 +486,12 @@ Unit::fromUnit(double val) const
 UnitHms::UnitHms(const Glib::ustring& name, double factor, double offset)
 : Unit(name, factor, offset)
 {
+}
+
+bool
+UnitHms::useOwnParse()
+{
+    return true;
 }
 
 Glib::ustring

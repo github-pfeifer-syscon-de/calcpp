@@ -409,6 +409,13 @@ CalcppWin::getSettings()
     return m_settings;
 }
 
+PtrEvalContext
+CalcppWin::getEvalContext()
+{
+    return m_evalContext;
+}
+
+
 void
 CalcppWin::save_config()
 {

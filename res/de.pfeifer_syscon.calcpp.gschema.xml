@@ -74,10 +74,10 @@
       <summary>Conversion unit e.g. cm,...</summary>
       <description>Last used conversion result unit</description>
     </key>
-    <key name="conversion-value" type='d'>
-      <default>1.0</default>
-      <summary>Conversion value</summary>
-      <description>Last used conversion value</description>
+    <key name="conversion-expr" type='s'>
+      <default>'1'</default>
+      <summary>Conversion expression</summary>
+      <description>Last used conversion expression</description>
     </key>
   </schema>
 </schemalist>

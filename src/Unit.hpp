@@ -126,6 +126,7 @@ public:
     double getOffset() const;
     virtual Glib::ustring toUnit(double val, NumDialog* numDialog) const;
     virtual double fromUnit(Gtk::Entry* entry, NumDialog* numDialog) const;
+    virtual bool useOwnParse();
     double toUnit(double val) const;
     double fromUnit(double val) const;
 protected:
@@ -144,6 +145,7 @@ public:
     virtual ~UnitHms() = default;
     Glib::ustring toUnit(double val, NumDialog* numDialog) const override;
     double fromUnit(Gtk::Entry* entry, NumDialog* numDialog) const override;
+    virtual bool useOwnParse();
 
 protected:
     double splitPart(Gtk::Entry* entry, size_t& pos, Glib::ustring& sval) const;

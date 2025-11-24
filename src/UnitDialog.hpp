@@ -22,9 +22,11 @@
 
 #include "NumDialog.hpp"
 #include "CalcppWin.hpp"
+#include "EvalContext.hpp"
 
 class Dimension;
 class Unit;
+class UnitDialog;
 
 class DimensionColumns
 : public Gtk::TreeModel::ColumnRecord
@@ -62,6 +64,9 @@ public:
 
     Glib::ustring getValue(bool showError = false);
     void save();
+    PtrEvalContext getEvalContext();
+    void show_error(const Glib::ustring& msg, Gtk::MessageType type = Gtk::MessageType::MESSAGE_WARNING);
+
 protected:
     void evaluate() override;
     void update();
@@ -73,7 +78,7 @@ protected:
     static constexpr auto CONF_DIM{"conversion-dimension"};
     static constexpr auto CONF_SOURCE{"conversion-source"};
     static constexpr auto CONF_RESULT{"conversion-result"};
-    static constexpr auto CONF_VALUE{"conversion-value"};
+    static constexpr auto CONF_EXPR{"conversion-expr"};
 
 private:
     Gtk::ComboBox* m_dimension;

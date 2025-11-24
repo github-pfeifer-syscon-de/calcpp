@@ -98,3 +98,4 @@ private:
     FunctionMap m_functionMap;
 };
 
+using PtrEvalContext = std::shared_ptr<EvalContext>;
