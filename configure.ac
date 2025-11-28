@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_CONFIG_MACRO_DIR([m4])
 
-AC_INIT([calcpp],[0.1],[calcpp@pfeifer-syscon.de])
+AC_INIT([calcpp],[0.1])
 
 dnl point to unique-file-in-source-dir, for safety check
 AC_CONFIG_SRCDIR([src/CalcppApp.cpp])

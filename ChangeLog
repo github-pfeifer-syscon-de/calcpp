@@ -28,6 +28,7 @@
 2024-12-15 localisation added
 
 Sep '22 changed calculation implementation
+    to a Dijkstra shunting yard implementation
 
 Jun '20 inital release
 
