@@ -70,14 +70,23 @@ In INSTALL_DIR/share/calcpp/unit.js can be found if
 it is copied to ~/.local/share/calcpp/unit.js
 you can modify it or add other units.
 
-To build on (Lin)ux use (as a prerequisite genericImg is required):
+As a prerequisite genericImg is required, you have to install
+it first.
+
+To build on (Lin)ux use :
 <pre>
 autoreconf -fis
 ./configure --prefix=/usr
 make
 </pre>
 
-Build for windows was integrated at least for msys2<br>
+Build for windows was integrated at least for msys2 use:
 <pre>
-  look for "$host_os" = "mingw32"
+ autoreconf -fis
+./configure --prefix=${MINGW_PREFIX}
+make
+</pre>
+If you want to find the Os-specific sections look for:
+<pre>
+  "$host_os" = "mingw32"
 </pre>
