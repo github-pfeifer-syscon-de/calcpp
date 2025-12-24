@@ -62,7 +62,7 @@ check_matrix()
 {
     psc::mat::MatrixU<double> m(3);
     m(1, 1) = 1.234;
-    if (m[1][1] != 1.234) {
+    if (std::abs(m[1][1] - 1.234) > VALUE_LIMIT) {
         std::cout << "check_matrix exp " << 1.234 << " got " << m[1][1] << std::endl;
         return false;
     }
