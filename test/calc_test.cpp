@@ -16,13 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <iostream>
 #include <iomanip>
 #include <cstdlib>
-#include <charconv>
-#include <optional>
-#include <system_error>
 #include <psc_format.hpp>
+#include <tuple>
 
 #include "CalcppApp.hpp"
 #include "calc_test.hpp"
@@ -210,6 +207,23 @@ testTime(Dimensions& dims)
     return true;
 }
 
+static bool
+testTupl()
+{
+    auto tup = std::make_tuple(1, "abc");
+    std::apply([] (auto&&... args) {
+        (
+            (std::cout << "item " << args << std::endl), ...
+        );
+    }, tup);
+    //std::apply([] (auto&&...tupleArgs) {
+    //    std::apply([] (auto&& tuple) {
+    //        std::cout << "info " << tuple << std::endl;
+    //    }, tupleArgs...);
+    //}, tup);
+    return true;
+}
+
 /*
  *
  */
@@ -247,7 +261,9 @@ int main(int argc, char** argv)
     if (!testTime(dims)) {
         return 9;
     }
-
+    if (!testTupl()) {
+        return 10;
+    }
     return 0;
 }
 
