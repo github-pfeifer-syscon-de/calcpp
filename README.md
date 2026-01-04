@@ -79,6 +79,15 @@ autoreconf -fis
 ./configure --prefix=/usr
 make
 </pre>
+or if you prefer the "out of tree" method:
+<pre>
+autoreconf -fis
+mkdir build
+cd build
+../configure --prefix=/usr
+make
+</pre>
+
 
 Build for windows was integrated at least for msys2 use:
 <pre>

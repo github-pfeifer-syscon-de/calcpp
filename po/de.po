@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: calcpp 0.1\n"
-"Report-Msgid-Bugs-To: calcpp@pfeifer-syscon.de\n"
-"POT-Creation-Date: 2025-11-07 14:18+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-24 07:54+0100\n"
 "PO-Revision-Date: 2024-12-15 06:57+0100\n"
 "Last-Translator:  <calcpp@pfeifer-syscon.de>\n"
 "Language-Team: German <calcpp@pfeifer-syscon.de>\n"
@@ -17,48 +17,46 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/CalcppApp.cpp:125
+#: src/CalcppApp.cpp:129
 #, c++-format
 msgid "The README file {} could not be located."
 msgstr "Die README Datei {} wurde nicht gefunden."
 
-#: src/CalcppWin.cpp:48
+#: src/CalcppWin.cpp:50
 msgid "Save File"
 msgstr "Datei speichern"
 
-#: src/CalcppWin.cpp:49
+#: src/CalcppWin.cpp:51
 msgid "Open File"
 msgstr "Datei öffnen"
 
-#: src/CalcppWin.cpp:55
+#: src/CalcppWin.cpp:57
 msgid "_Cancel"
 msgstr "_Abbrechen"
 
-#: src/CalcppWin.cpp:57
+#: src/CalcppWin.cpp:59
 msgid "_Save"
 msgstr "_Speichern"
 
-#: src/CalcppWin.cpp:58
+#: src/CalcppWin.cpp:60
 msgid "_Open"
 msgstr "Ö_ffnen"
 
-#: src/CalcppWin.cpp:102
+#: src/CalcppWin.cpp:104
 msgid "Calculator"
 msgstr "Rechner"
 
-#: src/CalcppWin.cpp:146 src/CalcppWin.cpp:166 src/CalcppWin.cpp:186
-#: src/CalcppWin.cpp:212 src/CalcppWin.cpp:232 src/CalcppWin.cpp:251
-#: src/CalcppWin.cpp:291 src/CalcppWin.cpp:312 src/CalcppWin.cpp:333
+#: src/CalcppWin.cpp:143 src/CalcppWin.cpp:223
 #, c++-format
 msgid "Unable to load {} error {}"
 msgstr "{} wurde nicht geladen. Fehler {}"
 
-#: src/CalcppWin.cpp:270
+#: src/CalcppWin.cpp:242
 #, c++-format
 msgid "Unable to save {} error {}"
 msgstr "Fehler {1} beim speichen {0}"
 
-#: src/CalcppWin.cpp:415
+#: src/CalcppWin.cpp:354
 #, c++-format
 msgid ""
 "No settings coud be read! error {}\n"
@@ -67,20 +65,20 @@ msgstr ""
 "Einstellungen konnten nicht geladen werden! Fehler {}\n"
 "Einstellungen werden nicht funktionieren!"
 
-#: src/CalcppWin.cpp:595
+#: src/CalcppWin.cpp:541
 #, c++-format
 msgid "Parse error: {}"
 msgstr "Syntax nicht erkannt. Fehler {}"
 
-#: src/AngleUnit.cpp:72
+#: src/AngleUnit.cpp:69
 msgid "Radians"
 msgstr "Radiant (rad)"
 
-#: src/AngleUnit.cpp:89
+#: src/AngleUnit.cpp:86
 msgid "Degree (°)"
 msgstr "Grad (°)"
 
-#: src/AngleUnit.cpp:106
+#: src/AngleUnit.cpp:103
 msgid "Gon"
 msgstr "Gon"
 
@@ -106,8 +104,8 @@ msgstr "Zeile{}"
 msgid "Result"
 msgstr "Ergebnis"
 
-#: src/GaussDialog.cpp:111 src/NumDialog.cpp:51 src/Unit.cpp:531
-#: src/Unit.cpp:552
+#: src/GaussDialog.cpp:111 src/NumDialog.cpp:51 src/Unit.cpp:543
+#: src/Unit.cpp:564
 msgid "Invalid number"
 msgstr "Keine gültige Zahl"
 
@@ -116,46 +114,64 @@ msgstr "Keine gültige Zahl"
 msgid "Unable to calculate \"{}\""
 msgstr "Ausdruck nicht berrechenbar \"{}\""
 
-#: src/Matrix.cpp:48 src/Matrix.cpp:112
+#: src/Matrix.cpp:39 src/Matrix.cpp:50
+#, fuzzy, c++-format
+#| msgid "Matrix row index {} exceeds limit {}"
+msgid "Row column index {} exceeds limit {}"
+msgstr "Matrix Zeile {} überschreitet Limit {}"
+
+#: src/Matrix.cpp:100 src/Matrix.cpp:111
 #, c++-format
 msgid "Matrix row index {} exceeds limit {}"
 msgstr "Matrix Zeile {} überschreitet Limit {}"
 
-#: src/Matrix.cpp:166
+#: src/Matrix.cpp:116
+#, fuzzy, c++-format
+#| msgid "Matrix row index {} exceeds limit {}"
+msgid "Matrix column index {} exceeds limit {}"
+msgstr "Matrix Zeile {} überschreitet Limit {}"
+
+#: src/Matrix.cpp:171
 #, c++-format
 msgid "Matrix cols {} must be rows {}+1"
 msgstr "Matrix Spalten {} muss Zeilen {}+1 enthalten"
 
-#: src/Matrix.cpp:187
+#: src/Matrix.cpp:198
 #, c++-format
 msgid "Value for col {} row {} is 0, matrix not solveable."
 msgstr "Wert for Spalte {} Zeile {} ist 0, nicht lösbar"
 
-#: src/OutputForm.cpp:114
+#: src/Matrix.cpp:223
+#, fuzzy, c++-format
+#| msgid "Value for col {} row {} is 0, matrix not solveable."
+msgid "Value for row {} col {}  is {}, matrix not in not in row echolon form."
+msgstr "Wert for Spalte {} Zeile {} ist 0, nicht lösbar"
+
+#: src/OutputForm.cpp:111
 msgid "Hexadecimal (integer)"
 msgstr "Hexdezimal (Ganzzahl)"
 
-#: src/OutputForm.cpp:127
+#: src/OutputForm.cpp:124
 msgid "Octal (integer)"
 msgstr "Oktal (Ganzzahl)"
 
-#: src/OutputForm.cpp:167
+#: src/OutputForm.cpp:164
 msgid "Hexadecimal (floating point)"
 msgstr "Hexdezimal (Gleitkommazahl)"
 
-#: src/OutputForm.cpp:180
+#: src/OutputForm.cpp:177
 msgid "Scientific"
 msgstr "Wissenschaftlich"
 
-#: src/OutputForm.cpp:193
+#: src/OutputForm.cpp:190
 msgid "Decimal"
 msgstr "Dezimal"
 
-#: src/OutputForm.cpp:206
+#: src/OutputForm.cpp:203
 msgid "Exponential"
 msgstr "Exponentailform"
 
-#: src/QuadDialog.cpp:66
+#: src/QuadDialog.cpp:67
 #, fuzzy, c++-format
 #| msgid "No result (square-root of negative number {:L} is undefined)"
 msgid "No result (square-root of negative number {} is undefined)"

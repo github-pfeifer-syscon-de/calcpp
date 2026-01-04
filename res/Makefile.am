@@ -6,16 +6,16 @@ PKGCONFIG = pkg-config
 GLIB_COMPILE_RESOURCES = $(shell $(PKGCONFIG) --variable=glib_compile_resources gio-2.0)
 GLIB_COMPILE_SCHEMAS = $(shell $(PKGCONFIG) --variable=glib_compile_schemas gio-2.0)
 
-CALCPP_RESOURCE_XML=calcpp.gresources.xml
-gsettings_SCHEMAS=de.pfeifer_syscon.calcpp.gschema.xml
-RESOURCE_C=../src/resources.c
+CALCPP_RESOURCE_XML=$(srcdir)/calcpp.gresources.xml
+gsettings_SCHEMAS=$(srcdir)/de.pfeifer_syscon.calcpp.gschema.xml
+RESOURCE_C=$(top_srcdir)/src/resources.c
 GSCHEMA_COMPILED=gschemas.compiled
-CALCPP_RESOURCES=$(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=. --generate-dependencies $(CALCPP_RESOURCE_XML))
+CALCPP_RESOURCES=$(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(CALCPP_RESOURCE_XML))
 
 all:$(RESOURCE_C) $(GSCHEMA_COMPILED)
 
 $(RESOURCE_C): $(CALCPP_RESOURCE_XML) $(CALCPP_RESOURCES)
-	$(GLIB_COMPILE_RESOURCES) --target=$(RESOURCE_C) --sourcedir=. --generate-source $(CALCPP_RESOURCE_XML)
+	$(GLIB_COMPILE_RESOURCES) --target=$(RESOURCE_C) --sourcedir=$(srcdir) --generate-source $(CALCPP_RESOURCE_XML)
 
 # The desktop files
 desktopdir = $(datadir)/applications
