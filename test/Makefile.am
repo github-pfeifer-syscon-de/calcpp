@@ -8,8 +8,8 @@ AM_CPPFLAGS = \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)."\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
 	$(GENERICIMG_CFLAGS) \
-	-I ../srcLib \
-	-I ../src
+	-I $(top_srcdir)/srcLib \
+	-I $(top_srcdir)/src
 
 AM_CFLAGS= \
 	-Wall -Wpedantic
