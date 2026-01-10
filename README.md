@@ -79,7 +79,7 @@ autoreconf -fis
 ./configure --prefix=/usr
 make
 </pre>
-or if you prefer the "out of tree" method:
+or if you prefer the "out of tree" compile-method:
 <pre>
 autoreconf -fis
 mkdir build
@@ -87,9 +87,13 @@ cd build
 ../configure --prefix=/usr
 make
 </pre>
+For a first test `src/calcpp` should be sufficient.
+If the application was once installed there is the likelihood, 
+of conflicts between the installed configuration schema
+and a new version, so for further testing use `make install` 
+to avoid this.
 
-
-Build for windows was integrated at least for msys2 use:
+Build for windows was integrated at least for msys2 use (choose your shell consistently):
 <pre>
  autoreconf -fis
 ./configure --prefix=${MINGW_PREFIX}

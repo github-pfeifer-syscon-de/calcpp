@@ -72,20 +72,32 @@ kopiert wird können diese für die eigenen Bedürfnisse
 modifiziert werden.
 
 Änderungen:
-* am 14.10.25 enthält eine Änderung des Konfigurationsschemas
-  dies muss vor dem testen installiert werden...
 * am 15.10.25 hinzugefügt numerische Trennzeichen.
 
-Zum erstellen verwenden (als Voraussetzung wird genericImg benötigt):
+Zum Erstellen verwenden (als Voraussetzung wird genericImg benötigt):
 <pre>
 autoreconf -fis
 ./configure --prefix=/usr
 make
 </pre>
-
-Das Bauen für Win(dows) wird mit msys2 untersützt, dazu bauen wie oben beschrieben, mit Ausnahme von:
+oder wenn du die "out of tree" kompilierung bevorzugst:
 <pre>
-./configure --prefix=/mingw64
+autoreconf -fis
+mkdir build
+cd build
+../configure --prefix=/usr
+make
+</pre>
+Zum ersten testen sollte `src/calcpp` ausreichen.
+Wurde die Anwendung einmal installiert, treten Konflikte des
+installierten Konfigurationsschemas und einer ggf. geänderten Version auf,
+damit sollte alle weiteren Aufrufe ein `make install` vorausgehen.
+
+Das Bauen für Win(dows) wird mit msys2 untersützt (wähle die Umgebung für alle Schritte einheitlich):
+<pre>
+autoreconf -fis
+./configure --prefix=${MINGW_PREFIX}
+make
 </pre>
 
 if you want to change this build look for:
