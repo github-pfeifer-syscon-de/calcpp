@@ -11,8 +11,9 @@ Erlaubt es Berrechnungen niederzuschreiben z.B.:
 und mit [Strg] und [Eingabe] wird diese ausgewertet.
 
 Mit einstallbarem Ausgabeformat: Dezimal, Wissenschaftlich, Hexdezimal and Oktal.
-Bei der Eingabe von Werten in Dezimal- oder Hexdezimalzahlen mit Lokalisierung
-(Oktalwerte wie z.B. 0123 werden nur als solche ausgewertet wenn das Ausgabeformat Oktal gewählt ist).
+Bei der Eingabe von Werten werden die Formate Dezimal- (mit Lokalisierung) oder Hexdezimalzahlen
+mit 0x.. erkannt.
+Oktalwerte wie z.B. 0123 werden nur als solche ausgewertet wenn das Ausgabeformat Oktal gewählt ist.
 Ebenfalls einstellbare Winkeleinheit: Radians, Grad, Gon.
 
 Die folgenden Operatorn werden unterstützt:

@@ -14,8 +14,8 @@ Write down your calculation e.g.:
 and press [control] and [enter] to evaluate it.
 
 Adjustable output format: decimal, scientific, hexadecimal and octal.
-Input for decimal and hexdecimal numbers with local support
-(octal numbers e.g. 0123 are only parsed as such when the output format is octal).
+Input for decimal (with local support) and hexadecimal (with 0x...) numbers.
+Octal numbers e.g. 0123 are only parsed as such when the output format is octal.
 Adjustable angle unit: radian, degree, gon.
 
 The following operators are supported:
