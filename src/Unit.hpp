@@ -71,6 +71,11 @@ protected:
     void loadJson(const std::string& exec_path);
     void loadJsonUnits(const psc::json::PtrJsonObj& unitObj);
     std::string localizeJson(const char* data);
+    Glib::RefPtr<Gio::File> getUserUnitPath();
+    Glib::RefPtr<Gio::File> getResUnitPath();
+    Glib::RefPtr<Gio::File> getGlobalUnitPath();
+    const static constexpr auto unitName{"unit.js"};
+
 
 private:
     //static std::shared_ptr<Dimensions> m_dimension;

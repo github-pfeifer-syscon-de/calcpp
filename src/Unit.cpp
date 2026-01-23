@@ -95,37 +95,60 @@ Dimensions::loadJsonUnits(const psc::json::PtrJsonObj& unitObj)
     }
 }
 
-void
-Dimensions::loadJson(const std::string& execPath)
+Glib::RefPtr<Gio::File>
+Dimensions::getUserUnitPath()
 {
-    const std::string unitName{"unit.js"};
     auto userFullPath = Glib::canonicalize_filename("calcpp/", Glib::get_user_data_dir());
     auto userConfig = Gio::File::create_for_path(userFullPath);
     if (!userConfig->query_exists()) {
         userConfig->make_directory_with_parents();
     }
-    auto jsonFile = userConfig->get_child(unitName);    // prefere a local copy if it exists
+    return userConfig;
+}
+
+Glib::RefPtr<Gio::File>
+Dimensions::getResUnitPath()
+{
+    // this is limited, as srcdir is given relative
+    //   and make check may be called from somewhere
+    //   expected is the build dir.
+    std::vector<std::string> relResPath;
+    if (G_DIR_SEPARATOR == '\\') {
+        relResPath.push_back("..");	// have to escape .libs on windows
+    }
+    relResPath.push_back("..");
+    relResPath.push_back("res");
+    auto resRel = Glib::build_filename(relResPath);
+    auto resPath = Glib::canonicalize_filename(resRel, PACKAGE_SRC_DIR);
+    auto resConfig = Gio::File::create_for_path(resPath);
+    return resConfig;
+}
+
+Glib::RefPtr<Gio::File>
+Dimensions::getGlobalUnitPath()
+{
+   auto globalConfig = Gio::File::create_for_path(PACKAGE_DATA_DIR);
+   return globalConfig;
+}
+
+void
+Dimensions::loadJson(const std::string& execPath)
+{
+    auto userPath = getUserUnitPath();
+    auto jsonFile = userPath->get_child(unitName);    // prefere a local copy if it exists
     if (!jsonFile->query_exists()) {
-        // this effort is done to run from source dir (without installed package data)
-        std::vector<std::string> relResPath;
-        if (G_DIR_SEPARATOR == '\\') {
-            relResPath.push_back("..");	// have to escape .libs on windows
-        }
-        relResPath.push_back("..");
-        relResPath.push_back("res");
-        relResPath.push_back(unitName);
-        std::string resRel = Glib::build_filename(relResPath);
-        std::string resPath = Glib::canonicalize_filename(resRel, PACKAGE_SRC_DIR);
-        jsonFile = Gio::File::create_for_path(resPath);
+        // this file identifies the program share
+        auto globalPath  =getGlobalUnitPath();
+        jsonFile = globalPath->get_child(unitName);
         if (!jsonFile->query_exists()) {
-            // this file identifies the development resources dir, beside executable
-            auto globalPath = Glib::canonicalize_filename(unitName, PACKAGE_DATA_DIR);
-            jsonFile = Gio::File::create_for_path(globalPath);
+            // this effort is done to run from source dir (without installed package data)
+            auto resPath = getResUnitPath();
+            jsonFile = resPath->get_child(unitName);
             if (!jsonFile->query_exists()) {
                 std::cout << "Dimensions::loadJson the file "<< unitName << " was not found in locations"
-                          << " user " << userFullPath
-                          << " res " << resPath
-                          << " global " << globalPath
+                          << " user " << userPath->get_path()
+                          << " global " << globalPath->get_path()
+                          << " res " << resPath->get_path()
                           << " maybe the used prefix for configure was wrong?" << std::endl;
                 return;
             }
