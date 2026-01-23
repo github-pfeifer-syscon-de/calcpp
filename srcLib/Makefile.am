@@ -10,8 +10,15 @@ AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
 	$(GENERICIMG_CFLAGS)
 
-libexpression_a_CFLAGS = -Wall
-libexpression_a_CXXFLAGS = -Wall
+libexpression_a_CFLAGS = @WARN_CFLAGS@
+libexpression_a_CXXFLAGS = @WARN_CXXFLAGS@
+
+if RELEASE
+libexpression_a_CFLAGS += @OPT_CFLAGS@
+libexpression_a_CXXFLAGS += @OPT_CXXFLAGS@
+else
+libexpression_a_CXXFLAGS += @INSTUMENT_CXXFLAGS@
+endif
 
 libexpression_a_SOURCES = \
 	NumberFormat.cpp \

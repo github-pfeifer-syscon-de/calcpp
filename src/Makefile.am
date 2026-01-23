@@ -3,21 +3,24 @@ bin_PROGRAMS = calcpp
 
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
-        -DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
-        -DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
+    -DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
+    -DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
 	-I"$(srcdir)"/../srcLib \
 	$(GENERICIMG_CFLAGS) \
 	$(GLIBMM_CFLAGS) \
 	$(GTKMM_CFLAGS)
 
-calcpp_CFLAGS = -Wall
-calcpp_CXXFLAGS = -Wall \
-	-Wpedantic \
-	-Wconversion \
-	-Wextra \
-	-Wno-unused-parameter
-
+calcpp_CFLAGS = @WARN_CFLAGS@
+calcpp_CXXFLAGS = @WARN_CXXFLAGS@
 calcpp_LDFLAGS = @EXTRA_LDFLAGS@
+
+if RELEASE
+calcpp_CFLAGS += @OPT_CFLAGS@
+calcpp_CXXFLAGS += @OPT_CXXFLAGS@
+else
+calcpp_CXXFLAGS += @INSTUMENT_CXXFLAGS@
+calcpp_LDFLAGS += @INSTUMENT_LINKFLAGS@
+endif
 
 calcpp_LDADD =  \
 	-lunistring \

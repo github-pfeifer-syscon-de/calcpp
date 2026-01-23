@@ -59,6 +59,8 @@ Row<T>::getColumns()
     return m_cols;
 }
 
+template class Row<double>;
+
 template<typename T> Glib::ustring
 Matrix<T>::toString()
 {

@@ -64,7 +64,7 @@ click on the character.
 A simple calendar view is included.
 
 A simple option to convert units is included.
-Sorry i'am still not too deep into non SI units,
+Sorry i'm still not too deep into non SI units,
 please check your results, suggestions are welcome.
 In INSTALL_DIR/share/calcpp/unit.js can be found if
 it is copied to ~/.local/share/calcpp/unit.js

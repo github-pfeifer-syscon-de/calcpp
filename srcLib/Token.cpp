@@ -327,9 +327,9 @@ OpShiftToken::eval(double valL, double valR)
 {
 	switch (m_op) {
 	case '<':
-		return (uint64_t)valL << (uint64_t)valR;
+		return static_cast<double>(static_cast<uint64_t>(valL) << static_cast<uint64_t>(valR));
 	case '>':
-		return (uint64_t)valL >> (uint64_t)valR;
+		return static_cast<double>(static_cast<uint64_t>(valL) >> static_cast<uint64_t>(valR));
 	default:
 		throw EvalError(Glib::ustring::format("Unexpected shift operator %c", m_op));
 	}

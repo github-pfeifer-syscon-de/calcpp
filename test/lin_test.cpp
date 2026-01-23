@@ -69,6 +69,7 @@ check_matrix()
     try {
         size_t col{4};
         auto a = m[1][col];
+	std::cout << "check_matrix a " << a << std::endl;
         if (col >= m.getColumns()) {
             std::cout << "The access for the element 4 beyond limit did succeed!" << std::endl;
             return false;

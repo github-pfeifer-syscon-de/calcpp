@@ -107,23 +107,28 @@ Dimensions::loadJson(const std::string& execPath)
     auto jsonFile = userConfig->get_child(unitName);    // prefere a local copy if it exists
     if (!jsonFile->query_exists()) {
         // this effort is done to run from source dir (without installed package data)
-        std::string fullPath = Glib::canonicalize_filename(execPath, Glib::get_current_dir());
-        Glib::RefPtr<Gio::File> jsonDir = Gio::File::create_for_path(fullPath);
-        auto bin_dir = jsonDir->get_parent();
         std::vector<std::string> relResPath;
         if (G_DIR_SEPARATOR == '\\') {
             relResPath.push_back("..");	// have to escape .libs on windows
         }
         relResPath.push_back("..");
         relResPath.push_back("res");
+        relResPath.push_back(unitName);
         std::string resRel = Glib::build_filename(relResPath);
-        std::string resPath = Glib::canonicalize_filename(resRel, bin_dir->get_path());
-        // this file identifies the development resources dir, beside executable
-
-        jsonFile = Gio::File::create_for_path(resPath + "/" + unitName);
-        //std::cout << "Dimensions::loadJson trying " << jsonFile->get_path() << std::boolalpha << " found " << jsonFile->query_exists() << std::endl;
+        std::string resPath = Glib::canonicalize_filename(resRel, PACKAGE_SRC_DIR);
+        jsonFile = Gio::File::create_for_path(resPath);
         if (!jsonFile->query_exists()) {
-            jsonFile = Gio::File::create_for_path(PACKAGE_DATA_DIR "/" + unitName);
+            // this file identifies the development resources dir, beside executable
+            auto globalPath = Glib::canonicalize_filename(unitName, PACKAGE_DATA_DIR);
+            jsonFile = Gio::File::create_for_path(globalPath);
+            if (!jsonFile->query_exists()) {
+                std::cout << "Dimensions::loadJson the file "<< unitName << " was not found in locations"
+                          << " user " << userFullPath
+                          << " res " << resPath
+                          << " global " << globalPath
+                          << " maybe the used prefix for configure was wrong?" << std::endl;
+                return;
+            }
         }
     }
     size_t len;

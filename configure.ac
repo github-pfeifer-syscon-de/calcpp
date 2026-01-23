@@ -16,6 +16,7 @@ AC_CONFIG_HEADERS([config.h])
 AM_SILENT_RULES([yes])
 
 AX_CHECK_ENABLE_DEBUG([info], [DEBUG], [RELEASE], [IS-RELEASE])
+AM_CONDITIONAL([RELEASE],[test "x${enable_debug}" != "xyes"])
 AC_PROG_CC
 AC_PROG_CXX
 dnl did choose c++20 for consistency across libs and programs
@@ -43,6 +44,20 @@ AM_GNU_GETTEXT([external])
 if test "$host_os" = "mingw32" ; then
     AC_SUBST(EXTRA_LDFLAGS, "-mwindows")
 fi
+dnl this is a no-tech approach,
+dnl  if you don't like gcc/clang, this should also work without these options
+dnl    -W... the usual warnings
+dnl  most options originate from https://github.com/cpp-best-practices/cmake_template/blob/main/cmake/Hardening.cmake
+dnl    GLIBC++ Assertions (vector[], string[], ...) enabled
+dnl    g++/clang -fstack-protector-strong enabled
+dnl    g++/clang -fcf-protection enabled
+dnl    undefined behaviour sanitizer
+AC_SUBST(OPT_CFLAGS, "-Og")
+AC_SUBST(OPT_CXXFLAGS, "-mtune=native -march=native -O3")
+AC_SUBST(WARN_CFLAGS, "-Wall -Wconversion ")
+AC_SUBST(WARN_CXXFLAGS, "-Wall -Wconversion -Wpedantic ")
+AC_SUBST(INSTUMENT_CXXFLAGS, "-D_GLIBCXX_ASSERTIONS -fstack-protector-strong -fcf-protection -fsanitize=undefined")
+AC_SUBST(INSTUMENT_LINKFLAGS, "-fsanitize=undefined")
 
 AC_CONFIG_FILES([
 po/Makefile.in
