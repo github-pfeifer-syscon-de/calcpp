@@ -106,16 +106,16 @@ Dimensions::getUserUnitPath()
     return userConfig;
 }
 
+// the intention is to get res for testing run
 Glib::RefPtr<Gio::File>
-Dimensions::getResUnitPath(const std::string& execPath)
+Dimensions::getResSrcPath(const std::string& execPath)
 {
-    // this is limited, as srcdir is given relative
-    //   and make check may be called from somewhere
-    //   expected is the build dir.
-    // this is limited, as srcdir is given relative
+    //   build absolute executable path
     auto exec = Glib::canonicalize_filename(execPath.c_str(), Glib::get_current_dir());
     auto execFile = Gio::File::create_for_path(exec);
+    //   as PACKAGE_SRC_DIR is relative to executable resolve from path
     auto srcPath = Glib::canonicalize_filename( PACKAGE_SRC_DIR, execFile->get_parent()->get_path());
+    //   from src get sibling res
     auto resPath = Glib::canonicalize_filename( "../res", srcPath);
     auto resConfig = Gio::File::create_for_path(resPath);
     return resConfig;
@@ -140,7 +140,7 @@ Dimensions::loadJson(const std::string& execPath)
         jsonFile = globalPath->get_child(unitName);
         if (!jsonFile->query_exists()) {
             // this effort is done to run from source dir (without installed package data)
-            auto resPath = getResUnitPath(execPath);
+            auto resPath = getResSrcPath(execPath);
             jsonFile = resPath->get_child(unitName);
             if (!jsonFile->query_exists()) {
                 std::cout << "Dimensions::loadJson the file "<< unitName << " was not found in locations"

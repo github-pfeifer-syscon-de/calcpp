@@ -38,6 +38,7 @@
 #include "config.h"
 #include "PlotDialog.hpp"
 #include "UnitDialog.hpp"
+#include "Unit.hpp"     // getResSrcPath
 
 /*
  * slightly customized file chooser
@@ -311,26 +312,13 @@ CalcppWin::getApplication()
     return m_application;
 }
 
-Glib::RefPtr<Gio::File>
-CalcppWin::getResSchemaPath()
-{
-    // this is limited, as srcdir is given relative
-    auto exec = Glib::canonicalize_filename(m_application->get_exec_path().c_str(), Glib::get_current_dir());
-    auto execFile = Gio::File::create_for_path(exec);
-    auto srcPath = Glib::canonicalize_filename( PACKAGE_SRC_DIR, execFile->get_parent()->get_path());
-    auto resPath = Glib::canonicalize_filename( "../res", srcPath);
-    auto resConfig = Gio::File::create_for_path(resPath);
-    return resConfig;
-}
-
 void
 CalcppWin::load_config()
 {
-    Glib::ustring execPath = m_application->get_exec_path();
     // this effort is done to run from source dir (without installed schema)
     Glib::RefPtr<Gio::SettingsSchemaSource> schema_source = Gio::SettingsSchemaSource::get_default();
     try {
-        auto resPath = getResSchemaPath();
+        auto resPath = Dimensions::getResSrcPath(m_application->get_exec_path());
         auto resSchema = resPath->get_child(m_application->get_id() + ".gschema.xml");
         // this file identifies the development resources dir, beside executable
         if (resSchema->query_exists()) {

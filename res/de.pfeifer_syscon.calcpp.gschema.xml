@@ -22,7 +22,7 @@
       <description>The unit for angles. 'rad' Radian describes a circle from 0..2pi, 'deg' degree 0..360°, 'gon' grad 0..400.</description>
     </key>
     <key name="output-format" type='s'>
-        <!-- choices leave out values as they are already present in source, and they are not translatebale here... >
+        <!-- choices leave out values as they are already present in source, and they are not translateble here... >
 			<choice value='dec'/>
 			<choice value='sci'/>
 			<choice value='exp'/>

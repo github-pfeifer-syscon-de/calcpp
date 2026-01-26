@@ -67,12 +67,12 @@ public:
 
 
     std::list<std::shared_ptr<Dimension>> getDimensions();
+    static Glib::RefPtr<Gio::File> getResSrcPath(const std::string& execPath);
 protected:
     void loadJson(const std::string& exec_path);
     void loadJsonUnits(const psc::json::PtrJsonObj& unitObj);
     std::string localizeJson(const char* data);
     Glib::RefPtr<Gio::File> getUserUnitPath();
-    Glib::RefPtr<Gio::File> getResUnitPath(const std::string& execPath);
     Glib::RefPtr<Gio::File> getGlobalUnitPath();
     const static constexpr auto unitName{"unit.js"};
 
