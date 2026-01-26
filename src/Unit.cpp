@@ -107,19 +107,16 @@ Dimensions::getUserUnitPath()
 }
 
 Glib::RefPtr<Gio::File>
-Dimensions::getResUnitPath()
+Dimensions::getResUnitPath(const std::string& execPath)
 {
     // this is limited, as srcdir is given relative
     //   and make check may be called from somewhere
     //   expected is the build dir.
-    std::vector<std::string> relResPath;
-    if (G_DIR_SEPARATOR == '\\') {
-        relResPath.push_back("..");	// have to escape .libs on windows
-    }
-    relResPath.push_back("..");
-    relResPath.push_back("res");
-    auto resRel = Glib::build_filename(relResPath);
-    auto resPath = Glib::canonicalize_filename(resRel, PACKAGE_SRC_DIR);
+    // this is limited, as srcdir is given relative
+    auto exec = Glib::canonicalize_filename(execPath.c_str(), Glib::get_current_dir());
+    auto execFile = Gio::File::create_for_path(exec);
+    auto srcPath = Glib::canonicalize_filename( PACKAGE_SRC_DIR, execFile->get_parent()->get_path());
+    auto resPath = Glib::canonicalize_filename( "../res", srcPath);
     auto resConfig = Gio::File::create_for_path(resPath);
     return resConfig;
 }
@@ -135,14 +132,15 @@ void
 Dimensions::loadJson(const std::string& execPath)
 {
     auto userPath = getUserUnitPath();
-    auto jsonFile = userPath->get_child(unitName);    // prefere a local copy if it exists
+    // prefere a local copy if it exists
+    auto jsonFile = userPath->get_child(unitName);
     if (!jsonFile->query_exists()) {
         // this file identifies the program share
-        auto globalPath  =getGlobalUnitPath();
+        auto globalPath = getGlobalUnitPath();
         jsonFile = globalPath->get_child(unitName);
         if (!jsonFile->query_exists()) {
             // this effort is done to run from source dir (without installed package data)
-            auto resPath = getResUnitPath();
+            auto resPath = getResUnitPath(execPath);
             jsonFile = resPath->get_child(unitName);
             if (!jsonFile->query_exists()) {
                 std::cout << "Dimensions::loadJson the file "<< unitName << " was not found in locations"

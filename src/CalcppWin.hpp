@@ -55,6 +55,8 @@ protected:
              , const std::string& compName
              , std::function<void(T*)> function
              , Args&&... args);
+    Glib::RefPtr<Gio::File> getResSchemaPath();
+
 private:
     void load_config();
     void save_config();

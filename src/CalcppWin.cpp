@@ -311,39 +311,40 @@ CalcppWin::getApplication()
     return m_application;
 }
 
+Glib::RefPtr<Gio::File>
+CalcppWin::getResSchemaPath()
+{
+    // this is limited, as srcdir is given relative
+    auto exec = Glib::canonicalize_filename(m_application->get_exec_path().c_str(), Glib::get_current_dir());
+    auto execFile = Gio::File::create_for_path(exec);
+    auto srcPath = Glib::canonicalize_filename( PACKAGE_SRC_DIR, execFile->get_parent()->get_path());
+    auto resPath = Glib::canonicalize_filename( "../res", srcPath);
+    auto resConfig = Gio::File::create_for_path(resPath);
+    return resConfig;
+}
+
 void
 CalcppWin::load_config()
 {
     Glib::ustring execPath = m_application->get_exec_path();
     // this effort is done to run from source dir (without installed schema)
     Glib::RefPtr<Gio::SettingsSchemaSource> schema_source = Gio::SettingsSchemaSource::get_default();
-    std::string fullPath = g_canonicalize_filename(execPath.c_str(), Glib::get_current_dir().c_str());
-    Glib::RefPtr<Gio::File> f = Gio::File::create_for_path(fullPath);
-    auto bin_dir = f->get_parent();
-	std::vector<std::string> relResPath;
-	if (G_DIR_SEPARATOR == '\\') {
-		relResPath.push_back("..");	// have to escape .libs on windows
-	}
-	relResPath.push_back("..");
-	relResPath.push_back("res");
-    std::string resRel = Glib::build_filename(relResPath);
-    std::string resPath = g_canonicalize_filename(resRel.c_str(), bin_dir->get_path().c_str());
-    std::string resSchema = Glib::build_filename(resPath, m_application->get_id() + ".gschema.xml");
-    // this file identifies the development resources dir, beside executable
     try {
-        bool exists = Glib::file_test(resSchema, Glib::FileTest::FILE_TEST_IS_REGULAR);
-        if (exists) {
+        auto resPath = getResSchemaPath();
+        auto resSchema = resPath->get_child(m_application->get_id() + ".gschema.xml");
+        // this file identifies the development resources dir, beside executable
+        if (resSchema->query_exists()) {
             // for development run without global schema, and again the documented function is missing
             schema_source = Glib::wrap(
                     g_settings_schema_source_new_from_directory(
-                        resPath.c_str(), g_settings_schema_source_get_default(), FALSE, nullptr));
+                        resPath->get_path().c_str(), g_settings_schema_source_get_default(), FALSE, nullptr));
         }
         Glib::RefPtr<Gio::SettingsSchema> schema = schema_source->lookup(m_application->get_id(), true);
         if (!schema) {
             std::cerr << "Schema was not loaded!"
                       << " id " << m_application->get_id()
-                      << " local path " << resSchema
-                      << " exists " << (exists ? "y" : "n")
+                      << " local path " << resSchema->get_path()
+                      << " exists " << (resSchema->query_exists() ? "y" : "n")
                       << std::endl;
         }
         // Somehow this function was not ported to glibmm

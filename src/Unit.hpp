@@ -72,7 +72,7 @@ protected:
     void loadJsonUnits(const psc::json::PtrJsonObj& unitObj);
     std::string localizeJson(const char* data);
     Glib::RefPtr<Gio::File> getUserUnitPath();
-    Glib::RefPtr<Gio::File> getResUnitPath();
+    Glib::RefPtr<Gio::File> getResUnitPath(const std::string& execPath);
     Glib::RefPtr<Gio::File> getGlobalUnitPath();
     const static constexpr auto unitName{"unit.js"};
 

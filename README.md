@@ -74,12 +74,8 @@ As a prerequisite genericImg is required, you have to install
 it first.
 
 To build on (Lin)ux use :
-<pre>
-autoreconf -fis
-./configure --prefix=/usr
-make
-</pre>
-or if you prefer the "out of tree" compile-method:
+(the "out of tree" compile method is preferred as some files are optionally
+loaded from build-dirs and too many variations result in unclear errors):
 <pre>
 autoreconf -fis
 mkdir build
@@ -95,8 +91,10 @@ to avoid this.
 
 Build for windows was integrated at least for msys2 use (choose your shell consistently):
 <pre>
- autoreconf -fis
-./configure --prefix=${MINGW_PREFIX}
+autoreconf -fis
+mkdir build
+cd build
+../configure --prefix=${MINGW_PREFIX}
 make
 </pre>
 If you want to find the Os-specific sections look for:

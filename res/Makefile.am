@@ -37,7 +37,7 @@ EXTRA_DIST = $(gsettings_SCHEMAS) $(CALCPP_RESOURCE_XML) $(CALCPP_RESOURCES) $(d
 
 # compile schema locally to allow run from source (without root permission)
 $(GSCHEMA_COMPILED): $(gsettings_SCHEMAS)
-	$(GLIB_COMPILE_SCHEMAS) .
+	$(GLIB_COMPILE_SCHEMAS) $(dir $<)
 
 clean-local:
 	-rm -rf $(RESOURCE_C)
