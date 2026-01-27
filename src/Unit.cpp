@@ -19,6 +19,7 @@
 #include <iostream>
 #include <psc_i18n.hpp>
 #include <psc_format.hpp>
+#include <psc_Files.hpp>
 #include <JsonHelper.hpp>
 #include <string.h>
 #include <cstddef>
@@ -110,14 +111,7 @@ Dimensions::getUserUnitPath()
 Glib::RefPtr<Gio::File>
 Dimensions::getResSrcPath(const std::string& execPath)
 {
-    //   build absolute executable path
-    auto exec = Glib::canonicalize_filename(execPath.c_str(), Glib::get_current_dir());
-    auto execFile = Gio::File::create_for_path(exec);
-    //   as PACKAGE_SRC_DIR is relative to executable resolve from path
-    auto srcPath = Glib::canonicalize_filename( PACKAGE_SRC_DIR, execFile->get_parent()->get_path());
-    //   from src get sibling res
-    auto resPath = Glib::canonicalize_filename( "../res", srcPath);
-    auto resConfig = Gio::File::create_for_path(resPath);
+    auto resConfig = Gio::File::create_for_path(psc::util::Files::getSrcRelativeDir(execPath, PACKAGE_SRC_DIR));
     return resConfig;
 }
 
