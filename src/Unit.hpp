@@ -53,7 +53,7 @@ private:
 class Dimensions
 {
 public:
-    Dimensions(const std::string& exec_path);
+    Dimensions(Glib::StdStringView exec_path);
     explicit Dimensions(const Dimensions& orig) = delete;
     virtual ~Dimensions() = default;
     //static std::shared_ptr<Dimensions> get();
@@ -67,9 +67,9 @@ public:
 
 
     std::list<std::shared_ptr<Dimension>> getDimensions();
-    static Glib::RefPtr<Gio::File> getResSrcPath(const std::string& execPath);
+    static Glib::RefPtr<Gio::File> getResSrcPath(Glib::StdStringView execPath);
 protected:
-    void loadJson(const std::string& exec_path);
+    void loadJson(Glib::StdStringView exec_path);
     void loadJsonUnits(const psc::json::PtrJsonObj& unitObj);
     std::string localizeJson(const char* data);
     Glib::RefPtr<Gio::File> getUserUnitPath();

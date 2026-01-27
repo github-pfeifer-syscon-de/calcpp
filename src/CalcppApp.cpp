@@ -149,7 +149,7 @@ CalcppApp::get_menu_builder()
     return m_builder;
 }
 
-Glib::ustring
+Glib::StdStringView
 CalcppApp::get_exec_path()
 {
     return m_exec;

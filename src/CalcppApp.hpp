@@ -35,7 +35,7 @@ public:
     void on_startup() override;
 
     Glib::RefPtr<Gtk::Builder> get_menu_builder();
-    Glib::ustring get_exec_path();
+    Glib::StdStringView get_exec_path();
     Glib::ustring getReadmeText();
 protected:
     template<typename T>
@@ -45,7 +45,7 @@ protected:
 
 private:
     CalcppWin *m_calcppAppWindow;
-    Glib::ustring m_exec;
+    Glib::StdStringView m_exec;
     Glib::RefPtr<Gtk::Builder> m_builder;
 
     std::string get_file(const std::string& name);

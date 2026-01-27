@@ -29,7 +29,7 @@
 #include "NumDialog.hpp"
 
 
-Dimensions::Dimensions(const std::string& exec_path)
+Dimensions::Dimensions(Glib::StdStringView exec_path)
 : m_length{std::make_shared<Dimension>()}
 , m_area{std::make_shared<Dimension>()}
 , m_volume{std::make_shared<Dimension>()}
@@ -109,7 +109,7 @@ Dimensions::getUserUnitPath()
 
 // the intention is to get res for testing run
 Glib::RefPtr<Gio::File>
-Dimensions::getResSrcPath(const std::string& execPath)
+Dimensions::getResSrcPath(Glib::StdStringView execPath)
 {
     auto resConfig = Gio::File::create_for_path(psc::util::Files::getSrcRelativeDir(execPath, PACKAGE_SRC_DIR));
     return resConfig;
@@ -123,7 +123,7 @@ Dimensions::getGlobalUnitPath()
 }
 
 void
-Dimensions::loadJson(const std::string& execPath)
+Dimensions::loadJson(Glib::StdStringView execPath)
 {
     auto userPath = getUserUnitPath();
     // prefere a local copy if it exists

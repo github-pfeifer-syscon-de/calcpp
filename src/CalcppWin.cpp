@@ -19,6 +19,7 @@
 #include <iostream>
 #include <StringUtils.hpp>
 #include <psc_i18n.hpp>
+#include <psc_Files.hpp>
 #include <Log.hpp>  // formatter Glib::Error
 #include <type_traits>
 
@@ -38,7 +39,6 @@
 #include "config.h"
 #include "PlotDialog.hpp"
 #include "UnitDialog.hpp"
-#include "Unit.hpp"     // getResSrcPath
 
 /*
  * slightly customized file chooser
@@ -318,7 +318,7 @@ CalcppWin::load_config()
     // this effort is done to run from source dir (without installed schema)
     Glib::RefPtr<Gio::SettingsSchemaSource> schema_source = Gio::SettingsSchemaSource::get_default();
     try {
-        auto resPath = Dimensions::getResSrcPath(m_application->get_exec_path());
+        auto resPath = Gio::File::create_for_path(psc::util::Files::getSrcRelativeDir(m_application->get_exec_path(), PACKAGE_SRC_DIR));
         auto resSchema = resPath->get_child(m_application->get_id() + ".gschema.xml");
         // this file identifies the development resources dir, beside executable
         if (resSchema->query_exists()) {
