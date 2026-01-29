@@ -10,14 +10,14 @@ AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
 	$(GENERICIMG_CFLAGS)
 
-libexpression_a_CFLAGS = @WARN_CFLAGS@
-libexpression_a_CXXFLAGS = @WARN_CXXFLAGS@
+libexpression_a_CFLAGS = $(WARN_CFLAGS)
+libexpression_a_CXXFLAGS = $(WARN_CXXFLAGS)
 
 if RELEASE
-libexpression_a_CFLAGS += @OPT_CFLAGS@
-libexpression_a_CXXFLAGS += @OPT_CXXFLAGS@
+libexpression_a_CFLAGS += $(OPTIM_CFLAGS)
+libexpression_a_CXXFLAGS += $(OPTIM_CXXFLAGS)
 else
-libexpression_a_CXXFLAGS += @INSTUMENT_CXXFLAGS@
+libexpression_a_CXXFLAGS += $(INSTUMENT_CXXFLAGS)
 endif
 
 libexpression_a_SOURCES = \

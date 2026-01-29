@@ -3,23 +3,23 @@ bin_PROGRAMS = calcpp
 
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
-    -DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
-    -DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
+	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
+	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
 	-I"$(srcdir)"/../srcLib \
 	$(GENERICIMG_CFLAGS) \
 	$(GLIBMM_CFLAGS) \
 	$(GTKMM_CFLAGS)
 
-calcpp_CFLAGS = @WARN_CFLAGS@
-calcpp_CXXFLAGS = @WARN_CXXFLAGS@
-calcpp_LDFLAGS = @EXTRA_LDFLAGS@
+calcpp_CFLAGS = $(WARN_CFLAGS)
+calcpp_CXXFLAGS = $(WARN_CXXFLAGS)
+calcpp_LDFLAGS = $(EXTRA_LDFLAGS)
 
 if RELEASE
-calcpp_CFLAGS += @OPT_CFLAGS@
-calcpp_CXXFLAGS += @OPT_CXXFLAGS@
+calcpp_CFLAGS += $(OPTIM_CFLAGS)
+calcpp_CXXFLAGS += $(OPTIM_CXXFLAGS)
 else
-calcpp_CXXFLAGS += @INSTUMENT_CXXFLAGS@
-calcpp_LDFLAGS += @INSTUMENT_LINKFLAGS@
+calcpp_CXXFLAGS += $(INSTUMENT_CXXFLAGS)
+calcpp_LDFLAGS += $(INSTUMENT_LINKFLAGS)
 endif
 
 calcpp_LDADD =  \
