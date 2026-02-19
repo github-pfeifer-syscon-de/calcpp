@@ -22,7 +22,7 @@
 
 #include "Syntax.hpp"
 #include "BaseEval.hpp"
-#include "config.h"
+#include "calcpp_config.h"
 
 Syntax::Syntax(const PtrNumberFormat& numberFormat, const std::shared_ptr<BaseEval>& conversionContext)
 : m_numberFormat{numberFormat}

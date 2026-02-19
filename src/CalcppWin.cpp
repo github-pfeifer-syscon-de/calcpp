@@ -36,7 +36,7 @@
 #include "QuadDialog.hpp"
 #include "GaussDialog.hpp"
 #include "NumBaseDialog.hpp"
-#include "config.h"
+#include "calcpp_config.h"
 #include "PlotDialog.hpp"
 #include "UnitDialog.hpp"
 
@@ -316,9 +316,16 @@ void
 CalcppWin::load_config()
 {
     // this effort is done to run from source dir (without installed schema)
+	const char* exec_c = m_application->get_exec_path().c_str();
+	std::string exec(exec_c);
+	std::cout << " exec " << exec
+		  << " PACK_SRC " PACKAGE_SRC_DIR << std::endl;
     Glib::RefPtr<Gio::SettingsSchemaSource> schema_source = Gio::SettingsSchemaSource::get_default();
     try {
         auto resPath = Gio::File::create_for_path(psc::util::Files::getSrcRelativeDir(m_application->get_exec_path(), PACKAGE_SRC_DIR));
+	std::cout << "load_config resPath " << resPath->get_path() 
+                  << " src " <<  g_settings_schema_source_get_default() << std::endl;
+
         auto resSchema = resPath->get_child(m_application->get_id() + ".gschema.xml");
         // this file identifies the development resources dir, beside executable
         if (resSchema->query_exists()) {

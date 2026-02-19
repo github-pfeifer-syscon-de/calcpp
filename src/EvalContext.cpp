@@ -22,7 +22,7 @@
 #include <psc_i18n.hpp>
 
 #include "EvalContext.hpp"
-#include "config.h"
+#include "calcpp_config.h"
 
 EvalContext::EvalContext()
 : Glib::ObjectBase(typeid (EvalContext))

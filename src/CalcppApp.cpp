@@ -24,7 +24,7 @@
 #include <clocale>
 #include <string_view>
 
-#include <config.h>
+#include "calcpp_config.h"
 #include "CalcppApp.hpp"
 
 CalcppApp::CalcppApp(int argc, char **argv)

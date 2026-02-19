@@ -23,7 +23,7 @@
 
 
 #include "BaseEval.hpp"
-#include "config.h"
+#include "calcpp_config.h"
 
 BaseEval::BaseEval()
 {
