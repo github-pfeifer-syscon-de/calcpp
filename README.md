@@ -93,3 +93,11 @@ meson setup build -Dprefix=${MINGW_PREFIX}
 cd build
 meson compile
 </pre>
+
+### i18n
+
+To update i18n data use:
+<pre>
+meson compile calcpp-pot
+meson compile calcpp-update-po
+</pre>

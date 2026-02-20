@@ -22,5 +22,6 @@ sources = files(
     , 'PlotDialog.cpp'
     , 'QuadraticEquation.cpp'
     , 'PrefDialog.cpp'
+    , 'ColorDialog.cpp'
     )
 

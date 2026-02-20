@@ -11,11 +11,12 @@ fs = import('fs')
 
 pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
 pkglocaledir = join_paths(get_option('prefix'), get_option('datadir'), 'locale')
+pkgsrcdir = fs.relative_to( meson.global_source_root(), meson.current_build_dir()) + '/src'
 add_project_arguments('-DPACKAGE_DATA_DIR="' + pkgdatadir + '"', language: ['cpp','c'])
 add_project_arguments('-DPACKAGE="' + meson.project_name() + '"', language: ['cpp','c'])
-# this is just to recreate the conventions from autotools
-add_project_arguments('-DPACKAGE_SRC_DIR="' + fs.relative_to( meson.global_source_root(), meson.current_build_dir())+'/src' + '"', language: ['cpp','c'])
-#add_project_arguments('-DGETTEXT_PACKAGE="intltest"', language: ['cpp','c'])
+# this is to recreate the conventions from autotools
+add_project_arguments('-DPACKAGE_SRC_DIR="' + pkgsrcdir + '"', language: ['cpp','c'])
+add_project_arguments('-DGETTEXT_PACKAGE="' + meson.project_name() + '"', language: ['c'])
 add_project_arguments('-DPACKAGE_LOCALE_DIR="' + pkglocaledir + '"', language: ['cpp','c'])
 conf = configuration_data()
 conf.set_quoted('VERSION', meson.project_version())     # Surround the version in quotes to make it a C string

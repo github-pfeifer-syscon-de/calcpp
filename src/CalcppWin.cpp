@@ -39,6 +39,7 @@
 #include "calcpp_config.h"
 #include "PlotDialog.hpp"
 #include "UnitDialog.hpp"
+#include "ColorDialog.hpp"
 
 /*
  * slightly customized file chooser
@@ -137,7 +138,7 @@ CalcppWin::build(const std::string& resName
         builder->get_widget_derived(compName, tDialog, std::forward<Args>(args)...);
         function(tDialog);
         tDialog->hide();
-        delete tDialog;  // as this is a toplevel component shoud destroy -> works
+        delete tDialog;  // as this is a toplevel component destroy it
     }
     catch (const Glib::Error &ex) {
         show_error(psc::fmt::vformat(
@@ -275,6 +276,16 @@ CalcppWin::activate_actions()
             }, this);
 		});
     add_action(numbase_action);
+
+    auto color_action = Gio::SimpleAction::create("color");
+    color_action->signal_activate().connect(
+        [this] (const Glib::VariantBase& value)
+        {
+            build<ColorDialog>("color-dlg.ui", "ColorDialog", [this] (ColorDialog* colorDialog) {
+                colorDialog->run();
+            }, this);
+        });
+    add_action(color_action);
 }
 
 void
@@ -320,6 +331,7 @@ CalcppWin::load_config()
 	std::string exec(exec_c);
     Glib::RefPtr<Gio::SettingsSchemaSource> schema_source = Gio::SettingsSchemaSource::get_default();
     try {
+        // this relies on geschemas.compiled created in res 
         auto resPath = Gio::File::create_for_path(psc::util::Files::getSrcRelativeDir(m_application->get_exec_path(), PACKAGE_SRC_DIR));
         auto resSchema = resPath->get_child(m_application->get_id() + ".gschema.xml");
         // this file identifies the development resources dir, beside executable
