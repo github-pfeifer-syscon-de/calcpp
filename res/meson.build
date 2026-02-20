@@ -27,8 +27,17 @@ install_data(
      schemaSrc 
     , install_dir: join_paths(dataDir, 'glib-2.0/schemas'))
 gnome.post_install( glib_compile_schemas: true )
-glib_compile_schemas = find_program('glib-compile-schemas', required: true)
-test('validate schema', glib_compile_schemas, args: ['--strict', '--dry-run', meson.current_source_dir()])
+# ask pkg-config to find compile schema
+pkg_config = find_program('pkg-config', required: true)
+r = run_command( pkg_config, '--variable=glib_compile_schemas', 'gio-2.0', capture: true, check: true)
+glib_compile_schemas = find_program(r.stdout().strip(), required: true)
+# to allow testrun & checking schema compile build it
+custom_target('geschemas.compiled'
+    , build_by_default : true
+    , command          : [glib_compile_schemas, '--strict', meson.current_source_dir()]
+    , depend_files     : schemaSrc
+    , output           : 'geschemas.compiled'
+    )
 
 # Doc-files
 docDir= join_paths(dataDir, 'doc', meson.project_name())

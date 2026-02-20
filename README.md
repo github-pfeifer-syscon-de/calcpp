@@ -77,27 +77,19 @@ To build on (Lin)ux use :
 (the "out of tree" compile method is preferred as some files are optionally
 loaded from build-dirs and too many variations result in unclear errors):
 <pre>
-autoreconf -fis
-mkdir build
+meson setup build -Dprefix=/usr
 cd build
-../configure --prefix=/usr
-make
+meson compile
 </pre>
-For a first test `src/calcpp` should be sufficient.
+For a first test `./calcpp` should be sufficient.
 If the application was once installed there is the likelihood, 
 of conflicts between the installed configuration schema
-and a new version, so for further testing use `make install` 
+and a new version, so for further testing use `meson install` 
 to avoid this.
 
 Build for windows was integrated at least for msys2 use (choose your shell consistently):
 <pre>
-autoreconf -fis
-mkdir build
+meson setup build -Dprefix=${MINGW_PREFIX}
 cd build
-../configure --prefix=${MINGW_PREFIX}
-make
-</pre>
-If you want to find the Os-specific sections look for:
-<pre>
-  "$host_os" = "mingw32"
+meson compile
 </pre>

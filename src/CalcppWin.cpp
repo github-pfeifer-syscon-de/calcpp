@@ -318,14 +318,9 @@ CalcppWin::load_config()
     // this effort is done to run from source dir (without installed schema)
 	const char* exec_c = m_application->get_exec_path().c_str();
 	std::string exec(exec_c);
-	std::cout << " exec " << exec
-		  << " PACK_SRC " PACKAGE_SRC_DIR << std::endl;
     Glib::RefPtr<Gio::SettingsSchemaSource> schema_source = Gio::SettingsSchemaSource::get_default();
     try {
         auto resPath = Gio::File::create_for_path(psc::util::Files::getSrcRelativeDir(m_application->get_exec_path(), PACKAGE_SRC_DIR));
-	std::cout << "load_config resPath " << resPath->get_path() 
-                  << " src " <<  g_settings_schema_source_get_default() << std::endl;
-
         auto resSchema = resPath->get_child(m_application->get_id() + ".gschema.xml");
         // this file identifies the development resources dir, beside executable
         if (resSchema->query_exists()) {
@@ -340,7 +335,7 @@ CalcppWin::load_config()
                       << " id " << m_application->get_id()
                       << " local path " << resSchema->get_path()
                       << " exists " << (resSchema->query_exists() ? "y" : "n")
-                      << std::endl;
+                      << "  which is likely you once installed this, so the there is no trying once it was installed... (you have to install this to try)" << std::endl;
         }
         // Somehow this function was not ported to glibmm
         m_settings = Glib::wrap(g_settings_new_full(schema->gobj(), nullptr, nullptr), false);
