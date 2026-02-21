@@ -71,36 +71,32 @@ wenn es nach ~/.local/share/calcpp/unit.js
 kopiert wird können diese für die eigenen Bedürfnisse
 modifiziert werden.
 
-Änderungen:
-* am 15.10.25 hinzugefügt numerische Trennzeichen.
+## Installation
 
-Zum Erstellen verwenden (als Voraussetzung wird genericImg benötigt):
+Als Voraussetzung ist genericImg erforderlich, bitte zunächst installieren.
+
+Für (Lin)ux zum bauen verwenden :
 <pre>
-autoreconf -fis
-./configure --prefix=/usr
-make
-</pre>
-oder wenn du die "out of tree" kompilierung bevorzugst:
-<pre>
-autoreconf -fis
-mkdir build
+meson setup build -Dprefix=/usr
 cd build
-../configure --prefix=/usr
-make
+meson compile
 </pre>
-Zum ersten testen sollte `src/calcpp` ausreichen.
-Wurde die Anwendung einmal installiert, treten Konflikte des
-installierten Konfigurationsschemas und einer ggf. geänderten Version auf,
-damit sollte alle weiteren Aufrufe ein `make install` vorausgehen.
+Für einen ersten Test sollte `./calcpp` ausreichen.
+Wenn die Anwendung einmal installiert war ist die Wahrscheinlichkeit hoch
+das es zu Konflikten mit dem installierten Anwendungsschema kommt,
+somit in diesem Fall `meson install` verwenden, um Probleme zu vermeiden.
 
-Das Bauen für Win(dows) wird mit msys2 untersützt (wähle die Umgebung für alle Schritte einheitlich):
+Für Windows mit msys2 wurde das Bauen integriert. (bitte die Umgebung/Shell konsistent verwenden):
 <pre>
-autoreconf -fis
-./configure --prefix=${MINGW_PREFIX}
-make
+meson setup build -Dprefix=${MINGW_PREFIX}
+cd build
+meson compile
 </pre>
 
-if you want to change this build look for:
+## Sprachunterstützung
+
+Im Fall diese soll angepasst werden verwenden:
 <pre>
-  look for "$host_os" = "mingw32"
+meson compile calcpp-pot
+meson compile calcpp-update-po
 </pre>

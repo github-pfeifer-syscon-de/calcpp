@@ -1,4 +1,4 @@
-# calcpp
+# Calcpp
 A desktop calculator
 
 ![calcpp](calcpp.png "calcpp")
@@ -70,12 +70,12 @@ In INSTALL_DIR/share/calcpp/unit.js can be found if
 it is copied to ~/.local/share/calcpp/unit.js
 you can modify it or add other units.
 
+## Install
+
 As a prerequisite genericImg is required, you have to install
 it first.
 
 To build on (Lin)ux use :
-(the "out of tree" compile method is preferred as some files are optionally
-loaded from build-dirs and too many variations result in unclear errors):
 <pre>
 meson setup build -Dprefix=/usr
 cd build
@@ -94,7 +94,7 @@ cd build
 meson compile
 </pre>
 
-### i18n
+## i18n
 
 To update i18n data use:
 <pre>
