@@ -32,10 +32,12 @@ pkg_config = find_program('pkg-config', required: true)
 r = run_command( pkg_config, '--variable=glib_compile_schemas', 'gio-2.0', capture: true, check: true)
 glib_compile_schemas = find_program(r.stdout().strip(), required: true)
 # to allow testrun & checking schema compile build it
+#   this is build too often but better than only on install...
+#   violates the out of tree convention, but to reduce the variations when searching.
 custom_target(
-      build_by_default : true   # build too often but better than only on install...
+    build_by_default   : true
     , command          : [glib_compile_schemas, '--strict', meson.current_source_dir()]
-    , depend_files     : schemaSrc
+    , input            : schemaSrc
     , output           : 'geschemas.compiled'
     )
 

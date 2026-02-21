@@ -2,7 +2,7 @@ project('calcpp', 'c', 'cpp'
     , default_options: ['c_std=c11'
                        , 'cpp_std=c++20'
                        , 'buildtype=debugoptimized'
-                       , 'warning_level=1']
+                       , 'warning_level=3']
     , license : 'GPL-3.0'
     , meson_version: '>=1.3.0'
     , version: '0.1')
@@ -18,10 +18,21 @@ add_project_arguments('-DPACKAGE="' + meson.project_name() + '"', language: ['cp
 add_project_arguments('-DPACKAGE_SRC_DIR="' + pkgsrcdir + '"', language: ['cpp','c'])
 add_project_arguments('-DGETTEXT_PACKAGE="' + meson.project_name() + '"', language: ['c'])
 add_project_arguments('-DPACKAGE_LOCALE_DIR="' + pkglocaledir + '"', language: ['cpp','c'])
+
+
+disable_flags = [   # limit the compiler noisiness
+    '-Wno-unused-parameter'
+]
+cc = meson.get_compiler('c')
+foreach cflag : disable_flags
+    if cc.has_argument(cflag)
+        add_project_arguments(cflag, language: ['c', 'cpp'])
+    endif
+endforeach
+
 conf = configuration_data()
 conf.set_quoted('VERSION', meson.project_version())     # Surround the version in quotes to make it a C string
 
-cc = meson.get_compiler('c')
 unistring_deps    = declare_dependency(dependencies : cc.find_library('unistring', required: true))
 
 gtkmm3_deps     = dependency('gtkmm-3.0')
