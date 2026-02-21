@@ -30,9 +30,15 @@ public:
     explicit ColorDialog(const ColorDialog& orig) = delete;
     virtual ~ColorDialog() = default;
 
-    void updateFromSingle();
+    void updateFromSpinner();
     void updateFromHex();
     void updateFromColor();
+protected:
+    // the internal passing uses Gdk::RGBA _u notation, values 0...65535
+    void setSpinner(uint32_t red, uint32_t green, uint32_t blue);
+    void setColorButton(uint32_t red, uint32_t green, uint32_t blue);
+    void setHexEntry(uint32_t red, uint32_t green, uint32_t blue);
+
 private:
     CalcppWin* m_parent;
     Gtk::SpinButton* m_red;
@@ -40,6 +46,6 @@ private:
     Gtk::SpinButton* m_blue;
     Gtk::ColorButton* m_color;
     Gtk::Entry* m_hex;
-    bool m_signalBlocked{false};
+    bool m_signalBlocked{false};    // block signal for internal changes
 };
 

@@ -32,30 +32,27 @@ ColorDialog::ColorDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
     builder->get_widget("color", m_color);
     builder->get_widget("hex", m_hex);
 
-    m_red->signal_value_changed().connect(sigc::mem_fun(*this, &ColorDialog::updateFromSingle));
-    m_green->signal_value_changed().connect(sigc::mem_fun(*this, &ColorDialog::updateFromSingle));
-    m_blue->signal_value_changed().connect(sigc::mem_fun(*this, &ColorDialog::updateFromSingle));
+    m_red->signal_value_changed().connect(sigc::mem_fun(*this, &ColorDialog::updateFromSpinner));
+    m_green->signal_value_changed().connect(sigc::mem_fun(*this, &ColorDialog::updateFromSpinner));
+    m_blue->signal_value_changed().connect(sigc::mem_fun(*this, &ColorDialog::updateFromSpinner));
     m_hex->signal_changed().connect(sigc::mem_fun(*this, &ColorDialog::updateFromHex));
     m_color->signal_color_set().connect(sigc::mem_fun(*this, &ColorDialog::updateFromColor));
-    updateFromSingle();
+    updateFromSpinner();
 }
 
 void
-ColorDialog::updateFromSingle()
+ColorDialog::updateFromSpinner()
 {
     if (!m_signalBlocked) {
         m_signalBlocked = true;
         uint32_t red = m_red->get_value_as_int();
         uint32_t green = m_green->get_value_as_int();
         uint32_t blue = m_blue->get_value_as_int();
-        Gdk::RGBA color;
-        color.set_red_u(red << 8u);
-        color.set_green_u(green << 8u);
-        color.set_blue_u(blue << 8u);
-        color.set_alpha_u(std::numeric_limits<uint16_t>::max());
-        m_color->set_rgba(color);
-        auto hex = Glib::ustring::sprintf("#%02x%02x%02x", red, green, blue);
-        m_hex->set_text(hex);
+        red <<= 8u;
+        green <<= 8u;
+        blue <<= 8u;
+        setColorButton(red, green, blue);
+        setHexEntry(red, green, blue);
         m_signalBlocked = false;
     }
 }
@@ -71,7 +68,7 @@ ColorDialog::updateFromHex()
         }
         uint32_t red{},green{},blue{};
         if (hex.length() >= 12) {
-            red = g_ascii_strtoull(hex.substr(0, 4).c_str(), nullptr, 16); //
+            red = g_ascii_strtoull(hex.substr(0, 4).c_str(), nullptr, 16);
             green = g_ascii_strtoull(hex.substr(4, 4).c_str(), nullptr, 16);
             blue = g_ascii_strtoull(hex.substr(8, 4).c_str(), nullptr, 16);
         }
@@ -85,15 +82,8 @@ ColorDialog::updateFromHex()
             green = g_ascii_strtoull(hex.substr(1, 1).c_str(), nullptr, 16) * 0x1100;
             blue = g_ascii_strtoull(hex.substr(2, 1).c_str(), nullptr, 16) * 0x1100;
         }
-        m_red->set_value(red >> 8u);
-        m_green->set_value(green >> 8u);
-        m_blue->set_value(blue >> 8u);
-        Gdk::RGBA color;
-        color.set_red_u(red);
-        color.set_green_u(green);
-        color.set_blue_u(blue);
-        color.set_alpha_u(std::numeric_limits<uint16_t>::max());
-        m_color->set_rgba(color);
+        setSpinner(red, green, blue);
+        setColorButton(red, green, blue);
         m_signalBlocked = false;
     }
 }
@@ -104,14 +94,38 @@ ColorDialog::updateFromColor()
     if (!m_signalBlocked) {
         m_signalBlocked = true;
         Gdk::RGBA color = m_color->get_rgba();
-        uint32_t red = color.get_red_u() >> 8u;
-        uint32_t green = color.get_green_u() >> 8u;
-        uint32_t blue = color.get_blue_u() >> 8u;
-        m_red->set_value(red);
-        m_green->set_value(green);
-        m_blue->set_value(blue);
-        auto hex = Glib::ustring::sprintf("#%02x%02x%02x", red, green, blue);
-        m_hex->set_text(hex);
+        uint32_t red = color.get_red_u();
+        uint32_t green = color.get_green_u();
+        uint32_t blue = color.get_blue_u();
+        setSpinner(red, green, blue);
+        setHexEntry(red, green, blue);
         m_signalBlocked = false;
     }
+}
+
+void
+ColorDialog::setHexEntry(uint32_t red, uint32_t green, uint32_t blue)
+{
+    auto hex = Glib::ustring::sprintf("#%02x%02x%02x"
+                                            , red >> 8u, green >> 8u, blue>> 8u);
+    m_hex->set_text(hex);
+}
+
+void
+ColorDialog::setSpinner(uint32_t red, uint32_t green, uint32_t blue)
+{
+    m_red->set_value(red >> 8u);
+    m_green->set_value(green >> 8u);
+    m_blue->set_value(blue >> 8u);
+}
+
+void
+ColorDialog::setColorButton(uint32_t red, uint32_t green, uint32_t blue)
+{
+    Gdk::RGBA color;
+    color.set_red_u(red);
+    color.set_green_u(green);
+    color.set_blue_u(blue);
+    color.set_alpha_u(std::numeric_limits<uint16_t>::max());
+    m_color->set_rgba(color);
 }
