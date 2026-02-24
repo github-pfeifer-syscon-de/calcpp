@@ -33,13 +33,14 @@ r = run_command( pkg_config, '--variable=glib_compile_schemas', 'gio-2.0', captu
 glib_compile_schemas = find_program(r.stdout().strip(), required: true)
 # to allow testrun & checking schema compile build it
 #   this is build too often but better than only on install...
-#   violates the out of tree convention, but to reduce the variations when searching.
+fs = import('fs')
+copySchema = fs.copyfile(schemaSrc)  # the build dir is the default target
 custom_target(
     build_by_default   : true
-    , command          : [glib_compile_schemas, '--strict', meson.current_source_dir()]
+    , command          : [glib_compile_schemas, '--strict', meson.current_build_dir()]
     , input            : schemaSrc
     , output           : 'geschemas.compiled'
-    )
+    , depends          : copySchema)
 
 # Doc-files
 docDir= join_paths(dataDir, 'doc', meson.project_name())

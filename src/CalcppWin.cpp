@@ -332,7 +332,7 @@ CalcppWin::load_config()
     Glib::RefPtr<Gio::SettingsSchemaSource> schema_source = Gio::SettingsSchemaSource::get_default();
     try {
         // this relies on geschemas.compiled created in res 
-        auto resPath = Gio::File::create_for_path(psc::util::Files::getSrcRelativeDir(m_application->get_exec_path(), PACKAGE_SRC_DIR));
+        auto resPath = Gio::File::create_for_path(psc::util::Files::getSrcRelativeDir(m_application->get_exec_path(), "res"));
         auto resSchema = resPath->get_child(m_application->get_id() + ".gschema.xml");
         // this file identifies the development resources dir, beside executable
         if (resSchema->query_exists()) {
