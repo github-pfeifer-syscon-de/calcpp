@@ -32,6 +32,11 @@ endforeach
 
 conf = configuration_data()
 conf.set_quoted('VERSION', meson.project_version())     # Surround the version in quotes to make it a C string
+conf_file = configure_file(output : meson.project_name() + '_config.h'
+               , configuration : conf)
+
+incSrcLib = include_directories('srcLib'
+                               , fs.parent(conf_file))
 
 unistring_deps    = declare_dependency(dependencies : cc.find_library('unistring', required: true))
 
@@ -52,7 +57,6 @@ subdir('test')
 subdir('res')
 sources += app_resources
 
-incSrcLib = include_directories('srcLib')
 project_targt = executable(meson.project_name()
     , sources
     , dependencies: deps

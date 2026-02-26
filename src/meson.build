@@ -1,9 +1,6 @@
 
-configure_file(output : meson.project_name() + '_config.h'
-               , configuration : conf)
-
 sources = files(
-     'CalcppApp.cpp' 
+     'CalcppApp.cpp'
     , 'CalcppWin.cpp'
     , 'EvalContext.cpp'
     , 'OutputForm.cpp'
