@@ -108,11 +108,18 @@ check_quad()
 static double
 random(std::mt19937& rng, bool allowNegative = true)
 {
-    auto n = static_cast<int32_t>(rng() % 10000u);
-    if (allowNegative && (rng() % 3) == 0) {
-        n = -n;
+    bool useNegative = allowNegative && (rng() % 3) == 0;
+    int32_t n,d;
+    while (true) {  // avoid 0 as this may not be dividable/solvable
+        n = static_cast<int32_t>(rng() % 10000u);
+        if (useNegative) {
+            n = -n;
+        }
+        d = static_cast<int32_t>(rng() % 1000u + 1u);
+        if (n != 0 && d != 0) {
+            break;
+        }
     }
-    auto d = static_cast<int32_t>(rng() % 1000u + 1u);
     //std::cout << "n " << n << " d " << d << " n/d "<< (static_cast<double>(n) / static_cast<double>(d)) << std::endl;
     return static_cast<double>(n) / static_cast<double>(d);
 }

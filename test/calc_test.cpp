@@ -16,9 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <iostream>
 #include <iomanip>
 #include <cstdlib>
 #include <psc_format.hpp>
+#include <psc_Files.hpp>
 #include <tuple>
 
 #include "CalcppApp.hpp"
@@ -224,6 +226,31 @@ testTupl()
     return true;
 }
 
+class TestDims
+: public Dimensions
+{
+public:
+    TestDims(Glib::StdStringView exec_path)
+    : Dimensions(exec_path)
+    , m_execPath{exec_path.c_str()}
+    {
+    }
+    explicit TestDims(const TestDims& org) = delete;
+    virtual ~TestDims() = default;
+protected:
+    // as the usual methods will not work from test
+    Glib::RefPtr<Gio::File> getUserUnitPath() override
+    {
+        auto resConfig = Gio::File::create_for_path(psc::util::Files::getSrcRelativeDir(m_execPath, PACKAGE_SRC_DIR, "../../res"));
+        //std::cout << "TestDims::getUserUnitPath "
+        //    << " cwd " << Glib::get_current_dir()
+        //    << " exec " << m_execPath
+        //    << " path " << resConfig->get_path() << std::endl;
+        return resConfig;
+    }
+    std::string m_execPath;
+};
+
 /*
  *
  */
@@ -232,7 +259,8 @@ int main(int argc, char** argv)
     setlocale(LC_ALL, "");      // make locale dependent, and make glib accept u8 const !!!
     Glib::init();
 
-    Dimensions dims{argv[0]};
+    std::cout << "main" << std::endl;
+    TestDims dims{argv[0]};
 
     if (!testEval()) {
         return 1;

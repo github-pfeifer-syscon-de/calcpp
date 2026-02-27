@@ -37,16 +37,8 @@ Dimensions::Dimensions(Glib::StdStringView exec_path)
 , m_speed{std::make_shared<Dimension>()}
 , m_mass{std::make_shared<Dimension>()}
 , m_time{std::make_shared<Dimension>()}
+, m_exec_path{exec_path.c_str()}
 {
-    m_dimensions.push_back(m_length);
-    m_dimensions.push_back(m_area);
-    m_dimensions.push_back(m_volume);
-    m_dimensions.push_back(m_temperature);
-    m_dimensions.push_back(m_speed);
-    m_dimensions.push_back(m_mass);
-    m_dimensions.push_back(m_time);
-
-    loadJson(exec_path);
 }
 
 
@@ -260,52 +252,74 @@ Dimensions::localizeJson(const char* data)
 //    }
 //    return m_dimension;
 //}
+void
+Dimensions::checkUnits()
+{
+    if (m_dimensions.empty()) {
+        loadJson(m_exec_path);
+        m_dimensions.push_back(m_length);
+        m_dimensions.push_back(m_area);
+        m_dimensions.push_back(m_volume);
+        m_dimensions.push_back(m_temperature);
+        m_dimensions.push_back(m_speed);
+        m_dimensions.push_back(m_mass);
+        m_dimensions.push_back(m_time);
+    }
+}
 
 std::shared_ptr<Dimension>
 Dimensions::getLength()
 {
+    checkUnits();
     return m_length;
 }
 
 std::shared_ptr<Dimension>
 Dimensions::getArea()
 {
+    checkUnits();
     return m_area;
 }
 
 std::shared_ptr<Dimension>
 Dimensions::getVolume()
 {
+    checkUnits();
     return m_volume;
 }
 
 std::shared_ptr<Dimension>
 Dimensions::getTemperature()
 {
+    checkUnits();
     return m_temperature;
 }
 
 std::shared_ptr<Dimension>
 Dimensions::getSpeed()
 {
+    checkUnits();
     return m_speed;
 }
 
 std::shared_ptr<Dimension>
 Dimensions::getMass()
 {
+    checkUnits();
     return m_mass;
 }
 
 std::shared_ptr<Dimension>
 Dimensions::getTime()
 {
+    checkUnits();
     return m_time;
 }
 
 std::list<std::shared_ptr<Dimension>>
 Dimensions::getDimensions()
 {
+    checkUnits();
     return m_dimensions;
 }
 

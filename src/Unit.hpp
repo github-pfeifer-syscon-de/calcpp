@@ -69,10 +69,11 @@ public:
     std::list<std::shared_ptr<Dimension>> getDimensions();
     static Glib::RefPtr<Gio::File> getResSrcPath(Glib::StdStringView execPath);
 protected:
+    void checkUnits();      // make loading lazy
     void loadJson(Glib::StdStringView exec_path);
     void loadJsonUnits(const psc::json::PtrJsonObj& unitObj);
     std::string localizeJson(const char* data);
-    Glib::RefPtr<Gio::File> getUserUnitPath();
+    virtual Glib::RefPtr<Gio::File> getUserUnitPath();
     Glib::RefPtr<Gio::File> getGlobalUnitPath();
     const static constexpr auto unitName{"unit.js"};
 
@@ -87,7 +88,7 @@ private:
     std::shared_ptr<Dimension> m_mass;
     std::shared_ptr<Dimension> m_time;
     std::list<std::shared_ptr<Dimension>> m_dimensions;
-
+    std::string m_exec_path;
 };
 
 
