@@ -27,6 +27,7 @@
 #include "calc_test.hpp"
 #include "Syntax.hpp"
 #include "Unit.hpp"
+#include "calcpp_config.h"
 
 static constexpr auto VALUE_LIMIT{0.000001};
 static constexpr auto VALUE_COARS{0.1};
@@ -259,7 +260,7 @@ int main(int argc, char** argv)
     setlocale(LC_ALL, "");      // make locale dependent, and make glib accept u8 const !!!
     Glib::init();
 
-    std::cout << "main" << std::endl;
+    std::cout << "main " << CALCPP_VERSION << std::endl;
     TestDims dims{argv[0]};
 
     if (!testEval()) {

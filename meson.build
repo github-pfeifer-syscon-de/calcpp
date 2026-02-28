@@ -31,7 +31,7 @@ foreach cflag : disable_flags
 endforeach
 
 conf = configuration_data()
-conf.set_quoted('VERSION', meson.project_version())     # Surround the version in quotes to make it a C string
+conf.set_quoted('CALCPP_VERSION', meson.project_version())     # Surround the version in quotes to make it a C string
 conf_file = configure_file(output : meson.project_name() + '_config.h'
                , configuration : conf)
 
