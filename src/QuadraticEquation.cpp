@@ -56,6 +56,9 @@ QuadraticEquation<T>::isRootPositive()
 template<typename T> T
 QuadraticEquation<T>::getX1()
 {
+    if (a == 0.0) { // is linear
+        return - c / b;
+    }
     auto sqrt = std::sqrt(getInnerRoot());
     return (- b + sqrt) / (static_cast<T>(2.0) * a);
 }
@@ -63,6 +66,9 @@ QuadraticEquation<T>::getX1()
 template<typename T> T
 QuadraticEquation<T>::getX2()
 {
+    if (a == 0.0) { // is linear
+        return - c / b;
+    }
     auto sqrt = std::sqrt(getInnerRoot());
     return (- b - sqrt) / (static_cast<T>(2.0) * a);
 }

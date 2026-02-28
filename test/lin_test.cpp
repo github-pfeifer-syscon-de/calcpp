@@ -93,13 +93,24 @@ check_quad()
         std::cout << "Root should be positive is  " << quad.getInnerRoot() << std::endl;
         return false;
     }
-    double sqrt3 = std::sqrt(3.0);
-    double expX1 = -1.0 + sqrt3;
-    double expX2 = -1.0 - sqrt3;
+    const double sqrt3 = std::sqrt(3.0);
+    const double expX1 = -1.0 + sqrt3;
+    const double expX2 = -1.0 - sqrt3;
     if (std::abs(quad.getX1() - expX1) > VALUE_LIMIT
      || std::abs(quad.getX2() - expX2) > VALUE_LIMIT) {
         std::cout << "Expecting x1 " << expX1 << " x2 " << expX2 << std::endl;
         std::cout << "Got       x1 " << quad.getX1() << " x2 " << quad.getX2() << std::endl;
+        return false;
+    }
+    psc::math::QuadraticEquation<double> quadLin;
+    quadLin.setA(0.0);
+    quadLin.setB(4.0);
+    quadLin.setC(-8.0);
+    const double expX = 2.0;
+    if (std::abs(quadLin.getX1() - expX) > VALUE_LIMIT
+     || std::abs(quadLin.getX2() - expX) > VALUE_LIMIT) {
+        std::cout << "Expecting x1 " << expX << " x2 " << expX << std::endl;
+        std::cout << "Got       x1 " << quadLin.getX1() << " x2 " << quadLin.getX2() << std::endl;
         return false;
     }
     return true;
@@ -110,16 +121,11 @@ random(std::mt19937& rng, bool allowNegative = true)
 {
     bool useNegative = allowNegative && (rng() % 3) == 0;
     int32_t n,d;
-    while (true) {  // avoid 0 as this may not be dividable/solvable
-        n = static_cast<int32_t>(rng() % 10000u);
-        if (useNegative) {
-            n = -n;
-        }
-        d = static_cast<int32_t>(rng() % 1000u + 1u);
-        if (n != 0 && d != 0) {
-            break;
-        }
+    n = static_cast<int32_t>(rng() % 10000u);
+    if (useNegative) {
+        n = -n;
     }
+    d = static_cast<int32_t>(rng() % 1000u + 1u);
     //std::cout << "n " << n << " d " << d << " n/d "<< (static_cast<double>(n) / static_cast<double>(d)) << std::endl;
     return static_cast<double>(n) / static_cast<double>(d);
 }
