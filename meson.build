@@ -56,6 +56,7 @@ subdir('src')
 subdir('test')
 subdir('res')
 sources += app_resources
+sources += win_res_file
 
 project_targt = executable(meson.project_name()
     , sources

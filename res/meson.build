@@ -2,7 +2,6 @@
 #
 # see https://mesonbuild.com/Gnome-module.html
 gnome = import('gnome')
-
 app_resources = gnome.compile_resources(
     'resources', meson.project_name() + '.gresources.xml'
     , source_dir: meson.current_source_dir()
@@ -50,3 +49,13 @@ install_data(
 install_data(
       ['unit.js']
     , install_dir: join_paths(dataDir, meson.project_name()))
+
+win_res_file = []
+if target_machine.system() == 'windows'     # expects resource compiler, disable if you don't have one (part of msys2 but not claimed by any package... )
+    windows = import('windows')
+    win_res_file = windows.compile_resources('win.rc'
+                            ,args: []
+                            ,depend_files: [meson.project_name() + '.ico']
+                           )
+
+endif
