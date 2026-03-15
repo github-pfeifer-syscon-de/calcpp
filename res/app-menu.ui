@@ -117,6 +117,10 @@
               <attribute translatable="yes" name="label">Color</attribute>
               <attribute name="action">win.color</attribute>
           </item>
+          <item>
+              <attribute translatable="yes" name="label">Fraction</attribute>
+              <attribute name="action">win.fraction</attribute>
+          </item>
 	  </submenu>
     <submenu>
       <attribute translatable="yes" name="label">Help</attribute>

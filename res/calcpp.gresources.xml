@@ -14,6 +14,7 @@
     <file preprocess="xml-stripblanks">plot-dlg.ui</file>
     <file preprocess="xml-stripblanks">unit-dlg.ui</file>
     <file preprocess="xml-stripblanks">color-dlg.ui</file>
+    <file preprocess="xml-stripblanks">fract-dlg.ui</file>
     <file>calcpp.png</file>
   </gresource>
 </gresources>

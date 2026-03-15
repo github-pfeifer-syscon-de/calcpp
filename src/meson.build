@@ -20,5 +20,6 @@ sources = files(
     , 'QuadraticEquation.cpp'
     , 'PrefDialog.cpp'
     , 'ColorDialog.cpp'
+    , 'FractDialog.cpp'
     )
 

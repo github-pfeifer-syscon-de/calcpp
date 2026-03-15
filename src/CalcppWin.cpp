@@ -40,6 +40,7 @@
 #include "PlotDialog.hpp"
 #include "UnitDialog.hpp"
 #include "ColorDialog.hpp"
+#include "FractDialog.hpp"
 
 /*
  * slightly customized file chooser
@@ -286,6 +287,17 @@ CalcppWin::activate_actions()
             }, this);
         });
     add_action(color_action);
+
+    auto fraction_action = Gio::SimpleAction::create("fraction");
+    fraction_action->signal_activate().connect(
+        [this] (const Glib::VariantBase& value)
+        {
+            build<FractDialog>("fract-dlg.ui", "FractDialog", [this] (FractDialog* fractDialog) {
+                fractDialog->run();
+            }, this);
+        });
+    add_action(fraction_action);
+
 }
 
 void
