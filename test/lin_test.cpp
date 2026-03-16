@@ -218,6 +218,17 @@ fract_test() {
         std::cout << "shorten expected 1/3 got " << sh.getNumerator() << "/" << sh.getDenominator() << std::endl;
         return false;
     }
+    Fraction sh0{0, 6};
+    sh0.shorten();
+    if (sh0.getNumerator() != 0 || sh0.getDenominator() != 6) {
+        std::cout << "shorten expected 0/6 got " << sh0.getNumerator() << "/" << sh0.getDenominator() << std::endl;
+        return false;
+    }
+    auto lcm = Fraction::lcm(10, 15);   // gcd is 5 so 10 * 15 / 5 = 30
+    if (lcm != 30) {
+        std::cout << "lcm expected 30 got " << lcm << std::endl;
+        return false;
+    }
     auto sum = Fraction {1,3} + Fraction{1,3};
     if (sum.getNumerator() != 2 || sum.getDenominator() != 3) {
         std::cout << "sum expected 2/3 got " << sum.getNumerator() << "/" << sum.getDenominator() << std::endl;

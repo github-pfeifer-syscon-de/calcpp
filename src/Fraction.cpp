@@ -21,39 +21,47 @@
 
 #include "Fraction.hpp"
 
-
 Fraction::Fraction()
+: Fraction{0ul}
 {
 }
 
 Fraction::Fraction(uint64_t numerator)
-: m_numerator{numerator}
+: Fraction{numerator, 1ul}
 {
 }
-
 
 Fraction::Fraction(uint64_t numerator, uint64_t denominator)
-: m_numerator{numerator}
-, m_denominator{denominator}
+: Fraction{numerator, denominator, false}
 {
 }
 
-void
-Fraction::fromDecimal(double decimal, double precision)
+Fraction::Fraction(uint64_t numerator, uint64_t denominator, bool negative)
+: m_numerator{numerator}
+, m_denominator{denominator}
+, m_negative{negative}
 {
+    if (denominator == 0) {
+        throw FractionException("Can't create fraction with denominator zero.");
+    }
+}
+
+
+void
+Fraction::fromDecimal(double decimal, double precision) {
     m_negative = decimal < 0.0;
     decimal = std::abs(decimal);
     precision = std::max(precision, 1e-10);     // since we don't want to search forever
     double full;
     double fract = std::modf(decimal, &full);
-    Fraction low{0, 1};
-    Fraction high{1, 1};
+    Fraction low{0};
+    Fraction high{1};
     // Farey algo
     double diff = 1.0;
     while (std::abs(diff) > precision) {
         m_numerator = low.getNumerator() + high.getNumerator();
         m_denominator = low.getDenominator() + high.getDenominator();
-        diff = getDecimal() - fract;
+        diff = operator double() - fract;
         //std::cout << "Val " << val << " diff " << diff << std::endl;
         if (diff > 0.0) {
             high = *this;
@@ -66,15 +74,23 @@ Fraction::fromDecimal(double decimal, double precision)
 }
 
 Fraction
+Fraction::negate() const
+{
+    Fraction ret{m_numerator, m_denominator, !isNegative()};
+    return ret;
+}
+
+Fraction
 Fraction::operator +(const Fraction& fract) const
 {
     Fraction ret;
-    uint64_t base = m_denominator * fract.m_denominator;
-    int64_t ext_num = m_numerator * fract.m_denominator;
+    uint64_t gcd = binGcd(m_denominator, fract.m_denominator);
+    uint64_t base = m_denominator * fract.m_denominator / gcd;  // = lcm (but calculated separately to simplify expansion)
+    int64_t ext_num = m_numerator * (fract.m_denominator / gcd);
     if (m_negative) {
         ext_num = -ext_num;
     }
-    int64_t ext_fract_num = fract.m_numerator * m_denominator;
+    int64_t ext_fract_num = fract.m_numerator * (m_denominator / gcd);
     if (fract.m_negative) {
         ext_fract_num = -ext_fract_num;
     }
@@ -89,22 +105,7 @@ Fraction::operator +(const Fraction& fract) const
 Fraction
 Fraction::operator -(const Fraction& fract) const
 {
-    Fraction ret;
-    uint64_t base = m_denominator * fract.m_denominator;
-    int64_t ext_num = m_numerator * fract.m_denominator;
-    if (m_negative) {
-        ext_num = -ext_num;
-    }
-    int64_t ext_fract_num = fract.m_numerator * m_denominator;
-    if (fract.m_negative) {
-        ext_fract_num = -ext_fract_num;
-    }
-    auto sum = ext_num - ext_fract_num;
-    ret.m_negative = sum < 0l;
-    ret.m_numerator = std::abs(sum);
-    ret.m_denominator = base;
-    ret.shorten();
-    return ret;
+    return operator+(fract.negate());
 }
 
 Fraction
@@ -141,9 +142,27 @@ untilOdd(uint64_t a)
 void
 Fraction::shorten()
 {
-    // Binary gcd
-    uint64_t a{m_numerator};
-    uint64_t b{m_denominator};
+    if (m_numerator == 0ul) {
+        return;         // no way to shorten
+    }
+    auto gcd = binGcd(m_numerator, m_denominator);
+    if (gcd > 1ul) {
+        m_numerator /= gcd;
+        m_denominator /= gcd;
+    }
+}
+
+// least common multiple
+uint64_t
+Fraction::lcm(uint64_t a, uint64_t b)
+{
+    return (a * b) / binGcd(a, b);
+}
+
+// Binary gcd
+uint64_t
+Fraction::binGcd(uint64_t a, uint64_t b)
+{
     uint32_t d{};
     while (a % 2 == 0 &&
         b % 2 == 0) {
@@ -165,8 +184,5 @@ Fraction::shorten()
     }
     uint64_t gcd = (1ul << d) * a;  // shift = 2^d
     //std::cout << "Found gcd a " << a << " b " << b << " d " << d << " gcd " << gcd << std::endl;
-    if (gcd > 1) {
-        m_numerator /= gcd;
-        m_denominator /= gcd;
-    }
+    return gcd;
 }

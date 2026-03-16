@@ -19,43 +19,61 @@
 #pragma once
 #include <cstdint>
 
-class Fraction
+class FractionException
+: public std::runtime_error
 {
 public:
+    FractionException(const char* msg)
+    : std::runtime_error(msg)
+    {
+    }
+};
+
+class Fraction {
+public:
     Fraction();
-    Fraction(uint64_t numerator);
-    Fraction(uint64_t numerator, uint64_t denominator);
+    explicit Fraction(uint64_t numerator);
+    explicit Fraction(uint64_t numerator, uint64_t denominator);
+    explicit Fraction(uint64_t numerator, uint64_t denominator, bool negative);
     Fraction(const Fraction& other) = default;
     Fraction& operator=(const Fraction& other) = default;
     virtual  ~Fraction() = default;
 
-    inline uint64_t getNumerator() const
+    [[nodiscard]] inline uint64_t getNumerator() const
     {
         return m_numerator;
     }
-    inline uint64_t getDenominator() const
+    [[nodiscard]] inline uint64_t getDenominator() const
     {
         return m_denominator;
     }
-    inline bool isNegative() const
+    [[nodiscard]] inline bool isNegative() const
     {
         return m_negative;
     }
-    inline double getDecimal() const
+    void setNegative(bool negative)
+    {
+        m_negative = negative;
+    }
+    [[nodiscard]] inline operator double() const
     {
         return static_cast<double>(m_numerator) / static_cast<double>(m_denominator);
     }
     void fromDecimal(double decimal, double precision = 1e-8);
-    Fraction operator +(const Fraction& fract) const;
-    Fraction operator -(const Fraction& fract) const;
-    Fraction operator *(const Fraction& fract) const;
-    Fraction operator /(const Fraction& fract) const;
+    [[nodiscard]] Fraction negate() const;
+    [[nodiscard]] Fraction operator +(const Fraction& fract) const;
+    [[nodiscard]] Fraction operator -(const Fraction& fract) const;
+    [[nodiscard]] Fraction operator *(const Fraction& fract) const;
+    [[nodiscard]] Fraction operator /(const Fraction& fract) const;
     // reduce to shortest representation e.g. 2/6 -> 1/3
     void shorten();
+    static uint64_t lcm(uint64_t a, uint64_t b);
+    static uint64_t binGcd(uint64_t a, uint64_t b);
+protected:
 
 private:
-    bool m_negative{false};
-    uint64_t m_numerator{};
-    uint64_t m_denominator{1ul};
+    uint64_t m_numerator;
+    uint64_t m_denominator;
+    bool m_negative;
 };
 

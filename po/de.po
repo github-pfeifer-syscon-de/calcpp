@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: calcpp 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-20 19:03+0100\n"
+"POT-Creation-Date: 2026-03-16 16:05+0100\n"
 "PO-Revision-Date: 2024-12-15 06:57+0100\n"
 "Last-Translator:  <calcpp@pfeifer-syscon.de>\n"
 "Language-Team: German <calcpp@pfeifer-syscon.de>\n"
@@ -22,41 +22,41 @@ msgstr ""
 msgid "The README file {} could not be located."
 msgstr "Die README Datei {} wurde nicht gefunden."
 
-#: src/CalcppWin.cpp:52
+#: src/CalcppWin.cpp:53
 msgid "Save File"
 msgstr "Datei speichern"
 
-#: src/CalcppWin.cpp:53
+#: src/CalcppWin.cpp:54
 msgid "Open File"
 msgstr "Datei öffnen"
 
-#: src/CalcppWin.cpp:59
+#: src/CalcppWin.cpp:60
 msgid "_Cancel"
 msgstr "_Abbrechen"
 
-#: src/CalcppWin.cpp:61
+#: src/CalcppWin.cpp:62
 msgid "_Save"
 msgstr "_Speichern"
 
-#: src/CalcppWin.cpp:62
+#: src/CalcppWin.cpp:63
 msgid "_Open"
 msgstr "Ö_ffnen"
 
-#: src/CalcppWin.cpp:106
+#: src/CalcppWin.cpp:107
 msgid "Calculator"
 msgstr "Rechner"
 
-#: src/CalcppWin.cpp:145 src/CalcppWin.cpp:225
+#: src/CalcppWin.cpp:146 src/CalcppWin.cpp:226
 #, c++-format
 msgid "Unable to load {} error {}"
 msgstr "{} wurde nicht geladen. Fehler {}"
 
-#: src/CalcppWin.cpp:244
+#: src/CalcppWin.cpp:245
 #, c++-format
 msgid "Unable to save {} error {}"
 msgstr "Fehler {1} beim speichen {0}"
 
-#: src/CalcppWin.cpp:357
+#: src/CalcppWin.cpp:369
 #, c++-format
 msgid ""
 "No settings coud be read! error {}\n"
@@ -65,7 +65,7 @@ msgstr ""
 "Einstellungen konnten nicht geladen werden! Fehler {}\n"
 "Einstellungen werden nicht funktionieren!"
 
-#: src/CalcppWin.cpp:544
+#: src/CalcppWin.cpp:556
 #, c++-format
 msgid "Parse error: {}"
 msgstr "Syntax nicht erkannt. Fehler {}"
@@ -100,12 +100,12 @@ msgstr "{} ist keine gültige Zahl"
 msgid "Row{}"
 msgstr "Zeile{}"
 
-#: src/GaussDialog.cpp:72
+#: src/GaussDialog.cpp:72 res/fract-dlg.ui:295
 msgid "Result"
 msgstr "Ergebnis"
 
-#: src/GaussDialog.cpp:111 src/NumDialog.cpp:51 src/Unit.cpp:563
-#: src/Unit.cpp:584
+#: src/GaussDialog.cpp:111 src/NumDialog.cpp:51 src/Unit.cpp:577
+#: src/Unit.cpp:598
 msgid "Invalid number"
 msgstr "Keine gültige Zahl"
 
@@ -185,13 +185,13 @@ msgstr "Syntaxfehler {} für {}"
 msgid "Error evaluating {}"
 msgstr "Fehler bei der Auswertung {}"
 
-#: src/Unit.cpp:181
+#: src/Unit.cpp:173
 #, c-format
 msgid "The file %s had errors %s (please check console output)"
 msgstr ""
 "Die Datei %s hatte Fehler %s (bitte prüfen sie ggf. die Konsolenausgabe)"
 
-#: src/Unit.cpp:185
+#: src/Unit.cpp:177
 #, c-format
 msgid "A usable %s was not found searching %s"
 msgstr "Eine verwendbare %s Datei wurde nicht gefunden, gesucht %s"
@@ -256,19 +256,23 @@ msgstr ""
 msgid "Units"
 msgstr "Einheiten"
 
-#: res/app-menu.ui:117 res/color-dlg.ui:107
+#: res/app-menu.ui:117 res/color-dlg.ui:113
 msgid "Color"
 msgstr "Farben"
 
-#: res/app-menu.ui:122
+#: res/app-menu.ui:121
+msgid "Fraction"
+msgstr "Bruch"
+
+#: res/app-menu.ui:126
 msgid "Help"
 msgstr "Hilfe"
 
-#: res/app-menu.ui:125
+#: res/app-menu.ui:129
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: res/app-menu.ui:129
+#: res/app-menu.ui:133
 msgid "_About"
 msgstr "Über"
 
@@ -578,21 +582,45 @@ msgstr "Meile³"
 msgid "Color selector"
 msgstr "Farbauswahl"
 
-#: res/color-dlg.ui:73
+#: res/color-dlg.ui:74
 msgid "Green"
 msgstr "Grün"
 
-#: res/color-dlg.ui:84
+#: res/color-dlg.ui:87
 msgid "Blue"
 msgstr "Blau"
 
-#: res/color-dlg.ui:96
+#: res/color-dlg.ui:100
 msgid "Red"
 msgstr "Rot"
 
-#: res/color-dlg.ui:130
+#: res/color-dlg.ui:137
 msgid "Hex"
 msgstr "Hexadezimal"
+
+#: res/fract-dlg.ui:15
+msgid "Find fraction representation"
+msgstr "Finde Brüche"
+
+#: res/fract-dlg.ui:206
+msgid "from Decimal"
+msgstr "aus Dezimal"
+
+#: res/fract-dlg.ui:222
+msgid "+ add"
+msgstr "+ addieren"
+
+#: res/fract-dlg.ui:238
+msgid "- substract"
+msgstr "- subtrahieren"
+
+#: res/fract-dlg.ui:254
+msgid "* multiply"
+msgstr "* multiplizieren"
+
+#: res/fract-dlg.ui:270
+msgid "/ divide"
+msgstr "/ dividieren"
 
 #~ msgid "Assignment operator only allowed once"
 #~ msgstr "Zuweisung nur eimal erlaubt"

@@ -32,9 +32,19 @@ public:
 
 protected:
     void evaluate() override;
+    void calc_changed();
 private:
     Gtk::Entry* m_entryDecimal;
     Gtk::Entry* m_entryNum;
     Gtk::Entry* m_entryDenom;
+    Gtk::RadioButton* m_dec;
+    Gtk::RadioButton* m_add;
+    Gtk::RadioButton* m_sub;
+    Gtk::RadioButton* m_mul;
+    Gtk::RadioButton* m_div;
+    Gtk::Entry* m_aNum;
+    Gtk::Entry* m_aDenom;
+    Gtk::Entry* m_bNum;
+    Gtk::Entry* m_bDenom;
 };
 
