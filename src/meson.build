@@ -21,5 +21,6 @@ sources = files(
     , 'PrefDialog.cpp'
     , 'ColorDialog.cpp'
     , 'FractDialog.cpp'
+    , 'Fraction.cpp'
     )
 

@@ -16,7 +16,9 @@ test('calc_test', calc_test)
 lin_test = executable('lin_test'
     , ['lin_test.cpp'
       , '../src/Matrix.cpp'
-      , '../src/QuadraticEquation.cpp']
+      , '../src/QuadraticEquation.cpp'
+      , '../src/Fraction.cpp'
+      ]
     , dependencies: deps
     , include_directories : incSrcLibTest
     , link_with: [expressions_lib])

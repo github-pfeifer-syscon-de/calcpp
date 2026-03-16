@@ -23,6 +23,7 @@
 #include <cmath>
 #include <random>
 
+#include "Fraction.hpp"
 #include "Matrix.hpp"
 #include "QuadraticEquation.hpp"
 
@@ -202,6 +203,44 @@ check_quad_rng(size_t cnt)
     }
     return true;
 }
+
+static bool
+fract_test() {
+    Fraction fract;
+    fract.fromDecimal(0.3333333333333);
+    if (fract.getNumerator() != 1 || fract.getDenominator() != 3) {
+        std::cout << "fromDecimal expected 1/3 got " << fract.getNumerator() << "/" << fract.getDenominator() << std::endl;
+        return false;
+    }
+    Fraction sh{2, 6};
+    sh.shorten();
+    if (sh.getNumerator() != 1 || sh.getDenominator() != 3) {
+        std::cout << "shorten expected 1/3 got " << sh.getNumerator() << "/" << sh.getDenominator() << std::endl;
+        return false;
+    }
+    auto sum = Fraction {1,3} + Fraction{1,3};
+    if (sum.getNumerator() != 2 || sum.getDenominator() != 3) {
+        std::cout << "sum expected 2/3 got " << sum.getNumerator() << "/" << sum.getDenominator() << std::endl;
+        return false;
+    }
+    auto diff = Fraction {1,3} - Fraction{2,9};
+    if (diff.getNumerator() != 1 || diff.getDenominator() != 9) {
+        std::cout << "dif expected 1/9 got " << diff.getNumerator() << "/" << diff.getDenominator() << std::endl;
+        return false;
+    }
+    auto mul = Fraction {2,3} * Fraction{1,3};
+    if (mul.getNumerator() != 2 || mul.getDenominator() != 9) {
+        std::cout << "mul expected 2/9 got " << mul.getNumerator() << "/" << mul.getDenominator() << std::endl;
+        return false;
+    }
+    auto div = Fraction {2,3} / Fraction{1,3};
+    if (div.getNumerator() != 2 || div.getDenominator() != 1) {
+        std::cout << "div expected 2/1 got " << div.getNumerator() << "/" << div.getDenominator() << std::endl;
+        return false;
+    }
+
+    return true;
+}
 /*
  *
  */
@@ -224,6 +263,9 @@ int main(int argc, char** argv)
     }
     if (!check_matrix()) {
         return 5;
+    }
+    if (!fract_test()) {
+        return 6;
     }
 
     return 0;

@@ -22,6 +22,7 @@ add_project_arguments('-DPACKAGE_LOCALE_DIR="' + pkglocaledir + '"', language: [
 
 disable_flags = [   # limit the compiler noisiness
     '-Wno-unused-parameter'
+    ,'-Wno-overlength-strings'
 ]
 cc = meson.get_compiler('c')
 foreach cflag : disable_flags

@@ -64,7 +64,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="xpad">5</property>
-                <property name="label">Denominator</property>
+                <property name="label">Numerator</property>
                 <property name="xalign">1</property>
               </object>
               <packing>
@@ -78,7 +78,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="xpad">5</property>
-                <property name="label">Nominator</property>
+                <property name="label">Denominator</property>
                 <property name="xalign">1</property>
               </object>
               <packing>

@@ -24,6 +24,7 @@
 #include <psc_format.hpp>
 #include <StringUtils.hpp>
 
+#include "Fraction.hpp"
 #include "FractDialog.hpp"
 
 
@@ -41,35 +42,11 @@ FractDialog::evaluate()
 {
     Glib::ustring text1,text2;
     try {
-        double  dec = parse(m_entryDecimal);
-        double full;
-        double fract = std::modf(dec, &full);
-        int64_t lowNum = 0;
-        int64_t lowDen = 1;
-        int64_t highNum = 1;
-        int64_t highDen = 1;
-        // Farey algo
-        int64_t num{};
-        int64_t den{};
-        double diff = 1.0;
-        while (std::abs(diff) > 1e-8) {
-            num = lowNum + highNum;
-            den =  lowDen + highDen;
-            double val = static_cast<double>(num) / static_cast<double>(den);
-            diff = val - fract;
-            //std::cout << "Val " << val << " diff " << diff << std::endl;
-            if (diff > 0.0) {
-                highNum = num;
-                highDen = den;
-            }
-            else {
-                lowNum = num;
-                lowDen = den;
-            }
-        }
-        num += static_cast<int64_t>(full) * den;
-        text1 = format(num);
-        text2 = format(den);
+        double decimal = parse(m_entryDecimal);
+        Fraction fraction;
+        fraction.fromDecimal(decimal);
+        text1 = format(fraction.getNumerator());
+        text2 = format(fraction.getDenominator());
     }
     catch (const std::exception& ex) {
         std::cout << "Error fract  " << ex.what() << std::endl;
