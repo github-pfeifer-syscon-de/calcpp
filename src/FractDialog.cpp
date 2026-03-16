@@ -24,7 +24,6 @@
 #include <psc_format.hpp>
 #include <StringUtils.hpp>
 
-#include "Fraction.hpp"
 #include "FractDialog.hpp"
 
 
@@ -43,6 +42,7 @@ FractDialog::FractDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
     builder->get_widget("aDenom", m_aDenom);
     builder->get_widget("bNum", m_bNum);
     builder->get_widget("bDenom", m_bDenom);
+    builder->get_widget("sign", m_sign);
     m_dec->signal_toggled().connect(sigc::mem_fun(*this, &FractDialog::calc_changed));
     m_add->signal_toggled().connect(sigc::mem_fun(*this, &FractDialog::calc_changed));
     m_sub->signal_toggled().connect(sigc::mem_fun(*this, &FractDialog::calc_changed));
@@ -61,6 +61,31 @@ FractDialog::calc_changed()
     m_bDenom->set_sensitive(!m_dec->get_active());
 }
 
+int64_t
+FractDialog::parseInt(Gtk::Entry* aNum)
+{
+    auto num = parse(aNum);
+    double numFull{};
+    double numFract = std::modf(num, &numFull);
+    if (numFract != 0.0) {
+        aNum->grab_focus();
+        throw std::invalid_argument(_("Expected integer"));
+    }
+    return static_cast<int64_t>(numFull);
+}
+
+Fraction
+FractDialog::parseFraction(Gtk::Entry* aNum, Gtk::Entry* aDenom)
+{
+    Fraction ret;
+    auto iNum = parseInt(aNum);
+    auto iDenom = parseInt(aDenom);
+    ret.setNumerator(std::abs(iNum));
+    ret.setDenominator(std::abs(iDenom));
+    ret.setNegative((iNum < 0l) != (iDenom < 0l));
+    return ret;
+}
+
 void
 FractDialog::evaluate()
 {
@@ -73,12 +98,8 @@ FractDialog::evaluate()
             result.fromDecimal(decimal);
         }
         else {
-            uint64_t aNum = parse(m_aNum);
-            uint64_t aDemom = parse(m_aDenom);
-            Fraction a{aNum, aDemom};
-            uint64_t bNum = parse(m_bNum);
-            uint64_t bDemom = parse(m_bDenom);
-            Fraction b{bNum, bDemom};
+            Fraction a = parseFraction(m_aNum, m_aDenom);
+            Fraction b = parseFraction(m_bNum, m_bDenom);
             if (m_add->get_active()) {
                 result = a + b;
             }
@@ -92,12 +113,9 @@ FractDialog::evaluate()
                 result = a / b;
             }
         }
-        int64_t num = result.getNumerator();
-        if (result.isNegative()) {
-            num = -num;
-        }
-        text1 = format(num);
-        text2 = format(result.getDenominator());
+        m_sign->set_label(result.isNegative() ? "-" : "+");
+        text1 = format(static_cast<double>(result.getNumerator()));
+        text2 = format(static_cast<double>(result.getDenominator()));
     }
     catch (const std::exception& ex) {
         auto what = ex.what();

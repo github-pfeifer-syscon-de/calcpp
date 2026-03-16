@@ -41,11 +41,16 @@ Fraction::Fraction(uint64_t numerator, uint64_t denominator, bool negative)
 , m_denominator{denominator}
 , m_negative{negative}
 {
+    checkDenominator(denominator);
+}
+
+void
+Fraction::checkDenominator(uint64_t denominator)
+{
     if (denominator == 0) {
         throw FractionException("Can't create fraction with denominator zero.");
     }
 }
-
 
 void
 Fraction::fromDecimal(double decimal, double precision) {

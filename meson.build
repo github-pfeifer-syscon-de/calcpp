@@ -20,12 +20,13 @@ add_project_arguments('-DGETTEXT_PACKAGE="' + meson.project_name() + '"', langua
 add_project_arguments('-DPACKAGE_LOCALE_DIR="' + pkglocaledir + '"', language: ['cpp','c'])
 
 
-disable_flags = [   # limit the compiler noisiness
-    '-Wno-unused-parameter'
+compile_flags = [
+    '-Wno-unused-parameter'         # limit the compiler noisiness
     ,'-Wno-overlength-strings'
+    ,'-Wconversion'                 # these can be helpful
 ]
 cc = meson.get_compiler('c')
-foreach cflag : disable_flags
+foreach cflag : compile_flags
     if cc.has_argument(cflag)
         add_project_arguments(cflag, language: ['c', 'cpp'])
     endif

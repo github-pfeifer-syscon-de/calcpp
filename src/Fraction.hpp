@@ -43,9 +43,18 @@ public:
     {
         return m_numerator;
     }
+    void setNumerator(uint64_t num)
+    {
+        m_numerator = num;
+    }
     [[nodiscard]] inline uint64_t getDenominator() const
     {
         return m_denominator;
+    }
+    void setDenominator(uint64_t denominator)
+    {
+        checkDenominator(denominator);
+        m_denominator = denominator;
     }
     [[nodiscard]] inline bool isNegative() const
     {
@@ -70,6 +79,7 @@ public:
     static uint64_t lcm(uint64_t a, uint64_t b);
     static uint64_t binGcd(uint64_t a, uint64_t b);
 protected:
+    void checkDenominator(uint64_t denominator);
 
 private:
     uint64_t m_numerator;

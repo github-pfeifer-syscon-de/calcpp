@@ -20,7 +20,7 @@
 
 #include "NumDialog.hpp"
 #include "CalcppWin.hpp"
-
+#include "Fraction.hpp"
 
 class FractDialog
 : public NumDialog
@@ -33,6 +33,9 @@ public:
 protected:
     void evaluate() override;
     void calc_changed();
+    int64_t parseInt(Gtk::Entry* aNum);
+    Fraction parseFraction(Gtk::Entry* aNum, Gtk::Entry* aDenom);
+
 private:
     Gtk::Entry* m_entryDecimal;
     Gtk::Entry* m_entryNum;
@@ -46,5 +49,6 @@ private:
     Gtk::Entry* m_aDenom;
     Gtk::Entry* m_bNum;
     Gtk::Entry* m_bDenom;
+    Gtk::Label* m_sign;
 };
 

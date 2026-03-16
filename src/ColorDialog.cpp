@@ -68,19 +68,19 @@ ColorDialog::updateFromHex()
         }
         uint32_t red{},green{},blue{};
         if (hex.length() >= 12) {
-            red = g_ascii_strtoull(hex.substr(0, 4).c_str(), nullptr, 16);
-            green = g_ascii_strtoull(hex.substr(4, 4).c_str(), nullptr, 16);
-            blue = g_ascii_strtoull(hex.substr(8, 4).c_str(), nullptr, 16);
+            red = static_cast<uint32_t>(g_ascii_strtoull(hex.substr(0, 4).c_str(), nullptr, 16));
+            green = static_cast<uint32_t>(g_ascii_strtoull(hex.substr(4, 4).c_str(), nullptr, 16));
+            blue = static_cast<uint32_t>(g_ascii_strtoull(hex.substr(8, 4).c_str(), nullptr, 16));
         }
         else if (hex.length() >= 6) {
-            red = g_ascii_strtoull(hex.substr(0, 2).c_str(), nullptr, 16) * 0x100;
-            green = g_ascii_strtoull(hex.substr(2, 2).c_str(), nullptr, 16) * 0x100;
-            blue = g_ascii_strtoull(hex.substr(4, 2).c_str(), nullptr, 16) * 0x100;
+            red = static_cast<uint32_t>(g_ascii_strtoull(hex.substr(0, 2).c_str(), nullptr, 16) * 0x100);
+            green = static_cast<uint32_t>(g_ascii_strtoull(hex.substr(2, 2).c_str(), nullptr, 16) * 0x100);
+            blue = static_cast<uint32_t>(g_ascii_strtoull(hex.substr(4, 2).c_str(), nullptr, 16) * 0x100);
         }
         else if (hex.length() >= 3) {
-            red = g_ascii_strtoull(hex.substr(0, 1).c_str(), nullptr, 16) * 0x1100;
-            green = g_ascii_strtoull(hex.substr(1, 1).c_str(), nullptr, 16) * 0x1100;
-            blue = g_ascii_strtoull(hex.substr(2, 1).c_str(), nullptr, 16) * 0x1100;
+            red = static_cast<uint32_t>(g_ascii_strtoull(hex.substr(0, 1).c_str(), nullptr, 16) * 0x1100);
+            green = static_cast<uint32_t>(g_ascii_strtoull(hex.substr(1, 1).c_str(), nullptr, 16) * 0x1100);
+            blue = static_cast<uint32_t>(g_ascii_strtoull(hex.substr(2, 1).c_str(), nullptr, 16) * 0x1100);
         }
         setSpinner(red, green, blue);
         setColorButton(red, green, blue);
@@ -123,9 +123,9 @@ void
 ColorDialog::setColorButton(uint32_t red, uint32_t green, uint32_t blue)
 {
     Gdk::RGBA color;
-    color.set_red_u(red);
-    color.set_green_u(green);
-    color.set_blue_u(blue);
+    color.set_red_u(static_cast<gushort>(red));
+    color.set_green_u(static_cast<gushort>(green));
+    color.set_blue_u(static_cast<gushort>(blue));
     color.set_alpha_u(std::numeric_limits<uint16_t>::max());
     m_color->set_rgba(color);
 }
