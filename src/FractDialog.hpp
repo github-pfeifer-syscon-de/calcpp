@@ -33,10 +33,8 @@ public:
     virtual ~FractDialog() = default;
 
 protected:
-    template <size_t N>
-    void updateCssProvider(const std::array<Gtk::Entry*,N>& entries);
-    template <size_t N>
-    void connectRadios(const std::array<Gtk::RadioButton*,N>& radios);
+    void updateCssProvider(std::initializer_list<Gtk::Entry*>  entries);   // const std::array<Gtk::Entry*,N>&
+    void connectRadios(std::initializer_list<Gtk::RadioButton*> radios);      //
     void evaluate() override;
     void calc_changed();
     int64_t parseInt(Gtk::Entry* aNum);

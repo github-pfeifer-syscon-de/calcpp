@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: calcpp 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 08:04+0100\n"
+"POT-Creation-Date: 2026-03-17 13:42+0100\n"
 "PO-Revision-Date: 2024-12-15 06:57+0100\n"
 "Last-Translator:  <calcpp@pfeifer-syscon.de>\n"
 "Language-Team: German <calcpp@pfeifer-syscon.de>\n"
@@ -100,7 +100,7 @@ msgstr "{} ist keine gültige Zahl"
 msgid "Row{}"
 msgstr "Zeile{}"
 
-#: src/GaussDialog.cpp:72 res/fract-dlg.ui:292
+#: src/GaussDialog.cpp:72 res/fract-dlg.ui:301
 msgid "Result"
 msgstr "Ergebnis"
 
@@ -109,7 +109,7 @@ msgstr "Ergebnis"
 msgid "Invalid number"
 msgstr "Keine gültige Zahl"
 
-#: src/GaussDialog.cpp:146
+#: src/GaussDialog.cpp:146 src/FractDialog.cpp:138
 #, c++-format
 msgid "Unable to calculate \"{}\""
 msgstr "Ausdruck nicht berrechenbar \"{}\""
@@ -602,37 +602,26 @@ msgstr "Hexadezimal"
 msgid "Find fraction representation"
 msgstr "Finde Brüche"
 
-#: res/fract-dlg.ui:208
+#: res/fract-dlg.ui:217
 msgid "from Decimal"
 msgstr "aus Dezimal"
 
-#: res/fract-dlg.ui:223
+#: res/fract-dlg.ui:232
 msgid "+ add"
 msgstr "+ addieren"
 
-#: res/fract-dlg.ui:238
+#: res/fract-dlg.ui:247
 msgid "- subtract"
 msgstr "- subtrahieren"
 
-#: res/fract-dlg.ui:253
+#: res/fract-dlg.ui:262
 msgid "* multiply"
 msgstr "* multiplizieren"
 
-#: res/fract-dlg.ui:268
+#: res/fract-dlg.ui:277
 msgid "/ divide"
 msgstr "/ dividieren"
 
-#~ msgid "Assignment operator only allowed once"
-#~ msgstr "Zuweisung nur eimal erlaubt"
-
-#, c++-format
-#~ msgid "The calculation is not balanced {} (expect 1)"
-#~ msgstr "Die Kalkulation ist nicht ausgeglichen {} (erwartet 1)"
-
-#, c++-format
-#~ msgid "No function named {}"
-#~ msgstr "Keine Funktion mit dem Namen {}"
-
-#, c++-format
-#~ msgid "No variable named {}"
-#~ msgstr "Keine Variable mit dem Namen {}"
+#: src/FractDialog.cpp:88
+msgid "Expected integer"
+msgstr "Erwartete Ganzzahl"
