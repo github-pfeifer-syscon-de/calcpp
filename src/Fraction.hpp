@@ -29,6 +29,9 @@ public:
     }
 };
 
+// fraction implementation that supports basic calculations
+//   for storage the uint64_t format is used,
+//   but for calculation this is cast to int64_t so this will limit the effective value-range
 class Fraction {
 public:
     Fraction();

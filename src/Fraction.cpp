@@ -75,33 +75,32 @@ Fraction::fromDecimal(double decimal, double precision) {
             low = *this;
         }
     }
-    m_numerator += static_cast<int64_t>(full) * m_denominator;
+    m_numerator += static_cast<uint64_t>(full) * m_denominator;
 }
 
 Fraction
 Fraction::negate() const
 {
-    Fraction ret{m_numerator, m_denominator, !isNegative()};
-    return ret;
+    return Fraction{m_numerator, m_denominator, !isNegative()};
 }
 
 Fraction
 Fraction::operator +(const Fraction& fract) const
 {
     Fraction ret;
-    uint64_t gcd = binGcd(m_denominator, fract.m_denominator);
-    uint64_t base = m_denominator * fract.m_denominator / gcd;  // = lcm (but calculated separately to simplify expansion)
-    int64_t ext_num = m_numerator * (fract.m_denominator / gcd);
+    const uint64_t gcd = binGcd(m_denominator, fract.m_denominator);
+    const uint64_t base = m_denominator * fract.m_denominator / gcd;  // = lcm (but calculated separately to simplify expansion)
+    auto ext_num = static_cast<int64_t>(m_numerator * (fract.m_denominator / gcd));
     if (m_negative) {
         ext_num = -ext_num;
     }
-    int64_t ext_fract_num = fract.m_numerator * (m_denominator / gcd);
+    auto ext_fract_num = static_cast<int64_t>(fract.m_numerator * (m_denominator / gcd));
     if (fract.m_negative) {
         ext_fract_num = -ext_fract_num;
     }
     auto sum = ext_num + ext_fract_num;
     ret.m_negative = sum < 0l;
-    ret.m_numerator = std::abs(sum);
+    ret.m_numerator = static_cast<uint64_t>(std::abs(sum));
     ret.m_denominator = base;
     ret.shorten();
     return ret;

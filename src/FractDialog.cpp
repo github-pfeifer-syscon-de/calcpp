@@ -24,6 +24,7 @@
 #include <psc_format.hpp>
 #include <StringUtils.hpp>
 
+#include "CalcppApp.hpp"
 #include "FractDialog.hpp"
 
 
@@ -43,12 +44,29 @@ FractDialog::FractDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
     builder->get_widget("bNum", m_bNum);
     builder->get_widget("bDenom", m_bDenom);
     builder->get_widget("sign", m_sign);
-    m_dec->signal_toggled().connect(sigc::mem_fun(*this, &FractDialog::calc_changed));
-    m_add->signal_toggled().connect(sigc::mem_fun(*this, &FractDialog::calc_changed));
-    m_sub->signal_toggled().connect(sigc::mem_fun(*this, &FractDialog::calc_changed));
-    m_mul->signal_toggled().connect(sigc::mem_fun(*this, &FractDialog::calc_changed));
-    m_div->signal_toggled().connect(sigc::mem_fun(*this, &FractDialog::calc_changed));
+    std::array entries {m_entryNum, m_entryDenom, m_aNum, m_aDenom, m_bNum, m_bDenom};
+    updateCssProvider(entries);
+    std::array radios {m_dec, m_add, m_sub, m_mul, m_div};
+    connectRadios(radios);
     m_dec->set_active(true);
+}
+
+template <size_t N> void
+FractDialog::connectRadios(const std::array<Gtk::RadioButton*,N>& radios)
+{
+    for (auto radio : radios) {
+        radio->signal_toggled().connect(sigc::mem_fun(*this, &FractDialog::calc_changed));
+    }
+}
+
+template <size_t N> void
+FractDialog::updateCssProvider(const std::array<Gtk::Entry*,N>& entries)
+{
+    auto cssProvider =  Gtk::CssProvider::create();
+    cssProvider->load_from_resource(m_parent->getApplication()->get_resource_base_path() + "/fract-dlg.css");
+    for (auto entry : entries) {
+        entry->get_style_context()->add_provider(cssProvider, GTK_STYLE_PROVIDER_PRIORITY_USER);
+    }
 }
 
 void

@@ -58,13 +58,26 @@ e.g. π (if you read this without unicode support small greek letter pi)
 
 Automatic save/restore of edit buffer and window position.
 
-A character list allows picking symbols by choosing a unicode page and
-click on the character.
+Short feature list:
 
-A simple calendar view is included.
+- a character list 
+- simple calendar view
+- solve quadratic equations
+- solve linear equations (by providing a matrix)
+- convert numbers to different bases
+- plot functions
+- convert units
+- a color value display
+- simple fraction calculations
 
-A simple option to convert units is included.
-Sorry i'm still not too deep into non SI units,
+## Character list
+
+Allows picking symbols by choosing a unicode page and click on the character.
+Also entering characters and view their properties is supported. 
+
+## Custom units
+
+Sorry i'm not too deep into non SI units,
 please check your results, suggestions are welcome.
 In INSTALL_DIR/share/calcpp/unit.js can be found if
 it is copied to ~/.local/share/calcpp/unit.js

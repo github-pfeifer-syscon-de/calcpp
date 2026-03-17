@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: calcpp 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-16 16:05+0100\n"
+"POT-Creation-Date: 2026-03-17 08:04+0100\n"
 "PO-Revision-Date: 2024-12-15 06:57+0100\n"
 "Last-Translator:  <calcpp@pfeifer-syscon.de>\n"
 "Language-Team: German <calcpp@pfeifer-syscon.de>\n"
@@ -100,7 +100,7 @@ msgstr "{} ist keine gültige Zahl"
 msgid "Row{}"
 msgstr "Zeile{}"
 
-#: src/GaussDialog.cpp:72 res/fract-dlg.ui:295
+#: src/GaussDialog.cpp:72 res/fract-dlg.ui:292
 msgid "Result"
 msgstr "Ergebnis"
 
@@ -602,23 +602,23 @@ msgstr "Hexadezimal"
 msgid "Find fraction representation"
 msgstr "Finde Brüche"
 
-#: res/fract-dlg.ui:206
+#: res/fract-dlg.ui:208
 msgid "from Decimal"
 msgstr "aus Dezimal"
 
-#: res/fract-dlg.ui:222
+#: res/fract-dlg.ui:223
 msgid "+ add"
 msgstr "+ addieren"
 
 #: res/fract-dlg.ui:238
-msgid "- substract"
+msgid "- subtract"
 msgstr "- subtrahieren"
 
-#: res/fract-dlg.ui:254
+#: res/fract-dlg.ui:253
 msgid "* multiply"
 msgstr "* multiplizieren"
 
-#: res/fract-dlg.ui:270
+#: res/fract-dlg.ui:268
 msgid "/ divide"
 msgstr "/ dividieren"
 

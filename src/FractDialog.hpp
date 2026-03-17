@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include <array>
+
 #include "NumDialog.hpp"
 #include "CalcppWin.hpp"
 #include "Fraction.hpp"
@@ -31,6 +33,10 @@ public:
     virtual ~FractDialog() = default;
 
 protected:
+    template <size_t N>
+    void updateCssProvider(const std::array<Gtk::Entry*,N>& entries);
+    template <size_t N>
+    void connectRadios(const std::array<Gtk::RadioButton*,N>& radios);
     void evaluate() override;
     void calc_changed();
     int64_t parseInt(Gtk::Entry* aNum);

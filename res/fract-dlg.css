@@ -1,0 +1,4 @@
+.fractNum {
+    /* this is disliked by editor but gtk supports it */
+    border-bottom: 3px solid  @theme_text_color;
+}
