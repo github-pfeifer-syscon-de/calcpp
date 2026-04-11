@@ -41,6 +41,7 @@
 #include "UnitDialog.hpp"
 #include "ColorDialog.hpp"
 #include "FractDialog.hpp"
+#include "PrimeDialog.hpp"
 
 /*
  * slightly customized file chooser
@@ -297,6 +298,16 @@ CalcppWin::activate_actions()
             }, this);
         });
     add_action(fraction_action);
+
+    auto prime_action = Gio::SimpleAction::create("primes");
+    prime_action->signal_activate().connect(
+        [this] (const Glib::VariantBase& value)
+        {
+            build<PrimeDialog>("prime-dlg.ui", "PrimDialog", [this] (PrimeDialog* primeDialog) {
+                primeDialog->run();
+            }, this);
+        });
+    add_action(prime_action);
 
 }
 

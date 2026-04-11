@@ -22,5 +22,7 @@ sources = files(
     , 'ColorDialog.cpp'
     , 'FractDialog.cpp'
     , 'Fraction.cpp'
+    , 'Primes.cpp'
+    , 'PrimeDialog.cpp'
     )
 

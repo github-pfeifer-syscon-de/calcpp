@@ -2,9 +2,9 @@
 <!-- Generated with glade 3.40.0 -->
 <interface>
   <requires lib="gtk+" version="3.22"/>
-  <object class="GtkDialog" id="NumDialog">
+  <object class="GtkDialog" id="PrimDialog">
     <property name="can-focus">False</property>
-    <property name="title" translatable="yes">Numeric conversion</property>
+    <property name="title" translatable="yes">Prime numbers</property>
     <property name="modal">True</property>
     <property name="destroy-with-parent">True</property>
     <property name="type-hint">dialog</property>
@@ -53,57 +53,21 @@
           </packing>
         </child>
         <child>
-          <!-- n-columns=2 n-rows=6 -->
+          <!-- n-columns=3 n-rows=3 -->
           <object class="GtkGrid">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
+            <property name="row-spacing">5</property>
+            <property name="column-spacing">5</property>
             <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="xpad">5</property>
-                <property name="label">Dezimal</property>
-                <property name="xalign">1</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="xpad">5</property>
-                <property name="label">Hexdecimal</property>
-                <property name="xalign">1</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="xpad">5</property>
-                <property name="label">Value</property>
-                <property name="xalign">1</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="input">
+              <object class="GtkEntry" id="max">
                 <property name="name">a</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="xalign">1</property>
+                <property name="placeholder-text">primes</property>
                 <property name="input-purpose">number</property>
               </object>
               <packing>
@@ -112,11 +76,58 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="dec">
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="xpad">5</property>
+                <property name="label" translatable="yes">Primes upto</property>
+                <property name="xalign">1</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
-                <property name="editable">False</property>
+                <property name="shadow-type">in</property>
+                <child>
+                  <object class="GtkTextView" id="text">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">2</property>
+                <property name="width">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="xpad">5</property>
+                <property name="label" translatable="yes">Factors</property>
                 <property name="xalign">1</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="factor">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="xalign">1</property>
+                <property name="placeholder-text" translatable="yes">factorize</property>
+                <property name="input-purpose">number</property>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -124,91 +135,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="hex">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="editable">False</property>
-                <property name="xalign">1</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">2</property>
-              </packing>
+              <placeholder/>
             </child>
             <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="xpad">5</property>
-                <property name="label" translatable="yes">Octal</property>
-                <property name="xalign">1</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="oct">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="editable">False</property>
-                <property name="xalign">1</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="bin">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="editable">False</property>
-                <property name="xalign">1</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">4</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="xpad">5</property>
-                <property name="label" translatable="yes">Binary</property>
-                <property name="xalign">1</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">4</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="xpad">5</property>
-                <property name="label" translatable="yes">Unicode</property>
-                <property name="xalign">1</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">5</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="uni">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="editable">False</property>
-                <property name="xalign">1</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">5</property>
-              </packing>
+              <placeholder/>
             </child>
           </object>
           <packing>

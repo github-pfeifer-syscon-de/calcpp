@@ -121,6 +121,10 @@
               <attribute translatable="yes" name="label">Fraction</attribute>
               <attribute name="action">win.fraction</attribute>
           </item>
+          <item>
+              <attribute translatable="yes" name="label">Primes</attribute>
+              <attribute name="action">win.primes</attribute>
+          </item>
 	  </submenu>
     <submenu>
       <attribute translatable="yes" name="label">Help</attribute>

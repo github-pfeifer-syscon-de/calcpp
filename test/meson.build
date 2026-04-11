@@ -18,6 +18,7 @@ lin_test = executable('lin_test'
       , '../src/Matrix.cpp'
       , '../src/QuadraticEquation.cpp'
       , '../src/Fraction.cpp'
+      , '../src/Primes.cpp'
       ]
     , dependencies: deps
     , include_directories : incSrcLibTest

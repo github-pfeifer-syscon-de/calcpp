@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: calcpp 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 13:42+0100\n"
+"POT-Creation-Date: 2026-04-11 02:19+0200\n"
 "PO-Revision-Date: 2024-12-15 06:57+0100\n"
 "Last-Translator:  <calcpp@pfeifer-syscon.de>\n"
 "Language-Team: German <calcpp@pfeifer-syscon.de>\n"
@@ -22,41 +22,41 @@ msgstr ""
 msgid "The README file {} could not be located."
 msgstr "Die README Datei {} wurde nicht gefunden."
 
-#: src/CalcppWin.cpp:53
+#: src/CalcppWin.cpp:54
 msgid "Save File"
 msgstr "Datei speichern"
 
-#: src/CalcppWin.cpp:54
+#: src/CalcppWin.cpp:55
 msgid "Open File"
 msgstr "Datei öffnen"
 
-#: src/CalcppWin.cpp:60
+#: src/CalcppWin.cpp:61
 msgid "_Cancel"
 msgstr "_Abbrechen"
 
-#: src/CalcppWin.cpp:62
+#: src/CalcppWin.cpp:63
 msgid "_Save"
 msgstr "_Speichern"
 
-#: src/CalcppWin.cpp:63
+#: src/CalcppWin.cpp:64
 msgid "_Open"
 msgstr "Ö_ffnen"
 
-#: src/CalcppWin.cpp:107
+#: src/CalcppWin.cpp:108
 msgid "Calculator"
 msgstr "Rechner"
 
-#: src/CalcppWin.cpp:146 src/CalcppWin.cpp:226
+#: src/CalcppWin.cpp:147 src/CalcppWin.cpp:227
 #, c++-format
 msgid "Unable to load {} error {}"
 msgstr "{} wurde nicht geladen. Fehler {}"
 
-#: src/CalcppWin.cpp:245
+#: src/CalcppWin.cpp:246
 #, c++-format
 msgid "Unable to save {} error {}"
 msgstr "Fehler {1} beim speichen {0}"
 
-#: src/CalcppWin.cpp:369
+#: src/CalcppWin.cpp:380
 #, c++-format
 msgid ""
 "No settings coud be read! error {}\n"
@@ -65,7 +65,7 @@ msgstr ""
 "Einstellungen konnten nicht geladen werden! Fehler {}\n"
 "Einstellungen werden nicht funktionieren!"
 
-#: src/CalcppWin.cpp:556
+#: src/CalcppWin.cpp:567
 #, c++-format
 msgid "Parse error: {}"
 msgstr "Syntax nicht erkannt. Fehler {}"
@@ -264,15 +264,19 @@ msgstr "Farben"
 msgid "Fraction"
 msgstr "Bruch"
 
-#: res/app-menu.ui:126
+#: res/app-menu.ui:125
+msgid "Primes"
+msgstr "Primzahlen"
+
+#: res/app-menu.ui:130
 msgid "Help"
 msgstr "Hilfe"
 
-#: res/app-menu.ui:129
+#: res/app-menu.ui:133
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: res/app-menu.ui:133
+#: res/app-menu.ui:137
 msgid "_About"
 msgstr "Über"
 
@@ -317,15 +321,15 @@ msgstr "Verwende Standardschrift"
 msgid "Numeric conversion"
 msgstr "Zahlen konvertieren"
 
-#: res/num-dlg.ui:137
+#: res/num-dlg.ui:143
 msgid "Octal"
 msgstr "Oktal"
 
-#: res/num-dlg.ui:172
+#: res/num-dlg.ui:180
 msgid "Binary"
 msgstr "Binär"
 
-#: res/num-dlg.ui:183
+#: res/num-dlg.ui:193
 msgid "Unicode"
 msgstr "Unicode"
 
@@ -625,3 +629,46 @@ msgstr "/ dividieren"
 #: src/FractDialog.cpp:88
 msgid "Expected integer"
 msgstr "Erwartete Ganzzahl"
+
+#: res/prime-dlg.ui:7
+#, fuzzy
+msgid "Prime numbers"
+msgstr "Primzahlen"
+
+#: res/prime-dlg.ui:83
+#, fuzzy
+msgid "Primes upto"
+msgstr "Primzahlen bis"
+
+#: res/prime-dlg.ui:116
+msgid "Factors"
+msgstr "Faktoren"
+
+#: res/prime-dlg.ui:129
+msgid "factorize"
+msgstr "faktorisieren"
+
+#: src/PrimeDialog.cpp:61 src/PrimeDialog.cpp:74
+#, c++-format
+msgid "Number {} exceeds limit {}, (you may recompile to increase this limit)"
+msgstr "Zahl {} überschreitet Limit {}, (zum Erhöhen ggf. neu kompilieren)"
+
+#: src/PrimeDialog.cpp:94
+#, c++-format
+msgid "Found {} upto {}"
+msgstr "Gefunden {} bis {}"
+
+#: src/PrimeDialog.cpp:97
+#, c++-format
+msgid " only the last {} will be shown"
+msgstr "nur die letzten {} werden gezeigt"
+
+#: src/PrimeDialog.cpp:121
+#, c++-format
+msgid "Error {} computing primes upto {}"
+msgstr ""
+
+#: src/PrimeDialog.cpp:146
+#, c++-format
+msgid "Error {} computing factors {}"
+msgstr ""

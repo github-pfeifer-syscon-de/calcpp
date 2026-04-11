@@ -24,3 +24,5 @@ res/unit.js
 res/color-dlg.ui
 res/fract-dlg.ui
 src/FractDialog.cpp
+res/prime-dlg.ui
+src/PrimeDialog.cpp

@@ -22,10 +22,13 @@
 #include <iomanip>
 #include <cmath>
 #include <random>
+#include <algorithm>
+#include <psc_format.hpp>
 
 #include "Fraction.hpp"
 #include "Matrix.hpp"
 #include "QuadraticEquation.hpp"
+#include "Primes.hpp"
 
 static constexpr auto VALUE_LIMIT{0.000001};
 
@@ -252,6 +255,57 @@ fract_test() {
 
     return true;
 }
+
+static bool
+compare(const std::vector<size_t>& prim, const std::vector<size_t>& optimized)
+{
+    auto diff = std::mismatch(prim.begin(), prim.end(), optimized.begin());
+    if (diff.first != prim.end()
+     || diff.second != optimized.end()) {
+        for (size_t i = 0; i < std::max(prim.size(), optimized.size()); ++i) {
+            auto p = i < prim.size() ? prim[i] : 0;
+            auto o = i < optimized.size() ? optimized[i] : 0;
+            if (p != o) {
+                std::cout << i << " missmatch primes "<< p << " optimized " << o << std::endl;
+            }
+        }
+        return false;
+    }
+    return true;
+}
+
+static bool
+check_prime(size_t cnt)
+{
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    for (size_t i = 0; i < cnt; ++i) {
+        size_t size = 5000u + (rng() % 5000u);
+        auto prim = psc::math::Primes::compute_simple(size);
+        auto optimized = psc::math::Primes::compute(size);
+        if (!compare(prim, optimized)) {
+            std::cout << "Computing primes to " << size << " failed" << std::endl;
+            return false;
+        }
+        auto pv = prim[rng() % prim.size()];
+        auto ov = optimized[rng() % optimized.size()];
+        auto n = pv * ov;       // use product of primes to check factorize
+        auto factors = psc::math::Primes::factorize(n);
+        if (factors.size() != 2u) {
+            std::cout << "factorisation returned " << factors.size() << "<> 2 elements" << std::endl;
+            return false;
+        }
+        if (!(factors[0] == pv && factors[1] == ov) &&
+            !(factors[0] == ov && factors[1] == pv)) {
+            std::cout << "factorisation found " << factors[0] << ", " << factors[1]
+                      << " expected " << pv << ", " << ov << std::endl;
+            return false;
+        }
+    }
+    return true;
+}
+
+
 /*
  *
  */
@@ -277,6 +331,9 @@ int main(int argc, char** argv)
     }
     if (!fract_test()) {
         return 6;
+    }
+    if (!check_prime(1000u)) {
+        return 7;
     }
 
     return 0;
