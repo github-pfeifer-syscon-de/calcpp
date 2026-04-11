@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
+
 #include <vector>
+#include <chrono>
+
 namespace psc::math {
 
     class Primes {
@@ -26,11 +29,13 @@ namespace psc::math {
         virtual ~Primes() = default;
 
         template <typename T>
-        static std::vector<T> compute(T max);
+        static std::vector<T> compute(T max, std::chrono::duration<double>* timeDur = nullptr);
         template <typename T>
-        static std::vector<T> compute_simple(T max);
+        static std::vector<T> compute_simple(T max, std::chrono::duration<double>* timeDur = nullptr);
         template <typename T>
         static std::vector<T> factorize(T n);
+        static std::vector<uint64_t> dijkstra_simple(uint64_t max, std::chrono::duration<double>* timeDur = nullptr);
+        static std::vector<uint64_t> dijkstra(uint64_t max, std::chrono::duration<double>* timeDur = nullptr);
 
     };
 

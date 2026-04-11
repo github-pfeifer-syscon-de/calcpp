@@ -4,24 +4,19 @@ incSrcLibTest = include_directories(
                   , '../srcLib'
                   , '..')   # for ...config.h
 
+calc_test_src = files('calc_test.cpp')
 calc_test = executable('calc_test'
-    , ['calc_test.cpp'
-      , '../src/Unit.cpp'
-      , '../src/NumDialog.cpp']
+    , calc_test_src
     , dependencies: deps
     , include_directories : incSrcLibTest
-    , link_with: [expressions_lib])
+    , link_with: [expressions_lib, calc_lib])
 test('calc_test', calc_test)
 
+lin_test_src = files('lin_test.cpp')
 lin_test = executable('lin_test'
-    , ['lin_test.cpp'
-      , '../src/Matrix.cpp'
-      , '../src/QuadraticEquation.cpp'
-      , '../src/Fraction.cpp'
-      , '../src/Primes.cpp'
-      ]
+    , lin_test_src
     , dependencies: deps
     , include_directories : incSrcLibTest
-    , link_with: [expressions_lib])
+    , link_with: [linear_lib])
 test('lin_test', lin_test)
 

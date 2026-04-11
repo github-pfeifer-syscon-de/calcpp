@@ -29,11 +29,15 @@
 #include "Unit.hpp"
 #include "calcpp_config.h"
 
+namespace {
+
 static constexpr auto VALUE_LIMIT{0.000001};
-static constexpr auto VALUE_COARS{0.1};
+static constexpr auto EXP_EVAL{23.1};
+static constexpr auto EXP_PARSE{1.23};
+static constexpr auto EXP_OFFS{4};
 
 // eval basic expression
-static bool
+bool
 testEval()
 {
     auto testEval = std::make_shared<TestEval>();
@@ -41,12 +45,24 @@ testEval()
     Syntax syntax(testFormat, testEval);
     Glib::ustring expr{"3.1+4*5"};
     auto list = syntax.parse(expr);
-    double res = testEval->eval(list);
-    std::cout << "testEval " << res << std::endl;
-    return std::abs(res - 23.1) < VALUE_LIMIT;
+    const double res = testEval->eval(list);
+    if (std::abs(res - EXP_EVAL) >= VALUE_LIMIT) {
+        std::cout << "testEval failed  " << res << " expected " << EXP_EVAL << std::endl;
+        return false;
+    }
+    std::string::size_type offs{};
+    double val{};
+    testFormat->parse("1.23abc", val, &offs);
+    if (std::abs(val - EXP_PARSE) >= VALUE_LIMIT
+     ||offs != EXP_OFFS) {
+        std::cout << "testParse failed  " << val << " expected " << EXP_PARSE
+                  << " offs " << offs << " expected " << EXP_OFFS << std::endl;
+        return false;
+    }
+    return true;
 }
 
-static bool
+bool
 testEvalBraced()
 {
     auto testEval = std::make_shared<TestEval>();
@@ -59,7 +75,7 @@ testEvalBraced()
     return std::abs(res - 35.5) < VALUE_LIMIT;
 }
 
-static bool
+bool
 testLen(Dimensions& dims)
 {
     auto len = dims.getLength();
@@ -73,7 +89,7 @@ testLen(Dimensions& dims)
     return true;
 }
 
-static bool
+bool
 testArea(Dimensions& dims)
 {
     auto area = dims.getArea();
@@ -87,7 +103,7 @@ testArea(Dimensions& dims)
     return true;
 }
 
-static bool
+bool
 testVol(Dimensions& dims)
 {
     auto vol = dims.getVolume();
@@ -122,7 +138,7 @@ testVol(Dimensions& dims)
     return true;
 }
 
-static bool
+bool
 testTemp(Dimensions& dims)
 {
     auto temp = dims.getTemperature();
@@ -154,7 +170,7 @@ testTemp(Dimensions& dims)
     return true;
 }
 
-static bool
+bool
 testSpeed(Dimensions& dims)
 {
     auto speed = dims.getSpeed();
@@ -181,7 +197,7 @@ testSpeed(Dimensions& dims)
     return true;
 }
 
-static bool
+bool
 testMass(Dimensions& dims)
 {
     auto mass = dims.getMass();
@@ -196,7 +212,7 @@ testMass(Dimensions& dims)
 }
 
 
-static bool
+bool
 testTime(Dimensions& dims)
 {
     auto time = dims.getTime();
@@ -210,7 +226,7 @@ testTime(Dimensions& dims)
     return true;
 }
 
-static bool
+bool
 testTupl()
 {
     auto tup = std::make_tuple(1, "abc");
@@ -252,12 +268,14 @@ protected:
     std::string m_execPath;
 };
 
+}
+
 /*
  *
  */
 int main(int argc, char** argv)
 {
-    setlocale(LC_ALL, "");      // make locale dependent, and make glib accept u8 const !!!
+    setlocale(LC_ALL, "en_US.UTF-8");      // choose en as parse will be used, and make glib accept u8 const !!!
     Glib::init();
 
     std::cout << "main " << CALCPP_VERSION << std::endl;

@@ -30,9 +30,12 @@
 #include "QuadraticEquation.hpp"
 #include "Primes.hpp"
 
-static constexpr auto VALUE_LIMIT{0.000001};
+// use anonymouse namespace to make these functions local
+namespace {
 
-static bool
+constexpr auto VALUE_LIMIT{0.000001};
+
+bool
 check_gauss()
 {
     try {
@@ -48,7 +51,7 @@ check_gauss()
          || std::abs(m[1][rows] - 3.0) > VALUE_LIMIT
          || std::abs(m[2][rows] - (-1.0)) > VALUE_LIMIT) {
             std::cout << "expecting 2,3,-1 got:" << std::endl;
-            for (int row = 0; row < static_cast<int32_t>(m.getRows()); ++row) {
+            for (size_t row = 0; row < m.getRows(); ++row) {
                 std::cout << "val[" << row <<  "] = " << m[row][rows] << std::endl;
             }
             return false;
@@ -61,7 +64,7 @@ check_gauss()
     return false;
 }
 
-static bool
+bool
 check_matrix()
 {
     psc::mat::MatrixU<double> m(3);
@@ -85,8 +88,7 @@ check_matrix()
     return true;
 }
 
-
-static bool
+bool
 check_quad()
 {
     psc::math::QuadraticEquation<double> quad;
@@ -120,21 +122,20 @@ check_quad()
     return true;
 }
 
-static double
+double
 random(std::mt19937& rng, bool allowNegative = true)
 {
     bool useNegative = allowNegative && (rng() % 3) == 0;
-    int32_t n,d;
-    n = static_cast<int32_t>(rng() % 10000u);
+    int32_t n{static_cast<int32_t>(rng() % 10000)};
     if (useNegative) {
         n = -n;
     }
-    d = static_cast<int32_t>(rng() % 1000u + 1u);
+    int32_t d{static_cast<int32_t>(rng() % 1000 + 1)};
     //std::cout << "n " << n << " d " << d << " n/d "<< (static_cast<double>(n) / static_cast<double>(d)) << std::endl;
     return static_cast<double>(n) / static_cast<double>(d);
 }
 
-static bool
+bool
 check_gauss_rng(size_t cnt)
 {
     std::random_device dev;
@@ -165,7 +166,7 @@ check_gauss_rng(size_t cnt)
     return true;
 }
 
-static bool
+bool
 check_quad_rng(size_t cnt)
 {
     std::random_device dev;
@@ -207,7 +208,7 @@ check_quad_rng(size_t cnt)
     return true;
 }
 
-static bool
+bool
 fract_test() {
     Fraction fract;
     fract.fromDecimal(0.3333333333333);
@@ -256,7 +257,7 @@ fract_test() {
     return true;
 }
 
-static bool
+bool
 compare(const std::vector<size_t>& prim, const std::vector<size_t>& optimized)
 {
     auto diff = std::mismatch(prim.begin(), prim.end(), optimized.begin());
@@ -274,15 +275,18 @@ compare(const std::vector<size_t>& prim, const std::vector<size_t>& optimized)
     return true;
 }
 
-static bool
+bool
 check_prime(size_t cnt)
 {
     std::random_device dev;
     std::mt19937 rng(dev());
+    bool first{true};
     for (size_t i = 0; i < cnt; ++i) {
         size_t size = 5000u + (rng() % 5000u);
-        auto prim = psc::math::Primes::compute_simple(size);
-        auto optimized = psc::math::Primes::compute(size);
+        std::chrono::duration<double> secSimple;
+        auto prim = psc::math::Primes::compute_simple(size, &secSimple);
+        std::chrono::duration<double> secOpt;
+        auto optimized = psc::math::Primes::compute(size, &secOpt);
         if (!compare(prim, optimized)) {
             std::cout << "Computing primes to " << size << " failed" << std::endl;
             return false;
@@ -301,11 +305,30 @@ check_prime(size_t cnt)
                       << " expected " << pv << ", " << ov << std::endl;
             return false;
         }
+        if (first) {    // just run these once as these are not optimal (at least with modern architectures where memory and caches dominate)
+            std::cout << "Computing eratosthenes     took " << secSimple.count()  << " to " << size << " primes " << prim.size() << std::endl;
+            std::cout << "Computing eratosth. optim. took " << secOpt.count()  << " to " << size << " primes " << optimized.size() << std::endl;
+            std::chrono::duration<double> dijSimple;
+            auto primDijSimple = psc::math::Primes::dijkstra_simple(size, &dijSimple);
+            if (!compare(prim, primDijSimple)) {
+                std::cout << "Computing dijkstra simple primes to " << size << " failed" << std::endl;
+                return false;
+            }
+            std::cout << "Computing dijkstra simple took " << dijSimple.count()  << " to " << size << " primes " << primDijSimple.size() << std::endl;
+            std::chrono::duration<double> dijOpt;
+            auto primDij = psc::math::Primes::dijkstra(size, &dijOpt);
+            if (!compare(prim, primDij)) {
+                std::cout << "Computing dijkstra primes to " << size << " failed" << std::endl;
+                return false;
+            }
+            std::cout << "Computing dijkstra took " << dijOpt.count() << " to " << size << " primes " << primDij.size()  << std::endl;
+            first = false;
+        }
     }
     return true;
 }
 
-
+} /* end namespace */
 /*
  *
  */

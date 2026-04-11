@@ -20,6 +20,7 @@
 #include <vector>
 #include <ranges>
 #include <cmath>
+#include <map>
 
 #include "Primes.hpp"
 
@@ -30,12 +31,13 @@ namespace psc::math {
 //   -> so don't store them
 template <typename T>
 std::vector<T>
-Primes::compute(T size)
+Primes::compute(T size, std::chrono::duration<double>* timeDur)
 {
     std::vector<T> prim;
-    std::vector<bool> sieve;    // storage is bitwise
-    sieve.resize(size / 2u + 1u);
-    const auto e = size / 2u + 1u; // don't try if we can't reach after *2
+    auto alloc = size / 2u + 1u;
+    std::vector<bool> sieve(alloc, false);    // storage is bitwise
+    const auto start{std::chrono::steady_clock::now()};
+    const auto e = static_cast<T>(std::sqrt(size)) + 1u;
     for (T n = 3u; n < e; n += 2u) {
         if (!sieve[n / 2u]) {
             auto j = 2u * n;
@@ -47,6 +49,10 @@ Primes::compute(T size)
             }
         }
     }
+    const auto end{std::chrono::steady_clock::now()};
+    if (timeDur) {
+        *timeDur = (end - start);
+    }
     prim.reserve(size / 7u);
     prim.push_back(2u);
     for (T n = 3u; n < size; n += 2u) {
@@ -54,20 +60,19 @@ Primes::compute(T size)
            prim.push_back(n);
         }
     }
-
     return prim;
 }
 
 // computation without much assumption
 template <typename T>
 std::vector<T>
-Primes::compute_simple(T size)
+Primes::compute_simple(T size, std::chrono::duration<double>* timeDur)
 {
     std::vector<T> prim;
     //auto u_sieve = std::make_unique<std::bitset<N>>();
-    std::vector<bool> sieve;
-    sieve.resize(size);
-    const auto e = size / 2u + 1u; // don't try if we can't reach after *2
+    std::vector<bool> sieve(size, false);
+    const auto start{std::chrono::steady_clock::now()};
+    const auto e = size / 2u;
     for (T n = 2u; n < e; ++n) {
         if (!sieve[n]) {
             auto j = 2u * n;
@@ -76,6 +81,10 @@ Primes::compute_simple(T size)
                 j += n;
             }
         }
+    }
+    const auto end{std::chrono::steady_clock::now()};
+    if (timeDur) {
+        *timeDur = (end - start);
     }
     prim.reserve(size / 7u);    // overallocate to avoid reallocation
     for (T p : std::views::iota(2u, sieve.size())
@@ -110,13 +119,132 @@ Primes::factorize(T n)
     return factorization;
 }
 
+
+// dijkstra 28.1671s count 78498
+//  worst, worst, worst version, but to get the gist of it
+std::vector<uint64_t>
+Primes::dijkstra_simple(uint64_t max, std::chrono::duration<double>* timeDur)
+{
+    uint64_t size = max/10ul;
+    auto primes = std::vector<uint64_t>();
+    primes.reserve(size);
+    auto pool = std::vector<uint64_t>();
+    pool.reserve(size);
+    const auto start{std::chrono::steady_clock::now()};
+    for (uint32_t i = 2; i < max; ++i) {
+        uint64_t smallest = std::numeric_limits<uint64_t>::max();
+        auto smallestPos = std::vector<uint32_t>();
+        for (uint32_t j = 0; j < pool.size(); ++j) {
+            if (smallest >= pool[j]) {
+                if (smallest > pool[j]) {
+                    smallestPos.clear();
+                }
+                smallest = pool[j];
+                smallestPos.push_back(j);
+            }
+        }
+        if (i < smallest) {
+            primes.push_back(i);
+            pool.push_back(static_cast<uint64_t>(i)*static_cast<uint64_t>(i));
+        }
+        else {
+            for (auto pos : smallestPos) {
+                pool[pos] = pool[pos] + primes[pos];
+            }
+        }
+    }
+    const auto end{std::chrono::steady_clock::now()};
+    if (timeDur != nullptr) {
+        *timeDur = (end - start);
+    }
+    return primes;
+}
+
+
+// using map to handle pool
+// the original pool structure was like
+//   prim 2 3  5  7  11
+//   pool 4 9 25 49 121 ...
+// optimized for getting lowest:
+//   use map with pool value and the list of primes e.g.
+//   4 -> 2
+//   8 -> 3 ...
+// 32bit dijkstra 0.325925s count 78498
+// 64bit dijkstra 0.343218s count 78498 (unlike java this has no performance penalty!)
+std::vector<uint64_t>
+Primes::dijkstra(uint64_t max, std::chrono::duration<double>* timeDur)
+{
+    std::vector<uint64_t> primes;
+    auto limit = static_cast<double>(max) * static_cast<double>(max) + static_cast<double>(max)*2.0;    // assume that the highest values will hardly be added as only the lowest values will be wrapped, at least where the get into a critical range
+    //std::cout <<  "limit " << limit << " prec " << static_cast<double>(std::numeric_limits<uint64_t>::max()) << std::endl;
+    if (limit > static_cast<double>(std::numeric_limits<uint64_t>::max())) {     // avoid numeric overflow
+        std::cout <<  "the requested limit " << max << " may exceed the estimated precision "  << limit << std::endl;
+        return primes;
+    }
+    auto pool = std::map<uint64_t, std::shared_ptr<std::vector<uint64_t>>>();
+    const auto start{std::chrono::steady_clock::now()};
+    for (uint64_t i = 2; i < max; ++i) {
+        uint64_t smallest = std::numeric_limits<uint64_t>::max();
+        auto begin = pool.begin();
+        if (begin != pool.end()) {
+            smallest = (*begin).first;
+        }
+        if (i < smallest) {
+            auto poolVal = i * i;
+            auto entry = pool.find(poolVal);
+            if (entry == pool.end()) {
+                auto vect = std::make_shared<std::vector<uint64_t>>();
+                vect->push_back(i);
+                pool.emplace(std::pair(poolVal, vect));
+            }
+            else {
+                (*entry).second->push_back(i);
+            }
+        }
+        else {
+            auto poolVal = (*begin).first;
+            auto pvect = (*begin).second;
+            pool.erase(begin);
+            auto vect = *pvect;
+            for (auto prim : vect) {
+                auto nextPoolVal = poolVal + prim;
+                auto entry = pool.find(nextPoolVal);
+                if (entry == pool.end()) {
+                    auto vect = std::make_shared<std::vector<uint64_t>>();
+                    vect->push_back(prim);
+                    pool.emplace(std::pair(nextPoolVal, vect));
+                }
+                else {
+                    (*entry).second->push_back(prim);
+                }
+            }
+        }
+    }
+    const auto end{std::chrono::steady_clock::now()};
+    if (timeDur) {
+        *timeDur = (end - start);
+    }
+    primes.reserve(max / 7u);
+    for (auto entry : pool) {
+        auto pvect = entry.second;
+        auto vect = *pvect;
+        for (auto prim : vect) {
+            primes.push_back(prim);
+        }
+    }
+    std::sort(primes.begin(), primes.end());    // as we may not vist the primes in order
+    return primes;
+}
+
+
 // probably useful with these
 template std::vector<size_t>
-Primes::compute<size_t>(size_t size);
+Primes::compute<size_t>(size_t size, std::chrono::duration<double>* timeDur);
 template std::vector<size_t>
-Primes::compute_simple<size_t>(size_t size);
+Primes::compute_simple<size_t>(size_t size, std::chrono::duration<double>* timeDur);
 template std::vector<size_t>
 Primes::factorize<size_t>(size_t size);
 
 
 } // psc::math
+

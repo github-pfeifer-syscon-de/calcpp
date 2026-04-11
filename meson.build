@@ -65,6 +65,6 @@ project_targt = executable(meson.project_name()
     , dependencies: deps
     , install: true
     , include_directories : incSrcLib
-    , link_with: expressions_lib
+    , link_with: [expressions_lib ,linear_lib , calc_lib]
     , win_subsystem: 'windows'  # disable this to see console output for windows
     )

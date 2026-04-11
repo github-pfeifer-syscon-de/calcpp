@@ -31,7 +31,7 @@ class TestEval
 {
 public:
     TestEval() = default;
-    ~TestEval() = default;
+    virtual ~TestEval() = default;
 
     // provide a minimal set of these functions
     std::shared_ptr<Function> getFunction(const Glib::ustring& name) override
@@ -63,7 +63,7 @@ class TestFormat
 {
 public:
     TestFormat() = default;
-    ~TestFormat() = default;
+    virtual ~TestFormat() = default;
 
     bool parse(const Glib::ustring& remain, double& value, std::string::size_type* offs) const override
     {
@@ -72,7 +72,7 @@ public:
         auto cend = cstr + remain.bytes();
         auto [ptr, ec] = std::from_chars(cstr, cend, result);
         if (ec == std::errc()) {
-            *offs = ptr - cstr;
+            *offs = static_cast<std::string::size_type>(std::distance(cstr, ptr));
             //std::cout << "Result: " << result << " offs " << *offs << '\n';
             value = result;
             return true;

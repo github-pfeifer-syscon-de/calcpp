@@ -666,9 +666,9 @@ msgstr "nur die letzten {} werden gezeigt"
 #: src/PrimeDialog.cpp:121
 #, c++-format
 msgid "Error {} computing primes upto {}"
-msgstr ""
+msgstr "Fehler {} beim berrechnen der Primzahlen bis {}"
 
 #: src/PrimeDialog.cpp:146
 #, c++-format
-msgid "Error {} computing factors {}"
-msgstr ""
+msgid "Error {} computing factors of {}"
+msgstr "Fehler {} beim berrechnen der Faktoren von {}"

@@ -143,7 +143,7 @@ PrimeDialog::displayFactors()
         auto err = ex.what();
         m_parent->show_error(
             psc::fmt::vformat(
-              _("Error {} computing factors {}")
+              _("Error {} computing factors of {}")
             , psc::fmt::make_format_args( err, m_factorize)));
     }
     m_text->get_buffer()->set_text(text);
