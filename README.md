@@ -87,18 +87,36 @@ you can modify it or add other units.
 
 As a prerequisite genericImg is required, you have to install
 it first.
+For more prerequisite see platforms.
+
+After building for a first test `./calcpp` should be sufficient.
+If the application was once installed there is the likelihood,
+of conflicts between the installed configuration schema
+and a new version, so for further testing use `meson install`
+to avoid this.
+
+### Linux
 
 To build on (Lin)ux use :
+
+As prerequisite libunistring is required, install with:
+<pre>
+sudo apt-get install libunistring5
+</pre>
+
+to build use:
 <pre>
 meson setup build -Dprefix=/usr
 cd build
 meson compile
 </pre>
-For a first test `./calcpp` should be sufficient.
-If the application was once installed there is the likelihood, 
-of conflicts between the installed configuration schema
-and a new version, so for further testing use `meson install` 
-to avoid this.
+
+### Windows
+
+As prerequisite libunistring is required, install with:
+<pre>
+pacman -S ${MINGW_PACKAGE_PREFIX}-libunistring
+</pre>
 
 Build for windows was integrated at least for msys2 use (choose your shell consistently):
 <pre>
@@ -107,9 +125,9 @@ cd build
 meson compile
 </pre>
 
-## i18n
+## Internationalization
 
-To update i18n data use:
+To update i18n data use (only need if translation was added or changed):
 <pre>
 meson compile calcpp-pot
 meson compile calcpp-update-po
