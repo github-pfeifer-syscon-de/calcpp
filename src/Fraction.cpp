@@ -134,6 +134,16 @@ Fraction::operator /(const Fraction& fract) const
     return ret;
 }
 
+int
+Fraction::operator<=>( const Fraction& other) const
+{
+    auto diff = *this - other;
+    if (diff.getNumerator() == 0u) {
+        return 0;
+    }
+    return diff.isNegative() ? -1 : 1;
+}
+
 static uint64_t
 untilOdd(uint64_t a)
 {

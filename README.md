@@ -99,7 +99,7 @@ to avoid this.
 
 To build on (Lin)ux use :
 
-As prerequisite libunistring is required, install with:
+As prerequisite libunistring is required, (for debian) install with :
 <pre>
 sudo apt-get install libunistring5
 </pre>

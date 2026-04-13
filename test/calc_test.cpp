@@ -40,23 +40,22 @@ static constexpr auto EXP_OFFS{4};
 bool
 testEval()
 {
-    auto testEval = std::make_shared<TestEval>();
     auto testFormat = std::make_shared<TestFormat>();
+    std::string::size_type offs { };
+    double val { };
+    testFormat->parse("1.23abc", val, &offs);
+    if (std::abs(val - EXP_PARSE) >= VALUE_LIMIT || offs != EXP_OFFS) {
+        std::cout << "testParse failed  " << val << " expected " << EXP_PARSE
+                  << " offs " << offs << " expected " << EXP_OFFS << std::endl;
+        return false;
+    }
+    auto testEval = std::make_shared<TestEval>();
     Syntax syntax(testFormat, testEval);
-    Glib::ustring expr{"3.1+4*5"};
+    Glib::ustring expr { "3.1+4*5" };
     auto list = syntax.parse(expr);
     const double res = testEval->eval(list);
     if (std::abs(res - EXP_EVAL) >= VALUE_LIMIT) {
         std::cout << "testEval failed  " << res << " expected " << EXP_EVAL << std::endl;
-        return false;
-    }
-    std::string::size_type offs{};
-    double val{};
-    testFormat->parse("1.23abc", val, &offs);
-    if (std::abs(val - EXP_PARSE) >= VALUE_LIMIT
-     ||offs != EXP_OFFS) {
-        std::cout << "testParse failed  " << val << " expected " << EXP_PARSE
-                  << " offs " << offs << " expected " << EXP_OFFS << std::endl;
         return false;
     }
     return true;
@@ -275,7 +274,7 @@ protected:
  */
 int main(int argc, char** argv)
 {
-    setlocale(LC_ALL, "en_US.UTF-8");      // choose en as parse will be used, and make glib accept u8 const !!!
+    setlocale(LC_ALL, "");      // choose en as parse will be used, and make glib accept u8 const !!!
     Glib::init();
 
     std::cout << "main " << CALCPP_VERSION << std::endl;

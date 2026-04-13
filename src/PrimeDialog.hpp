@@ -28,8 +28,8 @@ public:
     virtual ~PrimeDialog() = default;
     // if you increase this consider the implementation limits:
     //  - size_t is used for indexing so this should nto be exceeded
-    //  - the sieve is keep in memory so PRIME_LIMIT/(8*2) should be allocateable
-    static constexpr size_t PRIME_LIMIT{1024l*1024l*1024l}; // limit memory usage to ~128MB
+    //  - the sieve is keept in memory so PRIME_LIMIT/(8*2) should be allocateable
+    static constexpr size_t PRIME_LIMIT{1024ul*1024ul*1024ul}; // limit memory usage to ~128MB, and indexes that work with size_t on 32bit plattforms
     static constexpr int64_t MAX_SHOW_PRIMES{10000};
 protected:
     void evaluate() override;

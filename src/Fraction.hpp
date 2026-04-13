@@ -77,6 +77,12 @@ public:
     [[nodiscard]] Fraction operator -(const Fraction& fract) const;
     [[nodiscard]] Fraction operator *(const Fraction& fract) const;
     [[nodiscard]] Fraction operator /(const Fraction& fract) const;
+    [[nodiscard]] int operator<=>(const Fraction& other) const;
+    // as it looks this will not be defaulted
+    bool inline operator ==(const Fraction& other) const
+    {
+        return (*this <=> other) == 0;
+    }
     // reduce to shortest representation e.g. 2/6 -> 1/3
     void shorten();
     static uint64_t lcm(uint64_t a, uint64_t b);

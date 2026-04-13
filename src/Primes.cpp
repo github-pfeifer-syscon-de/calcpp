@@ -53,10 +53,10 @@ Primes::compute(T size, std::chrono::duration<double>* timeDur)
     if (timeDur) {
         *timeDur = (end - start);
     }
-    prim.reserve(size / 7u);
+    prim.reserve(size / PRIME_COUNT_FACTOR);
     prim.push_back(2u);
-    for (T n = 3u; n < size; n += 2u) {
-        if (!sieve[n / 2u]) {
+    for (T n = 3u, i = 1u; n < size; n += 2u, ++i) {
+        if (!sieve[i]) {
            prim.push_back(n);
         }
     }
@@ -72,7 +72,7 @@ Primes::compute_simple(T size, std::chrono::duration<double>* timeDur)
     //auto u_sieve = std::make_unique<std::bitset<N>>();
     std::vector<bool> sieve(size, false);
     const auto start{std::chrono::steady_clock::now()};
-    const auto e = size / 2u;
+    const auto e = static_cast<T>(std::sqrt(size)) + 1u;
     for (T n = 2u; n < e; ++n) {
         if (!sieve[n]) {
             auto j = 2u * n;
@@ -86,7 +86,7 @@ Primes::compute_simple(T size, std::chrono::duration<double>* timeDur)
     if (timeDur) {
         *timeDur = (end - start);
     }
-    prim.reserve(size / 7u);    // overallocate to avoid reallocation
+    prim.reserve(size / PRIME_COUNT_FACTOR);
     for (T p : std::views::iota(2u, sieve.size())
                 | std::views::filter(
                       [&sieve](const T i) -> bool
@@ -125,7 +125,7 @@ Primes::factorize(T n)
 std::vector<uint64_t>
 Primes::dijkstra_simple(uint64_t max, std::chrono::duration<double>* timeDur)
 {
-    uint64_t size = max/10ul;
+    uint64_t size = max / 10ul;
     auto primes = std::vector<uint64_t>();
     primes.reserve(size);
     auto pool = std::vector<uint64_t>();
@@ -224,7 +224,7 @@ Primes::dijkstra(uint64_t max, std::chrono::duration<double>* timeDur)
     if (timeDur) {
         *timeDur = (end - start);
     }
-    primes.reserve(max / 7u);
+    primes.reserve(max / PRIME_COUNT_FACTOR);
     for (auto entry : pool) {
         auto pvect = entry.second;
         auto vect = *pvect;

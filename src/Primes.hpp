@@ -37,6 +37,9 @@ namespace psc::math {
         static std::vector<uint64_t> dijkstra_simple(uint64_t max, std::chrono::duration<double>* timeDur = nullptr);
         static std::vector<uint64_t> dijkstra(uint64_t max, std::chrono::duration<double>* timeDur = nullptr);
 
+        // use this to estimate the number of primes from limit
+        //   (overshoot as we use it for allocation, not for lower numbers as reallocation will not hurt that much)
+        static constexpr auto PRIME_COUNT_FACTOR{6u};
     };
 
 } // psc::math

@@ -89,7 +89,7 @@ PrimeDialog::displayPrime()
     try {
         auto primes = m_handlePrimes.get();
         auto cnt = primes.size();
-        // limit the number of displayed as textarea will not handle very large text nicely
+        // limit the number of displayed primes as textarea will not handle very large text nicely
         auto showPrimes = std::min(cnt, static_cast<size_t>(MAX_SHOW_PRIMES));
         std::string text = psc::fmt::vformat(_("Found {} upto {}"),
             psc::fmt::make_format_args(cnt, m_maxPrime));
@@ -105,9 +105,8 @@ PrimeDialog::displayPrime()
         text.clear();
         for (size_t i = start; i < primes.size(); ++i) {
             auto p = primes[i];
-            text += psc::fmt::format("{}, ", p);
+            text += psc::fmt::format("{:8}: {:8}\n", i+1, p);
             if (++n % 8 == 0) {
-                text += "\n";
                 ins = buf->get_insert();
                 buf->insert(buf->get_iter_at_mark(ins), text);
                 text.clear();
@@ -129,7 +128,7 @@ PrimeDialog::displayFactors()
     Glib::ustring text;
     try {
         auto fact = m_handleFactors.get();
-        text.reserve(8192);
+        text.reserve(256);
         text = psc::fmt::format("{} = ", m_factorize);
         auto start = text.size();
         for (auto f : fact) {
