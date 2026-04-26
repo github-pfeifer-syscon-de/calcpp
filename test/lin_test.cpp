@@ -19,16 +19,13 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <iomanip>
 #include <cmath>
 #include <random>
 #include <algorithm>
-#include <psc_format.hpp>
 
 #include "Fraction.hpp"
 #include "Matrix.hpp"
 #include "QuadraticEquation.hpp"
-#include "Primes.hpp"
 
 // use anonymouse namespace to make these functions local
 namespace {
@@ -122,18 +119,37 @@ check_quad()
     return true;
 }
 
+// creating values +/- 0.001...1000
+//   avoid 0 and close values as if they appear in equations they might not be solvable by our simple means
 double
 random(std::mt19937& rng, bool allowNegative = true)
 {
     bool useNegative = allowNegative && (rng() % 3) == 0;
-    int32_t n{static_cast<int32_t>(rng() % 10000)};
-    if (useNegative) {
-        n = -n;
-    }
-    int32_t d{static_cast<int32_t>(rng() % 1000 + 1)};
+    auto n{rng() % 999u + 1u};
+    auto d{rng() % 999u + 1u};
     //std::cout << "n " << n << " d " << d << " n/d "<< (static_cast<double>(n) / static_cast<double>(d)) << std::endl;
-    return static_cast<double>(n) / static_cast<double>(d);
+    auto f = static_cast<double>(n) / static_cast<double>(d);
+    if (useNegative) {
+        f = -f;
+    }
+    return f;
 }
+
+#ifdef _IEEE754_H   // needs #include <ieee754.h>  // only avail for Gnu plattforms
+// create values -1...1
+double
+randomAlt(std::mt19937& rng, bool allowNegative = true)
+{
+    bool useNegative = allowNegative && (rng() % 3) == 0;
+    ieee754_double ie{};
+    ie.ieee.mantissa0 = rng();
+    ie.ieee.mantissa1 = rng();
+    ie.ieee.negative = useNegative;
+    ie.ieee.exponent = IEEE754_DOUBLE_BIAS;
+    double d = ie.d;
+    return d;
+}
+#endif
 
 bool
 check_gauss_rng(size_t cnt)
@@ -233,98 +249,40 @@ fract_test() {
         std::cout << "lcm expected 30 got " << lcm << std::endl;
         return false;
     }
-    auto sum = Fraction {1,3} + Fraction{1,3};
+    auto sum = Fraction{1,3} + Fraction{1,3};
     if (sum.getNumerator() != 2 || sum.getDenominator() != 3) {
         std::cout << "sum expected 2/3 got " << sum.getNumerator() << "/" << sum.getDenominator() << std::endl;
         return false;
     }
-    auto diff = Fraction {1,3} - Fraction{2,9};
+    auto diff = Fraction{1,3} - Fraction{2,9};
     if (diff.getNumerator() != 1 || diff.getDenominator() != 9) {
         std::cout << "dif expected 1/9 got " << diff.getNumerator() << "/" << diff.getDenominator() << std::endl;
         return false;
     }
-    auto mul = Fraction {2,3} * Fraction{1,3};
+    auto mul = Fraction{2,3} * Fraction{1,3};
     if (mul.getNumerator() != 2 || mul.getDenominator() != 9) {
         std::cout << "mul expected 2/9 got " << mul.getNumerator() << "/" << mul.getDenominator() << std::endl;
         return false;
     }
-    auto div = Fraction {2,3} / Fraction{1,3};
+    auto div = Fraction{2,3} / Fraction{1,3};
     if (div.getNumerator() != 2 || div.getDenominator() != 1) {
         std::cout << "div expected 2/1 got " << div.getNumerator() << "/" << div.getDenominator() << std::endl;
         return false;
     }
-
-    return true;
-}
-
-bool
-compare(const std::vector<size_t>& prim, const std::vector<size_t>& optimized)
-{
-    auto diff = std::mismatch(prim.begin(), prim.end(), optimized.begin());
-    if (diff.first != prim.end()
-     || diff.second != optimized.end()) {
-        for (size_t i = 0; i < std::max(prim.size(), optimized.size()); ++i) {
-            auto p = i < prim.size() ? prim[i] : 0;
-            auto o = i < optimized.size() ? optimized[i] : 0;
-            if (p != o) {
-                std::cout << i << " missmatch primes "<< p << " optimized " << o << std::endl;
-            }
-        }
+    auto f1_2 = Fraction{1,2};
+    auto f4_8 = Fraction(4, 8);
+    auto eq = f1_2 == f4_8;
+    if (!eq) {
+        std::cout << "compare got 1/2 <> 4/8  exp different result" << std::endl;
         return false;
     }
-    return true;
-}
-
-bool
-check_prime(size_t cnt)
-{
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    bool first{true};
-    for (size_t i = 0; i < cnt; ++i) {
-        size_t size = 5000u + (rng() % 5000u);
-        std::chrono::duration<double> secSimple;
-        auto prim = psc::math::Primes::compute_simple(size, &secSimple);
-        std::chrono::duration<double> secOpt;
-        auto optimized = psc::math::Primes::compute(size, &secOpt);
-        if (!compare(prim, optimized)) {
-            std::cout << "Computing primes to " << size << " failed" << std::endl;
-            return false;
-        }
-        auto pv = prim[rng() % prim.size()];
-        auto ov = optimized[rng() % optimized.size()];
-        auto n = pv * ov;       // use product of primes to check factorize
-        auto factors = psc::math::Primes::factorize(n);
-        if (factors.size() != 2u) {
-            std::cout << "factorisation returned " << factors.size() << "<> 2 elements" << std::endl;
-            return false;
-        }
-        if (!(factors[0] == pv && factors[1] == ov) &&
-            !(factors[0] == ov && factors[1] == pv)) {
-            std::cout << "factorisation found " << factors[0] << ", " << factors[1]
-                      << " expected " << pv << ", " << ov << std::endl;
-            return false;
-        }
-        if (first) {    // just run these once as these are not optimal (at least with modern architectures where memory and caches dominate)
-            std::cout << "Computing eratosthenes     took " << secSimple.count()  << " to " << size << " primes " << prim.size() << std::endl;
-            std::cout << "Computing eratosth. optim. took " << secOpt.count()  << " to " << size << " primes " << optimized.size() << std::endl;
-            std::chrono::duration<double> dijSimple;
-            auto primDijSimple = psc::math::Primes::dijkstra_simple(size, &dijSimple);
-            if (!compare(prim, primDijSimple)) {
-                std::cout << "Computing dijkstra simple primes to " << size << " failed" << std::endl;
-                return false;
-            }
-            std::cout << "Computing dijkstra simple took " << dijSimple.count()  << " to " << size << " primes " << primDijSimple.size() << std::endl;
-            std::chrono::duration<double> dijOpt;
-            auto primDij = psc::math::Primes::dijkstra(size, &dijOpt);
-            if (!compare(prim, primDij)) {
-                std::cout << "Computing dijkstra primes to " << size << " failed" << std::endl;
-                return false;
-            }
-            std::cout << "Computing dijkstra took " << dijOpt.count() << " to " << size << " primes " << primDij.size()  << std::endl;
-            first = false;
-        }
+    auto f1_3 = Fraction{1,3};
+    auto cmp = f1_2 > f1_3;
+    if (!cmp) {
+        std::cout << "compare got 1/3 > 1/2  exp different result" << std::endl;
+        return false;
     }
+
     return true;
 }
 
@@ -354,9 +312,6 @@ int main(int argc, char** argv)
     }
     if (!fract_test()) {
         return 6;
-    }
-    if (!check_prime(1000u)) {
-        return 7;
     }
 
     return 0;

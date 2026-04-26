@@ -22,21 +22,16 @@
 
 namespace psc::math {
 
-    class Primes {
-    public:
-        explicit Primes() = delete;
-        explicit Primes(const Primes& other) = delete;
-        virtual ~Primes() = default;
+class PrimeTest {
+public:
+    explicit  PrimeTest() = delete;
+    explicit  PrimeTest(const  PrimeTest& other) = delete;
+    virtual ~ PrimeTest() = default;
 
-        template <typename T>
-        static std::vector<T> compute(T max, std::chrono::duration<double>* timeDur = nullptr);
-        template <typename T>
-        static std::vector<T> factorize(T n);
+    template <typename T>
+    static std::vector<T> compute(T max, std::chrono::duration<double>* timeDur = nullptr);
+    static std::vector<uint64_t> dijkstra(uint64_t max, std::chrono::duration<double>* timeDur = nullptr);
 
-        // use this to estimate the number of primes from limit
-        //   (overshoot as we use it for allocation, not for lower numbers as reallocation will not hurt that much)
-        static constexpr auto PRIME_COUNT_FACTOR{6u};
-    };
+};
 
 } // psc::math
-

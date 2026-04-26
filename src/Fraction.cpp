@@ -52,6 +52,9 @@ Fraction::checkDenominator(uint64_t denominator)
     }
 }
 
+// for periodic fraction there is a exact solution
+//  e.g. 0.272727_  multiply until one period appears before the decimal point -> *100 = 27.27272
+//  substract one input which gives the numerator 27 the denominator is 100-1 = 27/99 /9 = 3/11
 void
 Fraction::fromDecimal(double decimal, double precision) {
     m_negative = decimal < 0.0;
