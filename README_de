@@ -93,6 +93,23 @@ cd build
 meson compile
 </pre>
 
+## Zeichentabelle
+
+Unterstützt die Auswahl eines Unicodeblocks und die Anzeige der enthaltenen Zeichen.
+
+Die Zeichentabelle unterstützt die Auswahl eines Zeichens, und beim Beenden der Auswahl,
+werden Details zu diesem in den unteren Infofeldern angezeigt.
+
+Die benachbarte Suche unterstützt mit einer Eingabe von z.B. "symbols" die Anzeige
+von Unicodeblöcken deren Namen dieses Wort enthalten.
+Diese Suche unterstützt ebenso Eingaben von z.B. "\U123a", "\u123A", "U+123A" oder "&#1234"
+um den Block anzuzeigen der das entsprechende Zeichen enthält.
+
+Das untere Suchfeld unterstützt die Dekodierung von Zeichen z.B. "πa" um die Scriptgruppen
+im Scriptbereich anzuzeigen,
+wenn diese Einträge angeklickt werden, wird der zugeordnete Unicodeblock angezeigt.
+
+
 ## Sprachunterstützung
 
 Im Fall diese soll angepasst werden verwenden:

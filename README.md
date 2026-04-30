@@ -125,6 +125,20 @@ cd build
 meson compile
 </pre>
 
+## Character list
+
+Supports the selection of a unicode block and shows the characters for this block.
+
+The character display allows selecting a char and when leaving the cell,
+character details will be show in the lower info fields.
+
+The adjacent search allows with input e.g. "symbols" to display blocks with names that contain this word.
+This search also supports unicode character references e.g. "\U123a", "\u123A", "U+123A" or "&#1234" 
+to display the block containing this character.
+ 
+The lower input supports decoding characters e.g. "πa" to display their script
+groups within the script area, where entries can be clicked to show the corresponding block.  
+
 ## Internationalization
 
 To update i18n data use (only need if translation was added or changed):

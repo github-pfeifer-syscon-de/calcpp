@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: calcpp 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-11 02:19+0200\n"
+"POT-Creation-Date: 2026-04-28 17:34+0200\n"
 "PO-Revision-Date: 2024-12-15 06:57+0100\n"
 "Last-Translator:  <calcpp@pfeifer-syscon.de>\n"
 "Language-Team: German <calcpp@pfeifer-syscon.de>\n"
@@ -185,6 +185,11 @@ msgstr "Syntaxfehler {} für {}"
 msgid "Error evaluating {}"
 msgstr "Fehler bei der Auswertung {}"
 
+#: src/CharDialog.cpp:194
+#, c-format
+msgid "The input %s was not parsed"
+msgstr "Die Eingabe %s konnte nicht verarbeitet werden"
+
 #: src/Unit.cpp:173
 #, c-format
 msgid "The file %s had errors %s (please check console output)"
@@ -289,15 +294,15 @@ msgstr "Einfacher Desktoprechner."
 msgid "Chars"
 msgstr "Zeichentabelle"
 
-#: res/char-dlg.ui:91
+#: res/char-dlg.ui:122
 msgid "Script"
-msgstr ""
+msgstr "Skript"
 
-#: res/char-dlg.ui:129
+#: res/char-dlg.ui:161
 msgid "Info"
 msgstr "Information"
 
-#: res/char-dlg.ui:167
+#: res/char-dlg.ui:200
 msgid "Input"
 msgstr "Eingabe"
 
@@ -630,21 +635,21 @@ msgstr "/ dividieren"
 msgid "Expected integer"
 msgstr "Erwartete Ganzzahl"
 
-#: res/prime-dlg.ui:7
+#: res/prime-dlg.ui:9
 #, fuzzy
 msgid "Prime numbers"
 msgstr "Primzahlen"
 
-#: res/prime-dlg.ui:83
+#: res/prime-dlg.ui:85
 #, fuzzy
 msgid "Primes upto"
 msgstr "Primzahlen bis"
 
-#: res/prime-dlg.ui:116
+#: res/prime-dlg.ui:119
 msgid "Factors"
 msgstr "Faktoren"
 
-#: res/prime-dlg.ui:129
+#: res/prime-dlg.ui:132
 msgid "factorize"
 msgstr "faktorisieren"
 
@@ -663,12 +668,12 @@ msgstr "Gefunden {} bis {}"
 msgid " only the last {} will be shown"
 msgstr "nur die letzten {} werden gezeigt"
 
-#: src/PrimeDialog.cpp:121
+#: src/PrimeDialog.cpp:120
 #, c++-format
 msgid "Error {} computing primes upto {}"
 msgstr "Fehler {} beim berrechnen der Primzahlen bis {}"
 
-#: src/PrimeDialog.cpp:146
+#: src/PrimeDialog.cpp:145
 #, c++-format
 msgid "Error {} computing factors of {}"
 msgstr "Fehler {} beim berrechnen der Faktoren von {}"

@@ -113,29 +113,32 @@ class CalcppWin;
 class CharDialog : public Gtk::Dialog {
 public:
     CharDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, CalcppWin* parent, Glib::RefPtr<Gio::Settings> settings);
-    virtual ~CharDialog();
+    virtual ~CharDialog() = default;
 
     Gtk::Widget* createBoxItem(const Glib::RefPtr<BlockRef>& blockRef);
-
+protected:
+    void charSearch();
 private:
     void create_columns();
     Glib::RefPtr<Gtk::ListStore> create_list();
     void show(const std::shared_ptr<UnicodeBlock>& page);
-    void append_combo_row(const std::shared_ptr<UnicodeBlock>& blk);
+    void append_combo_row(Glib::RefPtr<Gtk::ListStore>& m_pages, const std::shared_ptr<UnicodeBlock>& blk);
     Glib::RefPtr<Gtk::ListStore> get_pages();
     void fill_list();
     void char_info();
 
     CharColumns m_char_columns;
     ComboColumns m_combo_columns;
-    Gtk::TreeView* m_table;
-    Gtk::ComboBox* m_page;
-    Gtk::Entry* m_info;
-    Gtk::Entry* m_infoHtml;
-    Gtk::FlowBox* m_box;
-    Gtk::Entry* m_entry;
+    Gtk::ComboBox* m_page{};
+    Gtk::TreeView* m_table{};
+    Gtk::SearchEntry* m_search_entry{};
+    Gtk::Entry* m_info{};
+    Gtk::Entry* m_infoHtml{};
+    Gtk::FlowBox* m_box{};
+    Gtk::Entry* m_entry{};
     Glib::RefPtr<Gtk::ListStore> m_list; // characters display
     Glib::RefPtr<Gtk::ListStore> m_pages; // unicode pages selection
+    Glib::RefPtr<Gtk::ListStore> m_pagesSearch;
     Glib::RefPtr<Gio::Settings> m_settings;
 
 

@@ -10,6 +10,7 @@ src/NumDialog.cpp
 src/OutputForm.cpp
 src/QuadDialog.cpp
 src/PlotDialog.cpp
+src/CharDialog.cpp
 src/Unit.cpp
 res/app-menu.ui
 res/abt-dlg.ui

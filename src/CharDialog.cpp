@@ -17,6 +17,8 @@
  */
 
 #include <iostream>
+#include <StringUtils.hpp>
+#include <psc_i18n.hpp>
 
 #include "CharDialog.hpp"
 #include "CalcppWin.hpp"
@@ -62,15 +64,13 @@ CharDialog::CharDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 : Gtk::Dialog(cobject)
 , m_char_columns()
 , m_combo_columns()
-, m_table{nullptr}
-, m_page{nullptr}
-, m_info{nullptr}
 , m_list(Gtk::ListStore::create(m_char_columns))
 , m_pages()
 , m_settings{settings}
 {
     builder->get_widget("table", m_table);
     builder->get_widget("page", m_page);
+    builder->get_widget("search_entry", m_search_entry);
     builder->get_widget("info", m_info);
     builder->get_widget("infoHtml", m_infoHtml);
     builder->get_widget("box", m_box);
@@ -81,7 +81,8 @@ CharDialog::CharDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     m_table->set_model(m_list);
     fill_list();
     show_all();
-	m_entry->signal_changed().connect(sigc::mem_fun(*this, &CharDialog::char_info));
+    m_entry->signal_changed().connect(sigc::mem_fun(*this, &CharDialog::char_info));
+    m_search_entry->signal_search_changed().connect(sigc::mem_fun(*this, &CharDialog::charSearch));
     //m_table->set_headers_clickable(true);
     // seems to be no column selection
     //Glib::RefPtr<TreeSelection> selection = m_table->get_selection();
@@ -93,11 +94,6 @@ CharDialog::CharDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     //    std::shared_ptr<UnicodeBlock> unicodePage = row[m_combo_columns.m_value];
     //    add_rows(unicodePage);
     //});
-}
-
-
-CharDialog::~CharDialog()
-{
 }
 
 void
@@ -170,6 +166,68 @@ CharDialog::char_info()
     m_box->bind_list_store(model, sigc::mem_fun(*this, &CharDialog::createBoxItem));
 }
 
+void
+CharDialog::charSearch()
+{
+    auto searchText = m_search_entry->get_text();
+    if (searchText.empty()) {
+        m_page->set_model(m_pages);
+        return;
+    }
+    searchText = searchText.lowercase();
+    int parseBase{};
+    if (StringUtils::startsWith(searchText, "\\u")
+      ||StringUtils::startsWith(searchText, "u+")) {
+        parseBase = 16;
+    }
+    else if (StringUtils::startsWith(searchText, "&#")) {
+        parseBase = 10;
+    }
+    ucs4_t searchCode{};
+    if (parseBase > 0 && searchText.size() > 2) {
+        try {
+            searchCode = static_cast<ucs4_t>(std::stoul(searchText.substr(2), nullptr, parseBase));
+        }
+        catch (std::invalid_argument const& ex) {
+            Gtk::MessageDialog messagedialog(*this,
+                Glib::ustring::sprintf(_("The input %s was not parsed"), searchText), FALSE, Gtk::MessageType::MESSAGE_ERROR);
+            messagedialog.run();
+            messagedialog.hide();
+        }
+    }
+    if (!m_pagesSearch) {
+        m_pagesSearch = Gtk::ListStore::create(m_combo_columns);
+    }
+    else {
+        m_page->unset_model();  // avoid interaction with display while filling
+        m_pagesSearch->clear();
+    }
+    auto pages = get_pages();
+    auto chlds = pages->children();
+    for (auto iter = chlds.begin(); iter != chlds.end(); ++iter) {
+        auto row = *iter;
+        std::shared_ptr<UnicodeBlock> unicodePage = row[m_combo_columns.m_value];
+        if (searchCode == 0) {  // search by name
+            auto pageName = unicodePage->get_name().lowercase();
+            auto pos = pageName.find(searchText);
+            if (pos != pageName.npos) {
+                append_combo_row(m_pagesSearch, unicodePage);
+            }
+        }
+        else {
+            if (searchCode >= unicodePage->get_start()
+             && searchCode <= unicodePage->get_end()) {
+                append_combo_row(m_pagesSearch, unicodePage);
+            }
+        }
+    }
+    m_page->set_model(m_pagesSearch);
+    chlds = m_pagesSearch->children();
+    if (chlds.size() > 0) {
+        m_page->set_active(0);
+    }
+}
+
 Gtk::Widget*
 CharDialog::createBoxItem(const Glib::RefPtr<BlockRef>& blockRef)
 {
@@ -183,11 +241,11 @@ CharDialog::createBoxItem(const Glib::RefPtr<BlockRef>& blockRef)
             for (auto iter = chlds.begin(); iter != chlds.end(); ++iter) {
                 auto row = *iter;
                 std::shared_ptr<UnicodeBlock> unicodePage = row[m_combo_columns.m_value];
-                if (uc >= unicodePage->get_start()
-                 && uc <= unicodePage->get_end()) {
-                    m_page->set_active(row);		// and display
-                    break;
-                }
+                 if (uc >= unicodePage->get_start()
+                  && uc <= unicodePage->get_end()) {
+                     m_page->set_active(row);		// and display
+                     break;
+                 }
             }
         });
     return pageButton;
@@ -208,9 +266,9 @@ CharDialog::show(const std::shared_ptr<UnicodeBlock>& page)
 }
 
 void
-CharDialog::append_combo_row(const std::shared_ptr<UnicodeBlock>& blk)
+CharDialog::append_combo_row(Glib::RefPtr<Gtk::ListStore>& pages, const std::shared_ptr<UnicodeBlock>& blk)
 {
-    Gtk::TreeIter iter = m_pages->append();
+    Gtk::TreeIter iter = pages->append();
     Gtk::TreeModel::Row row = *iter;
     // use column with text and value
     row[m_combo_columns.m_name] = blk->get_name();
@@ -222,15 +280,14 @@ CharDialog::get_pages()
 {
     if (!m_pages) {
         m_pages = Gtk::ListStore::create(m_combo_columns);
-        // depend on libunistring
-        // see https://unicode-table.com/en/ for infos
+        // depend on libunistring see https://unicode-table.com/en/ for infos
         const uc_block_t *blocks;
         size_t count;
         uc_all_blocks(&blocks, &count);
         for (size_t i = 0; i < count; ++i) {
             const uc_block_t *block = &blocks[i];
-			auto row = std::make_shared<UnicodeBlock>(block->start, block->end, block->name);
-            append_combo_row(row);
+	    auto row = std::make_shared<UnicodeBlock>(block->start, block->end, block->name);
+            append_combo_row(m_pages, row);
         }
     }
     return m_pages;
@@ -241,14 +298,12 @@ CharDialog::fill_list()
 {
     m_page->set_model(get_pages());
     m_page->set_entry_text_column(m_combo_columns.m_name);
-
     m_page->signal_changed().connect(
         [this] {
-			Gtk::TreeIter iter = m_page->get_active();
-			Gtk::TreeModel::Row row = *iter;
-			auto unicodePage = row[m_combo_columns.m_value];
-			show(unicodePage);
-		}
-	);
+            Gtk::TreeIter iter = m_page->get_active();
+            Gtk::TreeModel::Row row = *iter;
+            auto unicodePage = row[m_combo_columns.m_value];
+            show(unicodePage);
+        });
     m_page->set_active(0); // preselect latin
 }
