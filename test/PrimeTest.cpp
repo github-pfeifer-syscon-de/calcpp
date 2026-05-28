@@ -71,20 +71,20 @@ PrimeTest::compute(T size, std::chrono::duration<double>* timeDur)
 //   8 -> 3 ...
 // 32bit dijkstra 0.325925s count 78498
 // 64bit dijkstra 0.343218s count 78498 (unlike java this has no performance penalty!)
-std::vector<uint64_t>
-PrimeTest::dijkstra(uint64_t max, std::chrono::duration<double>* timeDur)
+std::vector<size_t>
+PrimeTest::dijkstra(size_t max, std::chrono::duration<double>* timeDur)
 {
-    std::vector<uint64_t> primes;
+    std::vector<size_t> primes;
     auto limit = static_cast<double>(max) * static_cast<double>(max) + static_cast<double>(max)*2.0;    // assume that the highest values will hardly be added as only the lowest values will be wrapped, at least where the get into a critical range
-    //std::cout <<  "limit " << limit << " prec " << static_cast<double>(std::numeric_limits<uint64_t>::max()) << std::endl;
-    if (limit > static_cast<double>(std::numeric_limits<uint64_t>::max())) {     // avoid numeric overflow
+    //std::cout <<  "limit " << limit << " prec " << static_cast<double>(std::numeric_limits<size_t>::max()) << std::endl;
+    if (limit > static_cast<double>(std::numeric_limits<size_t>::max())) {     // avoid numeric overflow
         std::cout <<  "the requested limit " << max << " may exceed the estimated precision "  << limit << std::endl;
         return primes;
     }
-    auto pool = std::map<uint64_t, std::shared_ptr<std::vector<uint64_t>>>();
+    auto pool = std::map<size_t, std::shared_ptr<std::vector<size_t>>>();
     const auto start{std::chrono::steady_clock::now()};
-    for (uint64_t i = 2; i < max; ++i) {
-        uint64_t smallest = std::numeric_limits<uint64_t>::max();
+    for (size_t i = 2; i < max; ++i) {
+        size_t smallest = std::numeric_limits<size_t>::max();
         auto begin = pool.begin();
         if (begin != pool.end()) {
             smallest = (*begin).first;
@@ -93,7 +93,7 @@ PrimeTest::dijkstra(uint64_t max, std::chrono::duration<double>* timeDur)
             auto poolVal = i * i;
             auto entry = pool.find(poolVal);
             if (entry == pool.end()) {
-                auto vect = std::make_shared<std::vector<uint64_t>>();
+                auto vect = std::make_shared<std::vector<size_t>>();
                 vect->push_back(i);
                 pool.emplace(std::pair(poolVal, vect));
             }
@@ -110,7 +110,7 @@ PrimeTest::dijkstra(uint64_t max, std::chrono::duration<double>* timeDur)
                 auto nextPoolVal = poolVal + prim;
                 auto entry = pool.find(nextPoolVal);
                 if (entry == pool.end()) {
-                    auto vect = std::make_shared<std::vector<uint64_t>>();
+                    auto vect = std::make_shared<std::vector<size_t>>();
                     vect->push_back(prim);
                     pool.emplace(std::pair(nextPoolVal, vect));
                 }

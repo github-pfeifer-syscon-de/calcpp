@@ -30,7 +30,7 @@ public:
 
     template <typename T>
     static std::vector<T> compute(T max, std::chrono::duration<double>* timeDur = nullptr);
-    static std::vector<uint64_t> dijkstra(uint64_t max, std::chrono::duration<double>* timeDur = nullptr);
+    static std::vector<size_t> dijkstra(size_t max, std::chrono::duration<double>* timeDur = nullptr);
 
 };
 
