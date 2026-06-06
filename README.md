@@ -4,16 +4,14 @@ A desktop calculator
 ![calcpp](calcpp.png "calcpp")
 
 A simple lightweight desktop calculator
-(this time based on C++11 to try some it's features.
-As far i coud see they are useful,
-and as i'am just getting use to it not try to over featurize).
-Write down your calculation e.g.:
+this time based on C++20.
+It allows to write your calculation like:
 <pre>
 3 + 4 * 5
 </pre>
 and press [control] and [enter] to evaluate it.
 
-Adjustable output format: decimal, scientific, hexadecimal and octal.
+It has adjustable output format: decimal, scientific, hexadecimal and octal.
 Input for decimal (with local support) and hexadecimal (with 0x...) numbers.
 Octal numbers e.g. 0123 are only parsed as such when the output format is octal.
 Adjustable angle unit: radian, degree, gon.
@@ -69,19 +67,8 @@ Short feature list:
 - convert units
 - a color value display
 - simple fraction calculations
+- lookup for primes upto a limit and prime factors 
 
-## Character list
-
-Allows picking symbols by choosing a unicode page and click on the character.
-Also entering characters and view their properties is supported. 
-
-## Custom units
-
-Sorry i'm not too deep into non SI units,
-please check your results, suggestions are welcome.
-In INSTALL_DIR/share/calcpp/unit.js can be found if
-it is copied to ~/.local/share/calcpp/unit.js
-you can modify it or add other units.
 
 ## Install
 
@@ -138,6 +125,14 @@ to display the block containing this character.
  
 The lower input supports decoding characters e.g. "πa" to display their script
 groups within the script area, where entries can be clicked to show the corresponding block.  
+
+## Custom units
+
+Sorry i'm not too deep into non SI units,
+please check your results, suggestions are welcome.
+In INSTALL_DIR/share/calcpp/unit.js can be found if
+it is copied to ~/.local/share/calcpp/unit.js
+you can modify it or add other units.
 
 ## Internationalization
 
