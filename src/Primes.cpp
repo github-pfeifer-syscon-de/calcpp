@@ -70,7 +70,7 @@ Primes::factorize(T n)
     // https://cp-algorithms.com/algebra/factorization.html#fermats-factorization-method
     //    there are more advanced options but as we have the primes around
     std::vector<T> factorization;
-    auto primes = Primes::compute(static_cast<T>(std::sqrt(n)) + 1u);
+    auto primes = Primes::compute(static_cast<T>(std::ceil(std::sqrt(n))));
     for (T d : primes) {
         if (d * d > n) {
             break;

@@ -32,11 +32,37 @@ namespace psc::math {
         static std::vector<T> compute(T max, std::chrono::duration<double>* timeDur = nullptr);
         template <typename T>
         static std::vector<T> factorize(T n);
-
+        // if you like precomputed primes
+        // prefill sieve ?
+        //   -> fast if we can just copy
+        //   -> but beyond that there is no consistent advantage
+        template<uint32_t S, uint32_t N = S / 5>
+        static consteval std::array<uint32_t, N>
+        const_primes()
+        {
+            std::array<uint32_t,N> ret{};
+            std::array<bool, S> sieve{};
+            for (uint32_t i = 2u; i < S / 2; ++i) {
+                if (!sieve[i]) {
+                    size_t s = 2*i;
+                    while (s < S) {
+                        sieve[s] = true;
+                        s += i;
+                    }
+                }
+            }
+            std::size_t n = 0;
+            for (uint32_t i = 2u; i < S; ++i) {
+                if (!sieve[i]) {
+                    ret[n++] = i;
+                }
+            }
+            return ret;
+        }
         // use this to estimate the number of primes from limit
         //   (overshoot as we use it for allocation, not for lower numbers as reallocation will not hurt that much)
         static constexpr auto PRIME_COUNT_FACTOR{6u};
-    };
+};
 
 } // psc::math
 

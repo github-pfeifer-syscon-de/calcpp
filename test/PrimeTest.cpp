@@ -23,11 +23,13 @@
 #include <map>
 #include <ranges>
 #include <iterator>
+#include <cstddef>
 
 #include "PrimeTest.hpp"
 #include "Primes.hpp"
 
 namespace psc::math {
+
 // computation without much assumption, used as reference
 template <typename T>
 std::vector<T>
@@ -37,7 +39,7 @@ PrimeTest::compute(T size, std::chrono::duration<double>* timeDur)
     //auto u_sieve = std::make_unique<std::bitset<N>>();
     std::vector<bool> sieve(size, false);
     const auto start{std::chrono::steady_clock::now()};
-    const auto e = static_cast<T>(std::sqrt(size)) + 1u;
+    const auto e = static_cast<T>(std::ceil(std::sqrt(size)));
     for (T n = 2u; n < e; ++n) {
         if (!sieve[n]) {
             auto j = 2u * n;
@@ -144,8 +146,29 @@ PrimeTest::compute<size_t>(size_t size, std::chrono::duration<double>* timeDur);
 
 namespace {
 
+
+template<std::size_t S>
+consteval static size_t
+c_count(const std::array<uint32_t, S>& p)
+{
+    size_t s{};
+    for (uint32_t i = 0; i < p.size(); ++i) {
+        if (p[i] > 0) {
+            ++s;
+        }
+        else {
+            break;
+        }
+    }
+    return s;
+}
+
+constexpr size_t prime_max{10240};
+constexpr auto prime = psc::math::Primes::const_primes<prime_max>();
+static_assert(c_count(prime) == 1254u, "Wrong number of primes");
+
 bool
-compare(const std::vector<size_t>& prim, const std::vector<size_t>& optimized)
+compare(const std::vector<size_t>& prim, const std::vector<size_t>& optimized, const char* name)
 {
     auto diff = std::mismatch(prim.begin(), prim.end(), optimized.begin());
     if (diff.first != prim.end()
@@ -154,7 +177,7 @@ compare(const std::vector<size_t>& prim, const std::vector<size_t>& optimized)
             auto p = i < prim.size() ? prim[i] : 0;
             auto o = i < optimized.size() ? optimized[i] : 0;
             if (p != o) {
-                std::cout << i << " missmatch primes "<< p << " optimized " << o << std::endl;
+                std::cout << i << " missmatch primes "<< p << " " << name << " " << o << std::endl;
             }
         }
         return false;
@@ -162,34 +185,34 @@ compare(const std::vector<size_t>& prim, const std::vector<size_t>& optimized)
     return true;
 }
 
+static constexpr auto PRIME_LIMIT {100000u};
+
 bool
-check_prime(const size_t cnt)
+check_prime(std::mt19937& rng, const size_t cnt)
 {
-    std::random_device dev;
-    std::mt19937 rng(dev());
     bool first{true};
     for (size_t i = 0; i < cnt; ++i) {
-        size_t size = 5000u + (rng() % 5000u);
+        size_t size = (PRIME_LIMIT / 2u) + (rng() % (PRIME_LIMIT / 2u));
         std::chrono::duration<double> secSimple;
         auto prim = psc::math::PrimeTest::compute(size, &secSimple);
         std::chrono::duration<double> secOpt;
         auto optimized = psc::math::Primes::compute(size, &secOpt);
-        if (!compare(prim, optimized)) {
+        if (!compare(prim, optimized, "optimized")) {
             std::cout << "Computing primes to " << size << " failed" << std::endl;
             return false;
         }
-        auto pv = prim[rng() % prim.size()];
-        auto ov = optimized[rng() % optimized.size()];
-        auto n = pv * ov;       // use product of primes to check factorize
+        auto pv = prim[1000u + rng() % (prim.size() - 1000u)];
+        auto ov = optimized[1000u + rng() % (optimized.size() - 1000u)];
+        auto n = pv * ov * 3u;       // use product of primes to check factorize
         auto factors = psc::math::Primes::factorize(n);
-        if (factors.size() != 2u) {
-            std::cout << "factorisation returned " << factors.size() << "<> 2 elements" << std::endl;
+        if (factors.size() != 3u) {
+            std::cout << "factorisation returned " << factors.size() << "<> 3 elements" << std::endl;
             return false;
         }
-        if (!(factors[0] == pv && factors[1] == ov) &&
-            !(factors[0] == ov && factors[1] == pv)) {
-            std::cout << "factorisation found " << factors[0] << ", " << factors[1]
-                      << " expected " << pv << ", " << ov << std::endl;
+        if (!(factors[0] == 3 && factors[1] == pv && factors[2] == ov) &&
+            !(factors[0] == 3 && factors[1] == ov && factors[2] == pv)) {
+            std::cout << "factorisation found " << factors[0] << ", " << factors[1] << ", " << factors[2]
+                      << " expected 3 " << pv << ", " << ov << std::endl;
             return false;
         }
         if (first) {    // just run these once as these are not optimal (at least with modern architectures where memory and caches dominate)
@@ -198,7 +221,7 @@ check_prime(const size_t cnt)
             std::cout << "Computing eratosth. optim. took " << secOpt.count()  << " to " << size << " primes " << optimized.size() << std::endl;
             std::chrono::duration<double> dijOpt;
             auto primDij = psc::math::PrimeTest::dijkstra(size, &dijOpt);
-            if (!compare(prim, primDij)) {
+            if (!compare(prim, primDij, "dijkstra")) {
                 std::cout << "Computing dijkstra primes to " << size << " failed" << std::endl;
                 return false;
             }
@@ -218,10 +241,14 @@ int main(int argc, char** argv)
     setlocale(LC_ALL, "");      // make locale dependent, and make glib accept u8 const !!!
     //Glib::init();
 
-    if (!check_prime(1000u)) {
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    if (!check_prime(rng, 10u)) {
         return 7;
     }
-
+    // std::cout << "Size " << sizeof(p) << std::endl; // this will be 1024 not packed
+    static constexpr std::size_t s = c_count(prime);
+    std::cout << "Count " << s << std::endl;
     return 0;
 }
 
