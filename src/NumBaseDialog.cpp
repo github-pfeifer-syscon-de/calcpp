@@ -59,7 +59,9 @@ NumBaseDialog::convert()
         m_entryHex->set_text(psc::fmt::format("{:#x}", num));
         m_entryOct->set_text(psc::fmt::format("{:#o}", num));
         m_entryBin->set_text(psc::fmt::format("{:#b}", num));
-        m_entryUni->set_text(Glib::ustring::sprintf("%lc", num));
+        m_entryUni->set_text(num > 0
+                                ? Glib::ustring::sprintf("%lc", num)
+                                : Glib::ustring(""));
     }
     catch (const std::exception& exc)  {
         m_entryDec->set_text("");
