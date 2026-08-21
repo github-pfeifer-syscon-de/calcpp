@@ -17,11 +17,12 @@
  */
 
 #include <iostream>
-#include <StringUtils.hpp>
 #include <psc_i18n.hpp>
+#include <glibmm.h>
+#include <StringUtils.hpp>
 
-#include "CharDialog.hpp"
 #include "CalcppWin.hpp"
+#include "CharDialog.hpp"
 
 UnicodeBlock::UnicodeBlock(const UnicodeBlock& other)
 : m_start{other.m_start}

@@ -188,7 +188,7 @@ int main(int argc, char** argv)
     else {
         //std::cout << "setlocale " << loc << std::endl;
         // sync c++ (if we are not on windows)
-#       ifndef _WIN32
+#       ifndef __MINGW32__
         std::locale::global(std::locale(loc));
 #       endif
     }

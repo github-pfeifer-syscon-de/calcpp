@@ -78,13 +78,13 @@ OutputForm::parse(const Glib::ustring& remain, double& value, std::string::size_
 {
     try {
         //std::cout << "OutputForm::parse rem \"" << remain << "\"" << std::endl;
-#       ifndef _WIN32
+#       ifndef __MINGW32__
         if (remain.size() >= 2 && remain.substr(0, 2) == "0x") {
 #       endif
             // still have to rely on this as hexes are not recognized
     		value = std::stod(remain, offs);	// c way, at least on it's locale
             //std::cout << "used stod val " << value << " offs " << *offs << std::endl;
-#       ifndef _WIN32
+#       ifndef __MINGW32__
         }
         else {
             std::stringstream ins(remain);
@@ -120,7 +120,7 @@ OutformHex::OutformHex()
 Glib::ustring
 OutformHex::format(double val)
 {
-#   ifndef _WIN32
+#   ifndef __MINGW32__
     return std::format("{:#x}", static_cast<gint64>(val));
 #   else
     return Glib::ustring::sprintf("0x%llx", (gint64) val);
@@ -137,7 +137,7 @@ Glib::ustring
 OutformOctal::format(double val)
 {
 
-#   ifndef _WIN32
+#   ifndef __MINGW32__
     return std::format("{:#o}", static_cast<gint64>(val));
 #   else
     return Glib::ustring::sprintf("0%llo", (gint64) val);
@@ -181,7 +181,7 @@ Glib::ustring
 OutformHexFp::format(double val)
 {
 
-#   ifndef _WIN32
+#   ifndef __MINGW32__
     return std::format(std::locale(""), "0x{:.15La}", val);
 #   else
     return Glib::ustring::sprintf("%.15la", val);
@@ -198,7 +198,7 @@ Glib::ustring
 OutformScientific::format(double val)
 {
 
-#   ifndef _WIN32
+#   ifndef __MINGW32__
     return std::format(std::locale(""), "{:.15Lg}", val);
 #   else
     return Glib::ustring::sprintf("%.15lg", val);
@@ -215,7 +215,7 @@ Glib::ustring
 OutformDecimal::format(double val)
 {
     // g is the most flexibel option,"f" would be fixed again
-#   ifndef _WIN32
+#   ifndef __MINGW32__
     return std::format(std::locale(""), "{:.15Lg}", val);
 #   else
     return Glib::ustring::sprintf("%.15lg", val);
@@ -231,7 +231,7 @@ Glib::ustring
 OutformExponential::format(double val)
 {
     // this still generates trailing zeros...
-#   ifndef _WIN32
+#   ifndef __MINGW32__
     return std::format(std::locale(""), "{:.15Le}", val);
 #   else
     return Glib::ustring::sprintf("%.15le", val);
