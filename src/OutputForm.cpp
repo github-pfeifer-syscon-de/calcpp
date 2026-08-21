@@ -103,8 +103,8 @@ OutputForm::parse(const Glib::ustring& remain, double& value, std::string::size_
             }
             //std::cout << "used ins val " << value << " offs " << *offs << std::endl;
         }
-	return true;
 #   endif
+	return true;
     }
     catch (const std::invalid_argument& ex) {
         std::cout << "Invalid argument parsing num " << ex.what() << std::endl;
