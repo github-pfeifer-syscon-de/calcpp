@@ -82,7 +82,7 @@ OutputForm::parse(const Glib::ustring& remain, double& value, std::string::size_
         if (remain.size() >= 2 && remain.substr(0, 2) == "0x") {
 #       endif
             // still have to rely on this as hexes are not recognized
-    		value = std::stod(remain, offs);	// c++ way ;), honors local, parses hex (prefix 0x), still no thousands separator
+    		value = std::stod(remain, offs);	// c way, at least on it's locale
             //std::cout << "used stod val " << value << " offs " << *offs << std::endl;
 #       ifndef _WIN32
         }
