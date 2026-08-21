@@ -93,6 +93,11 @@ cd build
 meson compile
 </pre>
 
+Ich hielt es ursprünglich für eine gute Idee, die Formatierung auf `std::format` (C++20) umzustellen... 
+musste dann aber (nach einiger Zeit) feststellen, 
+dass die Implementierung der C++-Locale unter msys2/gcc praktisch nicht vorhanden ist (sorry für die Unannehmlichkeiten).
+Daher erfolgt die Formatierung unter Windows nun wieder im C-Stil (leider ohne Tausendertrennzeichen).
+
 ## Zeichentabelle
 
 Unterstützt die Auswahl eines Unicodeblocks und die Anzeige der enthaltenen Zeichen.
