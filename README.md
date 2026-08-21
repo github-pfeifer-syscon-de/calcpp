@@ -112,6 +112,12 @@ cd build
 meson compile
 </pre>
 
+Once I thought it was a great idea to change the formatting to c++
+std::format ... But I realized (after some time) 
+that for msys2/gcc the implementation of the c++ locale 
+is not really existent (sry for the inconvenience).
+So the formatting with windows is back to C (sry no thousands separator).
+
 ## Character list
 
 Supports the selection of a unicode block and shows the characters for this block.

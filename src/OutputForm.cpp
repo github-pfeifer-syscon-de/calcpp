@@ -18,10 +18,11 @@
 
 #include <stdio.h>
 #include <cstdint>
+#include <iostream>
 #include <string>
 #include <sstream>
 #include <psc_i18n.hpp>
-#include <psc_format.hpp>
+#include <format>
 
 #include "OutputForm.hpp"
 
@@ -75,12 +76,15 @@ OutputForm::get_name()
 bool
 OutputForm::parse(const Glib::ustring& remain, double& value, std::string::size_type* offs) const
 {
-	try {
+    try {
         //std::cout << "OutputForm::parse rem \"" << remain << "\"" << std::endl;
+#       ifndef _WIN32
         if (remain.size() >= 2 && remain.substr(0, 2) == "0x") {
+#       endif
             // still have to rely on this as hexes are not recognized
     		value = std::stod(remain, offs);	// c++ way ;), honors local, parses hex (prefix 0x), still no thousands separator
             //std::cout << "used stod val " << value << " offs " << *offs << std::endl;
+#       ifndef _WIN32
         }
         else {
             std::stringstream ins(remain);
@@ -99,12 +103,13 @@ OutputForm::parse(const Glib::ustring& remain, double& value, std::string::size_
             }
             //std::cout << "used ins val " << value << " offs " << *offs << std::endl;
         }
-		return true;
-	}
-	catch (const std::invalid_argument& ex) {
+	return true;
+    }
+    catch (const std::invalid_argument& ex) {
         std::cout << "Invalid argument parsing num " << ex.what() << std::endl;
-	}
-	return false;
+    }
+#   endif
+    return false;
 }
 
 OutformHex::OutformHex()
@@ -115,8 +120,11 @@ OutformHex::OutformHex()
 Glib::ustring
 OutformHex::format(double val)
 {
-    //return Glib::ustring::sprintf("0x%llx", (gint64) val);
-    return psc::fmt::format("{:#x}", static_cast<gint64>(val));
+#   ifndef _WIN32
+    return std::format("{:#x}", static_cast<gint64>(val));
+#   else
+    return Glib::ustring::sprintf("0x%llx", (gint64) val);
+#   endif
 }
 
 
@@ -128,8 +136,12 @@ OutformOctal::OutformOctal()
 Glib::ustring
 OutformOctal::format(double val)
 {
-    //return Glib::ustring::sprintf("0%llo", (gint64) val);
-    return psc::fmt::format("{:#o}", static_cast<gint64>(val));
+
+#   ifndef _WIN32
+    return std::format("{:#o}", static_cast<gint64>(val));
+#   else
+    return Glib::ustring::sprintf("0%llo", (gint64) val);
+#   endif
 }
 
 // for symetric input output processing
@@ -168,8 +180,12 @@ OutformHexFp::OutformHexFp()
 Glib::ustring
 OutformHexFp::format(double val)
 {
-    //return Glib::ustring::sprintf("%.15la", val);
-    return psc::fmt::format(std::locale(""), "0x{:.15La}", val);
+
+#   ifndef _WIN32
+    return std::format(std::locale(""), "0x{:.15La}", val);
+#   else
+    return Glib::ustring::sprintf("%.15la", val);
+#   endif
 }
 
 
@@ -181,8 +197,12 @@ OutformScientific::OutformScientific()
 Glib::ustring
 OutformScientific::format(double val)
 {
-    //return Glib::ustring::sprintf("%.15lg", val);
-    return psc::fmt::format(std::locale(""), "{:.15Lg}", val);
+
+#   ifndef _WIN32
+    return std::format(std::locale(""), "{:.15Lg}", val);
+#   else
+    return Glib::ustring::sprintf("%.15lg", val);
+#   endif
 }
 
 
@@ -195,8 +215,11 @@ Glib::ustring
 OutformDecimal::format(double val)
 {
     // g is the most flexibel option,"f" would be fixed again
-    //return Glib::ustring::sprintf("%.15lg", val);
-    return psc::fmt::format(std::locale(""), "{:.15Lg}", val);
+#   ifndef _WIN32
+    return std::format(std::locale(""), "{:.15Lg}", val);
+#   else
+    return Glib::ustring::sprintf("%.15lg", val);
+#   endif
 }
 
 OutformExponential::OutformExponential()
@@ -208,7 +231,10 @@ Glib::ustring
 OutformExponential::format(double val)
 {
     // this still generates trailing zeros...
-    //return Glib::ustring::sprintf("%.15le", val);
-    return psc::fmt::format(std::locale(""), "{:.15Le}", val);
+#   ifndef _WIN32
+    return std::format(std::locale(""), "{:.15Le}", val);
+#   else
+    return Glib::ustring::sprintf("%.15le", val);
+#   endif
 }
 

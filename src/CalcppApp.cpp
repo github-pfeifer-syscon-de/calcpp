@@ -187,8 +187,10 @@ int main(int argc, char** argv)
     }
     else {
         //std::cout << "setlocale " << loc << std::endl;
-        // sync c++
+        // sync c++ (if we are not on windows)
+#       ifndef _WIN32
         std::locale::global(std::locale(loc));
+#       endif
     }
     bindtextdomain(PACKAGE, PACKAGE_LOCALE_DIR);
     textdomain(PACKAGE);
