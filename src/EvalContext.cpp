@@ -63,7 +63,7 @@ EvalContext::EvalContext()
     m_functionMap.insert(std::make_pair("lg",    functLog10));
 
     set_value(StringUtils::u8str(u8"\u03c0"), std::numbers::pi); // π or pi set some defaults
-    set_value("e", G_E);
+    set_value("e", std::numbers::e);
     set_value(StringUtils::u8str(u8"\u03d5"), std::numbers::phi); // ϕ or phi
     // have to use proxy as it seems, to reflect property changes with functions
     //   custom setter,getter for property would be nice but the functions are not virtual...
