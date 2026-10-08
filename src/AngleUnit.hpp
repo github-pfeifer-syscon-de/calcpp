@@ -20,6 +20,7 @@
 
 #include <vector>
 #include <memory>
+#include <numbers>
 
 #include "OutputForm.hpp"
 
@@ -72,6 +73,7 @@ public:
 
     double convert_to_radian(double in) override;
     double convert_from_radian(double in) override;
+    static constexpr auto DEG2RAD{std::numbers::pi / 180.0};
 };
 
 class GonConversion
@@ -82,4 +84,5 @@ public:
 
     double convert_to_radian(double in) override;
     double convert_from_radian(double in) override;
+    static constexpr auto GON2RAD{std::numbers::pi / 200.0};
 };

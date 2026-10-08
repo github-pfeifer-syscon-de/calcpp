@@ -18,6 +18,7 @@
 
 #include <math.h>
 #include <iostream>
+#include <numbers>
 #include <StringUtils.hpp>
 #include <psc_i18n.hpp>
 
@@ -61,7 +62,7 @@ EvalContext::EvalContext()
     m_functionMap.insert(std::make_pair("log10", functLog10));
     m_functionMap.insert(std::make_pair("lg",    functLog10));
 
-    set_value(StringUtils::u8str(u8"\u03c0"), G_PI); // π or pi set some defaults
+    set_value(StringUtils::u8str(u8"\u03c0"), std::numbers::pi); // π or pi set some defaults
     set_value("e", G_E);
     set_value(StringUtils::u8str(u8"\u03d5"), (1.0 + sqrt(5.0)) / 2.0); // ϕ or phi
     // have to use proxy as it seems, to reflect property changes with functions

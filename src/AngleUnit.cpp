@@ -90,13 +90,13 @@ DegreeConversion::DegreeConversion()
 double
 DegreeConversion::convert_to_radian(double in)
 {
-    return in * G_PI / 180.0;
+    return in * DEG2RAD;
 }
 
 double
 DegreeConversion::convert_from_radian(double in)
 {
-    return in * 180.0 / G_PI;
+    return in / DEG2RAD;
 }
 
 GonConversion::GonConversion()
@@ -107,11 +107,11 @@ GonConversion::GonConversion()
 double
 GonConversion::convert_to_radian(double in)
 {
-    return in * G_PI / 200.0;
+    return in * GON2RAD;
 }
 
 double
 GonConversion::convert_from_radian(double in)
 {
-    return in * 200.0 / G_PI;
+    return in / GON2RAD;
 }
