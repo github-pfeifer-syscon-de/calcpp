@@ -16,6 +16,9 @@
     <file preprocess="xml-stripblanks">color-dlg.ui</file>
     <file preprocess="xml-stripblanks">fract-dlg.ui</file>
     <file preprocess="xml-stripblanks">prime-dlg.ui</file>
+    <file preprocess="xml-stripblanks">note-dlg.ui</file>
+    <file preprocess="xml-stripblanks">sql-dlg.ui</file>
+    <file preprocess="xml-stripblanks">sql-comp.ui</file>
     <file>calcpp.png</file>
     <file>fract-dlg.css</file>
   </gresource>

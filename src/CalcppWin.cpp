@@ -35,6 +35,8 @@
 #include "PrefDialog.hpp"
 #include "QuadDialog.hpp"
 #include "GaussDialog.hpp"
+#include "NoteDialog.hpp"
+#include "SqlDialog.hpp"
 #include "NumBaseDialog.hpp"
 #include "calcpp_config.h"
 #include "PlotDialog.hpp"
@@ -174,6 +176,29 @@ CalcppWin::activate_actions()
             }, this, m_settings);
 		});
     add_action(calendar_action);
+
+    auto notes_action = Gio::SimpleAction::create("notes");
+    notes_action->signal_activate().connect(
+        [this]  (const Glib::VariantBase& value)
+                {
+            build<NoteDialog>("note-dlg.ui", "NoteDialog", [this] (NoteDialog* noteDialog) {
+                noteDialog->set_transient_for(*this);
+                noteDialog->run();
+            }, this, m_settings);
+                });
+    add_action(notes_action);
+
+    auto sql_action = Gio::SimpleAction::create("sql");
+    sql_action->signal_activate().connect(
+        [this]  (const Glib::VariantBase& value)
+                {
+            build<SqlDialog>("sql-dlg.ui", "SqlDialog", [this] (SqlDialog* sqlDialog) {
+                sqlDialog->set_transient_for(*this);
+                sqlDialog->run();
+            }, this, m_settings);
+        });
+    add_action(sql_action);
+
 
     auto plot_action = Gio::SimpleAction::create("plot");
     plot_action->signal_activate().connect(

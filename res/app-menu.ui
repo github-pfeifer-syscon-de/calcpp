@@ -125,6 +125,14 @@
               <attribute translatable="yes" name="label">Primes</attribute>
               <attribute name="action">win.primes</attribute>
           </item>
+          <item>
+            <attribute translatable="yes" name="label">Notes</attribute>
+            <attribute name="action">win.notes</attribute>
+          </item>
+          <item>
+            <attribute translatable="yes" name="label">Sql</attribute>
+            <attribute name="action">win.sql</attribute>
+          </item>
 	  </submenu>
     <submenu>
       <attribute translatable="yes" name="label">Help</attribute>

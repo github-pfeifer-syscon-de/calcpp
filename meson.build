@@ -45,7 +45,8 @@ unistring_deps    = declare_dependency(dependencies : cc.find_library('unistring
 gtkmm3_deps     = dependency('gtkmm-3.0')
 glibmm2_deps    = dependency('glibmm-2.4 giomm-2.4')
 thread_deps     = dependency('threads')
-genericimg_deps = dependency('genericimg', version :'>= 0.4.8')
+genericimg_deps = dependency('genericimg', version :'>= 0.4.13')
+#openssl_deps    = dependency('openssl')
 deps = [gtkmm3_deps
     , glibmm2_deps
     , thread_deps

@@ -18,6 +18,8 @@ sources = files(
     , 'ColorDialog.cpp'
     , 'FractDialog.cpp'
     , 'PrimeDialog.cpp'
+    , 'NoteDialog.cpp'
+    , 'SqlDialog.cpp'
     )
 
 # create libraries so these can be used on test as well

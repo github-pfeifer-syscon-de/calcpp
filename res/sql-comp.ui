@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- this is gui hack the glade - builder doesn't understand it,
+     but the cpp loader is capable of handling it ...
+     to edit it with glade implant it in some context like window or dialog -->
+<interface>
+  <requires lib="gtk+" version="3.22"/>
+  <object class="GtkPaned" id="paned">
+    <property name="visible">True</property>
+    <property name="can-focus">True</property>
+    <property name="position">250</property>
+    <property name="position-set">True</property>
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="visible">True</property>
+        <property name="can-focus">True</property>
+        <property name="shadow-type">in</property>
+        <child>
+          <object class="GtkTreeView" id="objects">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection"/>
+            </child>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="resize">False</property>
+        <property name="shrink">True</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkPaned" id="panedVert">
+        <property name="visible">True</property>
+        <property name="can-focus">True</property>
+        <property name="orientation">vertical</property>
+        <property name="position">200</property>
+        <property name="position-set">True</property>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="shadow-type">in</property>
+            <child>
+              <object class="GtkTreeView" id="columns">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection"/>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="resize">False</property>
+            <property name="shrink">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="shadow-type">in</property>
+            <child>
+              <object class="GtkTextView" id="text">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="resize">True</property>
+            <property name="shrink">True</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="resize">True</property>
+        <property name="shrink">True</property>
+      </packing>
+    </child>
+  </object>
+</interface>
